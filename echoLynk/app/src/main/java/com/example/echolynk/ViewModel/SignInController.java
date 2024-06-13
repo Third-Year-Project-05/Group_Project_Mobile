@@ -1,4 +1,4 @@
 package com.example.echolynk.ViewModel;
 
-public class LoginController {
+public class SignInController {
 }
