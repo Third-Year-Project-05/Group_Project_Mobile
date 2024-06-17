@@ -2,4 +2,7 @@
     <string name="app_name">echolynk</string>
     <string name="hello_world">Hello World</string>
     <string name="english">English</string>
+    <string name="email">Email</string>
+    <string name="hi_welcome_back_you_ve_been_missed">Hi Welcome back, you’ve been missed</string>
+    <string name="example_gmail_com">example@gmail.com</string>
 </resources>
