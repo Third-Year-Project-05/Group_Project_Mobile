@@ -16,6 +16,25 @@
             android:name=".View.SignUp"
             android:exported="false" />
         <!-- Sandaru -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <!-- Dakshina -->
         <activity
             android:name=".View.LandingPage"
