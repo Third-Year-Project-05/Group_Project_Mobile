@@ -12,25 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Echolynk"
         tools:targetApi="31">
-
+        <activity
+            android:name=".View.SignUp"
+            android:exported="false" />
         <!-- Sandaru -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         <!-- Dakshina -->
         <activity
             android:name=".View.LandingPage"
@@ -44,8 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name=".View.SignIn"
             android:exported="true">
@@ -55,8 +38,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
     </application>
 
 </manifest>
