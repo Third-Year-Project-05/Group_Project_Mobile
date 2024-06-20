@@ -7,4 +7,5 @@
     <string name="example_gmail_com">example@gmail.com</string>
     <string name="frogetPassword"><u>Forgot Password</u></string>
     <string name="terms_conditions"><u>Terms &amp; Conditions</u></string>
+    <string name="resend_code"><u>Resend Code</u></string>
 </resources>
