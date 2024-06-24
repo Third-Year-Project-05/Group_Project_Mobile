@@ -2,85 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.HomeActivity"
+    tools:context=".View.HomeFragment"
     android:background="@color/primary_blue">
-
-
-
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleImageView"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginEnd="15dp"
-                android:src="@drawable/dummyprofileimage"
-                app:civ_border_color="#FFFFFF"
-                app:civ_border_width="1dp" />
-
-            <TextView
-                android:id="@+id/textView18"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="0dp"
-                android:text="Hi, Jennifer"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/circleImageView2"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/baseline_notifications_24"
-                    app:civ_border_color="#FFFFFF"
-                    app:civ_border_width="1dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@+id/relativeLayout"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="-100dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="290dp"
         android:layout_marginEnd="-100dp"
         android:background="@drawable/home_background">
 
@@ -88,33 +24,25 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/relativeLayout"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/textView19"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="24dp"
                 android:text="Welcome To Echolynk"
+                android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp"
-                android:textAlignment="center"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editTextText"
@@ -137,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginEnd="0dp"
                 android:orientation="horizontal">
 
@@ -149,16 +77,16 @@
                     android:id="@+id/video_call5"
                     android:layout_width="100dp"
                     android:layout_height="150dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="72dp"
                     android:background="@drawable/shortcut_navigation_background"
                     android:elevation="10dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:paddingTop="25dp"
                     android:paddingBottom="25dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
+                    app:layout_constraintStart_toEndOf="@+id/video_call"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:layout_width="48dp"
@@ -181,16 +109,16 @@
                     android:id="@+id/video_call3"
                     android:layout_width="100dp"
                     android:layout_height="150dp"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="72dp"
+                    android:layout_marginEnd="20dp"
                     android:background="@drawable/shortcut_navigation_background"
                     android:elevation="10dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:paddingTop="25dp"
                     android:paddingBottom="25dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintEnd_toStartOf="@+id/video_call"
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:layout_width="48dp"
@@ -213,16 +141,15 @@
                     android:id="@+id/video_call"
                     android:layout_width="100dp"
                     android:layout_height="150dp"
-                    android:layout_marginTop="20dp"
                     android:background="@drawable/shortcut_navigation_background"
                     android:elevation="10dp"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:paddingTop="25dp"
                     android:paddingBottom="25dp"
-                    app:layout_constraintEnd_toStartOf="@+id/video_call5"
-                    app:layout_constraintStart_toEndOf="@+id/video_call3"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="0dp">
 
                     <ImageView
                         android:layout_width="48dp"
@@ -247,107 +174,106 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="24dp">
 
                 <TextView
                     android:id="@+id/textView23"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="See all"
                     android:textColor="@color/black"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/textView22"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Echolynk Blog"
                     android:textColor="@color/black"
                     android:textSize="25sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textStyle="bold" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp">
+                android:layout_marginEnd="24dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_weight="1"
+                    android:orientation="vertical"
                     android:padding="10dp"
                     android:paddingStart="0dp">
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/imageView3"
+                        app:shapeAppearanceOverlay="@style/homepage_blog_image"
+                        app:srcCompat="@drawable/dummy_blog_img1"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/homepage_blog_image"
-                        app:srcCompat="@drawable/dummy_blog_img1" />
+                        android:scaleType="centerCrop" />
 
                     <TextView
                         android:id="@+id/textView24"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/blog_title_text_background"
+                        android:paddingStart="2dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="2dp"
+                        android:paddingBottom="10dp"
                         android:text="Silent Strength: Stories of Resilience"
+                        android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="10dp"
-                        android:paddingStart="2dp"
-                        android:paddingEnd="2dp"
-                        android:background="@drawable/blog_title_text_background"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_weight="1"
+                    android:orientation="vertical"
                     android:padding="10dp"
                     android:paddingEnd="0dp">
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/imageView3a"
+                        app:shapeAppearanceOverlay="@style/homepage_blog_image"
+                        app:srcCompat="@drawable/dummy_blog_img2"
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:scaleType="centerCrop"
-                        app:shapeAppearanceOverlay="@style/homepage_blog_image"
-                        app:srcCompat="@drawable/dummy_blog_img2" />
+                        android:scaleType="centerCrop" />
 
                     <TextView
                         android:id="@+id/textView24a"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/blog_title_text_background"
+                        android:paddingStart="2dp"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="2dp"
+                        android:paddingBottom="10dp"
                         android:text="Breaking Silence: Inspirational Journeys"
+                        android:textAlignment="center"
                         android:textColor="@color/black"
                         android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:textAlignment="center"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="10dp"
-                        android:paddingStart="2dp"
-                        android:paddingEnd="2dp"
-                        android:background="@drawable/blog_title_text_background"/>
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
