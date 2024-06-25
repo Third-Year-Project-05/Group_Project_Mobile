@@ -14,19 +14,24 @@
         tools:targetApi="31">
 
         <!-- Sandaru -->
-
         <activity
             android:name=".View.HomeActivity"
-            android:exported="false">
-
-        </activity>
-
-
+            android:exported="false" />
         <activity
             android:name=".View.StartupActivity"
             android:exported="false">
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
         </activity>
+
+
+
+
         <!-- Dakshina -->
         <activity
             android:name=".View.LandingPage"
@@ -42,6 +47,7 @@
             </intent-filter>
 
         </activity>
+
         <activity
             android:name=".View.SignIn"
             android:exported="false">
@@ -51,6 +57,18 @@
             android:exported="false" />
         <activity
             android:name=".View.SignUp"
+            android:exported="false" />
+        <activity
+            android:name=".View.HomeBlog"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".View.blog_card_custom"
             android:exported="false" />
     </application>
 
