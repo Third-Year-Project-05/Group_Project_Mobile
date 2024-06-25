@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="75dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/contactImageView"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="13dp"
+        android:src="@drawable/dummy_user_image" />
+
+    <TextView
+        android:id="@+id/contactNameView"
+        android:layout_width="wrap_content"
+        android:maxWidth="250dp"
+        android:maxLines="1"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/contactImageView"
+        android:text="Alex Boltan Alex Boltan Alex Boltan Alex Boltan"
+        android:textSize="17dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/lastMessageTextView"
+        android:layout_width="200dp"
+        android:layout_height="25dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="13dp"
+        android:maxLines="2"
+        android:layout_marginBottom="14dp"
+        android:textSize="10sp"
+        android:textColor="@color/primary_blue"
+        android:layout_toEndOf="@+id/contactImageView"
+        android:text="TextView 3ff43f34f 3g erg e ger er ge ge rg eg eg erg er ge ge rge rg erg egre" />
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="13dp"
+        android:text="2024-10-17"
+        android:textColor="@color/primary_blue"
+        android:textSize="10sp"/>
+
+    <TextView
+        android:id="@+id/countTextView"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/dateTextView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="13dp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textSize="10sp"
+        android:background="@drawable/message_count_background"
+        android:text="1" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="24dp"
+        android:background="#0C3D4E8B"
+        android:layout_marginEnd="24dp"
+        android:orientation="horizontal"/>
+
+
+</RelativeLayout>
