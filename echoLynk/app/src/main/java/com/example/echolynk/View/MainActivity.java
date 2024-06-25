@@ -91,6 +91,16 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+            binding.bottomNavigationView.setSelectedItemId(R.id.home_frame);
+            replaceFragment(new HomeFragment());
+
+    }
+
     private void setHeaderColours(int backColour){
         if (backColour == 1){
 
