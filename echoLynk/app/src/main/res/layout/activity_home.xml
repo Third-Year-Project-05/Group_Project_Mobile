@@ -8,27 +8,348 @@
     tools:context=".View.HomeActivity"
     android:background="@color/primary_blue">
 
+
+
+
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/profile_image_background"
-            android:clipChildren="true"
-            android:clipToPadding="true">
 
-            <ImageView
-                android:id="@+id/imageView5"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImageView"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/dummyprofileimage"
+                app:civ_border_color="#FFFFFF"
+                app:civ_border_width="1dp" />
+
+            <TextView
+                android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/DummyProfileImage" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_marginStart="0dp"
+                android:text="Hi, Jennifer"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/circleImageView2"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/baseline_notifications_24"
+                    app:civ_border_color="#FFFFFF"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+
     </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-100dp"
+        android:layout_marginTop="300dp"
+        android:layout_marginEnd="-100dp"
+        android:background="@drawable/home_background">
+
+    </FrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="24dp"
+                android:text="Welcome To Echolynk"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textAlignment="center"
+                android:textStyle="bold"/>
+
+            <EditText
+                android:id="@+id/editTextText"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/search_background_1"
+                android:drawableStart="@drawable/baseline_search_24"
+                android:drawablePadding="8dp"
+                android:ems="10"
+                android:hint="Search"
+                android:inputType="text"
+                android:padding="10dp"
+                android:textColor="@color/white" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/buttons_row"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginEnd="0dp"
+                android:orientation="horizontal">
+
+                <!-- Video Call Button -->
+
+                <!-- Voice Assistant Button -->
+
+                <LinearLayout
+                    android:id="@+id/video_call5"
+                    android:layout_width="100dp"
+                    android:layout_height="150dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/shortcut_navigation_background"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="25dp"
+                    android:paddingBottom="25dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/icon_background"
+                        android:padding="10dp"
+                        android:src="@drawable/gamepad_solid" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Games"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/video_call3"
+                    android:layout_width="100dp"
+                    android:layout_height="150dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/shortcut_navigation_background"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="25dp"
+                    android:paddingBottom="25dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/icon_background"
+                        android:padding="10dp"
+                        android:src="@drawable/video_solid__1_" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Video Call"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/video_call"
+                    android:layout_width="100dp"
+                    android:layout_height="150dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/shortcut_navigation_background"
+                    android:elevation="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="25dp"
+                    android:paddingBottom="25dp"
+                    app:layout_constraintEnd_toStartOf="@+id/video_call5"
+                    app:layout_constraintStart_toEndOf="@+id/video_call3"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/icon_background"
+                        android:padding="10dp"
+                        android:src="@drawable/microphone_solid" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Voice\nAssistant"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Games Button -->
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="24dp">
+
+                <TextView
+                    android:id="@+id/textView23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="See all"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Echolynk Blog"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:paddingStart="0dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/homepage_blog_image"
+                        app:srcCompat="@drawable/dummy_blog_img1" />
+
+                    <TextView
+                        android:id="@+id/textView24"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Silent Strength: Stories of Resilience"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="2dp"
+                        android:paddingEnd="2dp"
+                        android:background="@drawable/blog_title_text_background"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:padding="10dp"
+                    android:paddingEnd="0dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imageView3a"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:scaleType="centerCrop"
+                        app:shapeAppearanceOverlay="@style/homepage_blog_image"
+                        app:srcCompat="@drawable/dummy_blog_img2" />
+
+                    <TextView
+                        android:id="@+id/textView24a"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Breaking Silence: Inspirational Journeys"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textAlignment="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="10dp"
+                        android:paddingStart="2dp"
+                        android:paddingEnd="2dp"
+                        android:background="@drawable/blog_title_text_background"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </RelativeLayout>

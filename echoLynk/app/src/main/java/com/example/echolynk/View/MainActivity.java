@@ -1,28 +1,132 @@
 package com.example.echolynk.View;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.echolynk.Model.Call_Item;
 import com.example.echolynk.R;
+import com.example.echolynk.ViewModel.MyCallsAdapter;
+import com.example.echolynk.databinding.ActivityMainBinding;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
-    @SuppressLint("MissingInflatedId")
+    ActivityMainBinding binding;
+
+    RelativeLayout mainLayout;
+    TextView userName;
+    de.hdodenhof.circleimageview.CircleImageView userImage;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_verify_code);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.verifyCode), (v, insets) -> {
+        setContentView(binding.getRoot());
+        replaceFragment(new HomeFragment());
+        binding.bottomNavigationView.setSelectedItemId(R.id.home_frame);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        mainLayout = findViewById(R.id.main);
+        userName = findViewById(R.id.user_name);
+        userImage = findViewById(R.id.user_image);
+
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+
+            if (item.getItemId() == R.id.home_frame){
+                replaceFragment(new HomeFragment());
+                setHeaderColours(0);
+            } else if (item.getItemId() == R.id.call_frame) {
+                replaceFragment(new CallFragment());
+                mainLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+                setHeaderColours(1);
+
+            } else if (item.getItemId() == R.id.speech_frame) {
+                replaceFragment(new SpeechFragment());
+                setHeaderColours(1);
+            } else if (item.getItemId() == R.id.games_frame) {
+                replaceFragment(new GamesFragment());
+                setHeaderColours(0);
+            } else if (item.getItemId() == R.id.profile_frame) {
+                replaceFragment(new ProfileFragment());
+            } else {
+                replaceFragment(new TestFragment());
+            }
+            return true;
+        });
+
     }
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.commit();
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+            binding.bottomNavigationView.setSelectedItemId(R.id.home_frame);
+            replaceFragment(new HomeFragment());
+
+    }
+
+    private void setHeaderColours(int backColour){
+        if (backColour == 1){
+
+            mainLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
+            userName.setTextColor(ContextCompat.getColor(this, R.color.primary_blue));
+            userImage.setBorderColor(ContextCompat.getColor(this, R.color.primary_blue));
+            
+            
+            Drawable bellIcon;
+            CircleImageView circleImageView = findViewById(R.id.circleImageView2);
+            bellIcon = ContextCompat.getDrawable(this,R.drawable.bell_icon_with_circle);
+            bellIcon.setColorFilter(ContextCompat.getColor(this,R.color.primary_blue), PorterDuff.Mode.SRC_IN);
+            circleImageView.setImageDrawable(bellIcon);
+        }
+        else {
+            mainLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.primary_blue));
+            userName.setTextColor(ContextCompat.getColor(this, R.color.white));
+            userImage.setBorderColor(ContextCompat.getColor(this, R.color.white));
+
+
+            Drawable bellIcon;
+            CircleImageView circleImageView = findViewById(R.id.circleImageView2);
+            bellIcon = ContextCompat.getDrawable(this,R.drawable.bell_icon_with_circle);
+            bellIcon.setColorFilter(ContextCompat.getColor(this,R.color.white), PorterDuff.Mode.SRC_IN);
+            circleImageView.setImageDrawable(bellIcon);
+        }
+    }
+
 }
