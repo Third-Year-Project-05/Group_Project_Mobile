@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/blogListView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="8dp"
@@ -11,17 +11,19 @@
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_begin="8dp"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/backButton"
-        android:layout_width="28dp"
+        android:layout_width="48dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:backgroundTint="#00FFFFFF"
         android:onClick="backOnclick"
         android:rotationY="0"
@@ -35,8 +37,8 @@
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginStart="-4dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/poppins_medium"
         android:text="Echolynk Blog"
         android:textColor="#000000"
@@ -48,9 +50,9 @@
     <EditText
         android:id="@+id/search_bar"
         android:layout_width="282dp"
-        android:layout_height="44dp"
+        android:layout_height="48dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/edittext_background"
         android:drawableStart="@drawable/serch_icon"
         android:ems="10"
@@ -62,86 +64,26 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/blog_main_card"
-        android:layout_width="310dp"
-        android:layout_height="205dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar">
-
-        <LinearLayout
-            android:id="@+id/blog_card"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFFFFF"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imageView7"
-                android:layout_width="match_parent"
-                android:layout_height="155dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:background="@drawable/test_shape"
-                android:backgroundTint="#D75113B5"
-                android:contentDescription="Blog image"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/conversation_default" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:fontFamily="@font/poppins_regular"
-                    android:text="What is Text-to-Speech?"
-                    android:textColor="#000000"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/poppins_light"
-                    android:text="by Echolynk Team"
-                    android:textColor="#D0000000"
-                    android:textSize="14sp"
-                    android:textStyle="normal" />
-
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="12"
-                android:fontFamily="@font/poppins_regular"
-                android:text="Read More >"
-                android:textColor="#D0000000"
-                android:textSize="14sp"
-                android:textStyle="normal" />
-
-
-        </LinearLayout>
-
-
-    </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="363dp" />
+        app:layout_constraintEnd_toEndOf="@+id/blog_recycle_view"
+        app:layout_constraintEnd_toStartOf="@+id/blog_recycle_view"
+        app:layout_constraintGuide_end="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/blog_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="629dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
+        app:layout_constraintVertical_bias="0.04000002" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

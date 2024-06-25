@@ -26,7 +26,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/DummyProfileImage" />
+                app:srcCompat="@drawable/dummy_profile_image" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </RelativeLayout>
 
