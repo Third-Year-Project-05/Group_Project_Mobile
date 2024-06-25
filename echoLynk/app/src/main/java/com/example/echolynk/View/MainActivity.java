@@ -18,9 +18,16 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.echolynk.Model.Call_Item;
 import com.example.echolynk.R;
+import com.example.echolynk.ViewModel.MyCallsAdapter;
 import com.example.echolynk.databinding.ActivityMainBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -61,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new CallFragment());
                 mainLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
                 setHeaderColours(1);
+
             } else if (item.getItemId() == R.id.speech_frame) {
                 replaceFragment(new SpeechFragment());
                 setHeaderColours(1);

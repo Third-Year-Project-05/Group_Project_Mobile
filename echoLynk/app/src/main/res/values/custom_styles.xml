@@ -5,4 +5,8 @@
         <item name="cornerSizeTopRight">10dp</item>
     </style>
 
+    <style name="circle">
+        <item name="cornerSize">100%</item>
+    </style>
+
 </resources>
