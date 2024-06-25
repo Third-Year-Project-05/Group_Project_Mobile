@@ -2,6 +2,7 @@ package com.example.echolynk.View;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -23,6 +24,10 @@ public class blog_card_custom extends AppCompatActivity {
         setContentView(R.layout.activity_blog_card_custom);
 
         /*ListView listView=new ArrayAdapter<>()*/
+
+    }
+
+    public void readMoreOnClick(View view) {
 
     }
 }
