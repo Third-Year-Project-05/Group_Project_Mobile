@@ -27,7 +27,7 @@
         android:backgroundTint="#00FFFFFF"
         android:onClick="backOnclick"
         android:rotationY="0"
-        android:scaleType="center"
+        android:scaleType="centerCrop"
         android:scaleY="2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"

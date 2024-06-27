@@ -17,6 +17,11 @@ public class Blog {
         this.description = description;
     }
 
+    public Blog(String title, int image) {
+        this.title = title;
+        this.image = image;
+    }
+
     public String getTitle() {
         return title;
     }
