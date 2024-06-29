@@ -38,23 +38,15 @@ public class HomeBlog extends AppCompatActivity implements OnBlogClickListener {
 
         List<Blog> blogs=new ArrayList<>();
 
-        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1,"Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n" +
-                "\u200D\n" +
-                "For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever."));
+        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
 
-        blogs.add(new Blog("hatti pakaya","by Echolynk",R.drawable.dummy_blog_img1,"Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n" +
-                "\u200D\n" +
-                "For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever."));
+        blogs.add(new Blog("hatti pakaya","by Echolynk",R.drawable.dummy_blog_img1));
 
-        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1,"Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n" +
-                "\u200D\n" +
-                "For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever."));
+        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
 
-        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1,"Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n" +
-                "\u200D\n" +
-                "For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever."));
+        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
 
-        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1,"Read More >"));
+        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
 
 
         if (recyclerView != null || !blogs.isEmpty()){
@@ -75,6 +67,13 @@ public class HomeBlog extends AppCompatActivity implements OnBlogClickListener {
     @Override
     public void onBlogClick(int position, View view) {
         Intent intent = new Intent(HomeBlog.this, BlogView.class);
+        intent.putExtra("blogTitle","What is Text-to-Speech?");
+        intent.putExtra("blogImage",R.drawable.dummy_blog_img1);
+        intent.putExtra("blogAuthor","by Echolynk");
+        intent.putExtra("blogPublishDate","Published on June 13, 2024");
+        intent.putExtra("description","Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n" +
+                "\u200D\n" +
+                "For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever.");
         startActivity(intent);
     }
 

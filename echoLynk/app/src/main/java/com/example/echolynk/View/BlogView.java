@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +33,21 @@ public class BlogView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blog_view);
+
+        // set as article data
+        TextView articleTitle=findViewById(R.id.blog_view_title);
+        ImageView articleImage=findViewById(R.id.blog_view_image);
+        TextView articleAuthor=findViewById(R.id.blog_view_author);
+        TextView articlePublishDate=findViewById(R.id.blog_view_publish_date);
+        TextView articleDescription=findViewById(R.id.blog_view_description);
+
+        articleTitle.setText(getIntent().getStringExtra("blogTitle"));
+        articleImage.setImageResource(getIntent().getIntExtra("blogImage",R.drawable.conversation_default));
+        articleAuthor.setText(getIntent().getStringExtra("blogAuthor"));
+        articlePublishDate.setText(getIntent().getStringExtra("blogPublishDate"));
+        articleDescription.setText(getIntent().getStringExtra("description"));
+
+      // set as   recent articles
 
        recyclerView=findViewById(R.id.blog_view_recent_articles_recycle_view);
 

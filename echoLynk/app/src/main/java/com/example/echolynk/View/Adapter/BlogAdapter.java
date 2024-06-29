@@ -39,7 +39,6 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogViewModel> {
     public void onBindViewHolder(@NonNull BlogViewModel holder, int position) {
         holder.titleView.setText(blogs.get(position).getTitle());
         holder.authorView.setText(blogs.get(position).getAuthor());
-        holder.descriptionView.setText(blogs.get(position).getDescription());
         holder.imageView.setImageResource(blogs.get(position).getImage());
     }
 

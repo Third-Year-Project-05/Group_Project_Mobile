@@ -10,6 +10,12 @@ public class Blog {
     public Blog() {
     }
 
+    public Blog(String title, String author, int image) {
+        this.title = title;
+        this.author = author;
+        this.image = image;
+    }
+
     public Blog(String title, String author, int image, String description) {
         this.title = title;
         this.author = author;

@@ -14,7 +14,7 @@ public class BlogViewModel extends RecyclerView.ViewHolder {
     public ImageView imageView;
     public TextView titleView;
     public TextView authorView;
-    public TextView descriptionView;
+    public TextView readMore;
 
 
     public BlogViewModel(@NonNull View itemView,OnBlogClickListener listener) {
@@ -22,9 +22,8 @@ public class BlogViewModel extends RecyclerView.ViewHolder {
         imageView=itemView.findViewById(R.id.blog_image);
         titleView=itemView.findViewById(R.id.blog_title);
         authorView=itemView.findViewById(R.id.blog_author);
-        descriptionView=itemView.findViewById(R.id.blog_description);
+        readMore=itemView.findViewById(R.id.blog_description);
 
-
-        descriptionView.setOnClickListener(view -> listener.onBlogClick(getAdapterPosition(), view));
+        readMore.setOnClickListener(view -> listener.onBlogClick(getAdapterPosition(), view));
     }
 }
