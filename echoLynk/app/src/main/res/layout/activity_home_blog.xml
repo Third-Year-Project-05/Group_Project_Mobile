@@ -27,21 +27,23 @@
         android:backgroundTint="#00FFFFFF"
         android:onClick="backOnclick"
         android:rotationY="0"
-        android:scaleType="center"
+        android:scaleType="centerCrop"
         android:scaleY="2"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/back_arrow" />
 
     <TextView
-        android:id="@+id/textView18"
+        android:id="@+id/home_blog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="-4dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="54dp"
         android:fontFamily="@font/poppins_medium"
         android:text="Echolynk Blog"
         android:textColor="#000000"
+        android:clickable="true"
+        android:focusable="true"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/backButton"
@@ -49,9 +51,9 @@
 
     <EditText
         android:id="@+id/search_bar"
-        android:layout_width="282dp"
+        android:layout_width="320dp"
         android:layout_height="48dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/edittext_background"
         android:drawableStart="@drawable/serch_icon"
@@ -61,8 +63,10 @@
         android:paddingStart="8dp"
         android:singleLine="true"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.18"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+        app:layout_constraintTop_toBottomOf="@+id/home_blog_title" />
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -79,9 +83,10 @@
         android:layout_width="match_parent"
         android:layout_height="629dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.32"
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toBottomOf="@+id/search_bar"
         app:layout_constraintVertical_bias="0.04000002" />

@@ -7,20 +7,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.OnBlogClickListener;
 
 public class BlogViewModel extends RecyclerView.ViewHolder {
 
     public ImageView imageView;
     public TextView titleView;
     public TextView authorView;
-    public TextView descriptionView;
+    public TextView readMore;
 
 
-    public BlogViewModel(@NonNull View itemView) {
+    public BlogViewModel(@NonNull View itemView,OnBlogClickListener listener) {
         super(itemView);
         imageView=itemView.findViewById(R.id.blog_image);
         titleView=itemView.findViewById(R.id.blog_title);
         authorView=itemView.findViewById(R.id.blog_author);
-        descriptionView=itemView.findViewById(R.id.blog_description);
+        readMore=itemView.findViewById(R.id.blog_description);
+
+        readMore.setOnClickListener(view -> listener.onBlogClick(getAdapterPosition(), view));
     }
 }

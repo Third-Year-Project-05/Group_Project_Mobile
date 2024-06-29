@@ -20,6 +20,7 @@
         <activity
             android:name=".View.StartupActivity"
             android:exported="false">
+
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,12 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->
-        </activity>
-
-
-
-
-        <!-- Dakshina -->
+        </activity> <!-- Dakshina -->
         <activity
             android:name=".View.LandingPage"
             android:exported="false" />
@@ -41,17 +37,17 @@
             android:configChanges="orientation|screenSize"
             android:exported="true">
 
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
 
         </activity>
-
         <activity
             android:name=".View.SignIn"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".View.VerifyCode"
             android:exported="false" />
@@ -60,16 +56,28 @@
             android:exported="false" />
         <activity
             android:name=".View.HomeBlog"
-            android:exported="true">
+            android:exported="false"/>
+        <activity
+            android:name=".View.blog_card_custom"
+            android:exported="false" />
+        <activity
+            android:name=".View.BlogView"
+            android:exported="false" />
+        <activity
+            android:name=".View.EmptyPage"
+            android:exported="false" />
+        <activity
+            android:name=".View.BlogViewRecentArticlesCustom"
+            android:exported="false" />
+        <activity
+            android:name=".VoiceAssistanceThree"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".View.blog_card_custom"
-            android:exported="false" />
     </application>
 
 </manifest>
