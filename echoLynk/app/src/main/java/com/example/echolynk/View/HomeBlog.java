@@ -1,9 +1,12 @@
 package com.example.echolynk.View;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,12 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echolynk.Model.Blog;
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.OnBlogClickListener;
 import com.example.echolynk.View.Adapter.BlogAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeBlog extends AppCompatActivity {
+public class HomeBlog extends AppCompatActivity implements OnBlogClickListener {
 
     RecyclerView recyclerView;
     @Override
@@ -53,14 +57,28 @@ public class HomeBlog extends AppCompatActivity {
 
         if (recyclerView != null){
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new BlogAdapter(getApplicationContext(),blogs));
+            recyclerView.setAdapter(new BlogAdapter(getApplicationContext(),blogs,this));
         }else {
             Log.d("recyclerView check", "recyclerView null ");
+            //check the load fragment
         }
 
+    }
 
+    @Override
+    public void onBlogClick(int position, View view) {
+        Intent intent = new Intent(HomeBlog.this, BlogView.class);
+        startActivity(intent);
+    }
+
+    public void readBlog(View view) {
+        Intent intent = new Intent(HomeBlog.this, BlogView.class);
+        startActivity(intent);
     }
 
     public void backOnclick(View view) {
+
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.example.echolynk.View;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.echolynk.Model.Blog;
 import com.example.echolynk.R;
+import com.example.echolynk.View.Adapter.BlogAdapter;
 import com.example.echolynk.View.Adapter.BlogViewAdapter;
 
 import java.util.ArrayList;
@@ -51,5 +53,7 @@ public class BlogView extends AppCompatActivity {
     }
 
     public void backOnclick(View view) {
+        Intent intent = new Intent(BlogView.this, HomeBlog.class);
+        startActivity(intent);
     }
 }

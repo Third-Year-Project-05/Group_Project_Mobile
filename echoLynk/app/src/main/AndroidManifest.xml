@@ -58,18 +58,21 @@
             android:exported="false" />
         <activity
             android:name=".View.HomeBlog"
-            android:exported="false" />
-        <activity
-            android:name=".View.blog_card_custom"
-            android:exported="false" />
-        <activity
-            android:name=".View.BlogView"
-            android:exported="true">
+            android:exported="true" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".View.blog_card_custom"
+            android:exported="false" />
+        <activity
+            android:name=".View.BlogView"
+            android:exported="false">
+
         </activity>
     </application>
 

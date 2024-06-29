@@ -75,19 +75,19 @@
             <TextView
                 android:id="@+id/blog_description"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
                 android:layout_weight="12"
                 android:clickable="true"
                 android:focusable="true"
                 android:fontFamily="@font/poppins_regular"
-                android:onClick="readMoreOnClick"
                 android:paddingStart="5dp"
                 android:text="Read More >"
                 android:textColor="#D0000000"
                 android:textSize="18sp"
                 android:textStyle="normal"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="8dp"/>
+                android:layout_marginStart="8dp"
+                tools:ignore="RtlSymmetry" />
 
 
         </LinearLayout>
