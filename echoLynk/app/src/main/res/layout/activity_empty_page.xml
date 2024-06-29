@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/empty_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.EmptyPage">
+
+
+    <ImageView
+        android:id="@+id/empty_page_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:srcCompat="@drawable/empty_icon"
+        android:background="#F6F8F8"/>
+</RelativeLayout>
