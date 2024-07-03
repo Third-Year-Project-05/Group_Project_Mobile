@@ -1,31 +1,25 @@
 package com.example.echolynk.View;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echolynk.Model.Blog;
 import com.example.echolynk.R;
-import com.example.echolynk.Utils.OnBlogClickListener;
+import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.BlogAdapter;
 import com.example.echolynk.View.Adapter.EmptyAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeBlog extends AppCompatActivity implements OnBlogClickListener {
+public class HomeBlog extends AppCompatActivity implements onClickListener {
 
     RecyclerView recyclerView;
     @Override
@@ -38,7 +32,7 @@ public class HomeBlog extends AppCompatActivity implements OnBlogClickListener {
 
         List<Blog> blogs=new ArrayList<>();
 
-        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
+       /* blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
 
         blogs.add(new Blog("hatti pakaya","by Echolynk",R.drawable.dummy_blog_img1));
 
@@ -46,7 +40,7 @@ public class HomeBlog extends AppCompatActivity implements OnBlogClickListener {
 
         blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
 
-        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
+        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));*/
 
 
         if (recyclerView != null || !blogs.isEmpty()){
@@ -65,7 +59,7 @@ public class HomeBlog extends AppCompatActivity implements OnBlogClickListener {
     }
 
     @Override
-    public void onBlogClick(int position, View view) {
+    public void onClick(int position, View view) {
         Intent intent = new Intent(HomeBlog.this, BlogView.class);
         intent.putExtra("blogTitle","What is Text-to-Speech?");
         intent.putExtra("blogImage",R.drawable.dummy_blog_img1);
@@ -77,10 +71,6 @@ public class HomeBlog extends AppCompatActivity implements OnBlogClickListener {
         startActivity(intent);
     }
 
-    public void readBlog(View view) {
-        Intent intent = new Intent(HomeBlog.this, BlogView.class);
-        startActivity(intent);
-    }
 
     public void backOnclick(View view) {
 
