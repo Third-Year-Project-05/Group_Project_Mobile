@@ -65,7 +65,7 @@ dependencies {
     // Sandaru
 
     implementation(libs.roundimage)
-
+    implementation(libs.lottie)
 
 
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout mainLayout, mainLayoutHeader;
     TextView userName;
     de.hdodenhof.circleimageview.CircleImageView userImage;
+
 
 
     @Override

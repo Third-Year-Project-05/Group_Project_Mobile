@@ -12,40 +12,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Echolynk"
         tools:targetApi="31">
+        <activity
+            android:name=".View.AccountDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".View.ChangePasswordActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <!-- Sandaru -->
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".View.ChangePasswordEnterEmailActivity"
+            android:exported="false"></activity>
+        <activity
+            android:name=".View.EditDetailsActivity"
+            android:exported="false" /> <!-- Sandaru -->
         <activity
             android:name=".View.HomeActivity"
-            android:exported="false">
-
-        </activity>
-
-
+            android:exported="false" />
         <activity
             android:name=".View.StartupActivity"
-            android:exported="false">
-
-        </activity>
-        <!-- Dakshina -->
+            android:exported="false" /> <!-- Dakshina -->
         <activity
             android:name=".View.LandingPage"
             android:exported="false" />
         <activity
             android:name=".View.MainActivity"
             android:configChanges="orientation|screenSize"
-            android:exported="true">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".View.SignIn"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".View.VerifyCode"
             android:exported="false" />
