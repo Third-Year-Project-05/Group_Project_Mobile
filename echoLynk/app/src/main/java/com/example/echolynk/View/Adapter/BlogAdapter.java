@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echolynk.Model.Blog;
 import com.example.echolynk.R;
-import com.example.echolynk.Utils.OnBlogClickListener;
+import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.ViewModel.BlogViewModel;
 
 import java.util.List;
@@ -20,9 +20,9 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogViewModel> {
     Context context;
     List<Blog> blogs;
 
-    OnBlogClickListener listener;
+    onClickListener listener;
 
-    public BlogAdapter(Context context, List<Blog> blogs,OnBlogClickListener listener) {
+    public BlogAdapter(Context context, List<Blog> blogs, onClickListener listener) {
         this.context = context;
         this.blogs = blogs;
         this.listener=listener;

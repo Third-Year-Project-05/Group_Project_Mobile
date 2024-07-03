@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echolynk.R;
-import com.example.echolynk.Utils.OnBlogClickListener;
+import com.example.echolynk.Utils.onClickListener;
 
 public class BlogViewModel extends RecyclerView.ViewHolder {
 
@@ -17,13 +17,13 @@ public class BlogViewModel extends RecyclerView.ViewHolder {
     public TextView readMore;
 
 
-    public BlogViewModel(@NonNull View itemView,OnBlogClickListener listener) {
+    public BlogViewModel(@NonNull View itemView, onClickListener listener) {
         super(itemView);
         imageView=itemView.findViewById(R.id.blog_image);
         titleView=itemView.findViewById(R.id.blog_title);
         authorView=itemView.findViewById(R.id.blog_author);
         readMore=itemView.findViewById(R.id.blog_description);
 
-        readMore.setOnClickListener(view -> listener.onBlogClick(getAdapterPosition(), view));
+        readMore.setOnClickListener(view -> listener.onClick(getAdapterPosition(), view));
     }
 }
