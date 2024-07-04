@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.RecycleViewCustomItemDirection;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.LiveUserAdapter;
 import com.example.echolynk.View.Adapter.ReceiverAdapter;
@@ -57,6 +58,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         }
 
         if (chatRecycleView != null) {
+            chatRecycleView.addItemDecoration(new RecycleViewCustomItemDirection(116));
             chatRecycleView.setAdapter(new SenderAdapter(getApplicationContext(), massageList));
            // chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(),massageList));
         }

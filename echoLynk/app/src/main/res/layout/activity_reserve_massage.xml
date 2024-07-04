@@ -19,10 +19,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:maxWidth="256dp"
         android:fontFamily="@font/poppins_regular"
         android:textSize="18sp"
         android:paddingStart="8dp"
         android:textColor="@color/white"
-        android:text="Test message"
+        android:text="Test messdsdssdsadsadadadaadadadadasage"
         tools:ignore="RtlSymmetry" />
 </LinearLayout>
