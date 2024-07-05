@@ -39,6 +39,7 @@
         android:layout_marginBottom="0dp"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
+        app:menu="@menu/bottom_nav_live_conversation"
         app:itemIconTint="@color/primary_blue"
         app:itemTextColor="@color/primary_blue"
         app:backgroundTint="@color/white"/>
