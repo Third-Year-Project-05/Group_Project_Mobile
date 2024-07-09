@@ -15,9 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Echolynk"
         tools:targetApi="31">
-        <activity
-            android:name=".View.Suggestion_massage"
-            android:exported="false" />
+
         <!-- Sandaru -->
         <activity
             android:name=".View.HomeActivity"
@@ -40,7 +38,7 @@
         <activity
             android:name=".View.MainActivity"
             android:configChanges="orientation|screenSize"
-            android:exported="true">
+            android:exported="false">
 
             <!--
             <intent-filter>
@@ -97,6 +95,9 @@
             android:exported="false" />
         <activity
             android:name=".View.reserveMessage"
+            android:exported="false" />
+        <activity
+            android:name=".View.Suggestion_massage"
             android:exported="false" />
     </application>
 
