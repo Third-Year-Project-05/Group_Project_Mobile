@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,7 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Echolynk"
         tools:targetApi="31">
-         <!-- Sandaru -->
+        <activity
+            android:name=".View.Suggestion_massage"
+            android:exported="false" />
+        <!-- Sandaru -->
         <activity
             android:name=".View.HomeActivity"
             android:exported="false" />
@@ -27,54 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->
-        </activity>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- Dakshina -->
+        </activity> <!-- Dakshina -->
         <activity
             android:name=".View.LandingPage"
             android:exported="false" />
@@ -127,15 +86,12 @@
         <activity
             android:name=".View.LiveConversationChat"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
         <activity
             android:name=".View.sender_massage"
             android:exported="false" />
