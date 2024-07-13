@@ -31,7 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->
-        </activity> <!-- Dakshina -->
+        </activity>
+
+        <!-- Dakshina -->
         <activity
             android:name=".View.LandingPage"
             android:exported="false" />
