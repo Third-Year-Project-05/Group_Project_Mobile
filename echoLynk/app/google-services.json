@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "403359480178",
+    "project_id": "echolynk-cf3ca",
+    "storage_bucket": "echolynk-cf3ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403359480178:android:a16373c4a99d630cbdc5eb",
+        "android_client_info": {
+          "package_name": "com.example.echolynk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAysvaqEqybR-fkUhfIAPOzL6tREgtoZ48"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
