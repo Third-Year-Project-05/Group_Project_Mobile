@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.media.AudioRecord;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -34,6 +36,7 @@ import com.example.echolynk.Utils.RecycleViewCustomItemDirection;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.AnswerAdapter;
 import com.example.echolynk.View.Adapter.LiveUserAdapter;
+import com.example.echolynk.View.Adapter.ReceiverAdapter;
 import com.example.echolynk.View.Adapter.SenderAdapter;
 
 import java.util.ArrayList;
@@ -61,7 +64,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private static final int RecodeAudioRequestCode = 1;
 
 
-    @SuppressLint("MissingInflatedId")
+    @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,16 +95,42 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         // set data for live users icon tab
         setLiveUsers(live_users, recyclerView);
 
-
-        // set data for live chat view
-        setLiveChat(chatRecycleView, massageList);
-
         // click keyboard btn
         keyboardBtn.setOnClickListener(view -> {
             massageBox.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) {
                 imm.showSoftInput(massageBox, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+
+        // set data for live chat view
+      //  setLiveChat(chatRecycleView, massageList,0);
+
+        //sender click the sent Btn
+        massageBox.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+
+                if (event.getAction()==MotionEvent.ACTION_UP){
+                    Drawable drawableEnd=massageBox.getCompoundDrawables()[2];
+
+                    if (drawableEnd!=null){
+                        int drawableWidth=drawableEnd.getBounds().width();
+                        if (event.getRawX() >= (massageBox.getRight() - drawableWidth)) {
+                            // handel the sender massage
+                            String massage=massageBox.getText().toString();
+                            if (!massage.isEmpty()) {
+                                massageList.add(massage);
+                                setLiveChat(chatRecycleView,massageList,0);
+                                return true;
+                            }
+                        }
+                    }
+                }
+
+                return false;
             }
         });
 
@@ -127,14 +156,14 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             public void onBeginningOfSpeech() {
-                ViewGroup viewGroup=findViewById(android.R.id.content);
-                View dialogView= LayoutInflater.from(LiveConversationChat.this).inflate(R.layout.alert_custom,viewGroup,false);
+                /*ViewGroup viewGroup=findViewById(android.R.id.content);
+                View dialogView= LayoutInflater.from(LiveConversationChat.this).inflate(R.layout.alert_custom,viewGroup,false);*/
 
-                alertSpeechDialog=new AlertDialog.Builder(LiveConversationChat.this);
+                /*alertSpeechDialog=new AlertDialog.Builder(LiveConversationChat.this);
                 alertSpeechDialog.setMessage("Listening....");
                 alertSpeechDialog.setView(dialogView);
                 alertDialog=alertSpeechDialog.create();
-                alertDialog.show();
+                alertDialog.show();*/
             }
 
             @Override
@@ -159,10 +188,10 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             public void onResults(Bundle bundle) {
-              //  imageButton.setImageResource(R.drawable.mic);
                 ArrayList<String> arrayList=bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                massageBox.setText(arrayList.get(0));
-                alertDialog.dismiss();
+                massageList.add(arrayList.get(0));
+                setLiveChat(chatRecycleView, massageList,1);
+
             }
 
             @Override
@@ -179,13 +208,6 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
         //click the mike btn
         mikeBtn.setOnClickListener(view -> {
-            /*if (isRecording) {
-                //stopRecoding();
-            } else {
-                isRecording = true;
-
-            }*/
-
             speechRecognizer.startListening(speechIntent);
         });
 
@@ -205,16 +227,18 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
 
 
-    private void setLiveChat (RecyclerView chatRecycleView, List < String > massageList){
-        massageList.add("abc");
-        massageList.add("10");
-        massageList.add("safafa");
-        massageList.add("abcasdsdasd");
+    private void setLiveChat (RecyclerView chatRecycleView, List < String > massageList,int type){
+
+        // type 0 is sender and type 1 is receiver
 
         if (chatRecycleView != null) {
-            chatRecycleView.addItemDecoration(new RecycleViewCustomItemDirection(116));
-            chatRecycleView.setAdapter(new SenderAdapter(getApplicationContext(), massageList));
-            // chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(),massageList));
+
+            if (type==1){
+                chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(),massageList));
+            }else {
+                chatRecycleView.addItemDecoration(new RecycleViewCustomItemDirection(300));
+                chatRecycleView.setAdapter(new SenderAdapter(getApplicationContext(), massageList));
+            }
         }
     }
 

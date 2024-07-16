@@ -40,25 +40,23 @@
         <activity
             android:name=".View.MainActivity"
             android:configChanges="orientation|screenSize"
-            android:exported="false">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-
-        </activity>
+            android:exported="false"/>
         <activity
             android:name=".View.SignIn"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".View.VerifyCode"
             android:exported="false" />
         <activity
             android:name=".View.SignUp"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".View.HomeBlog"
             android:exported="false" />
@@ -85,13 +83,7 @@
             android:exported="false" />
         <activity
             android:name=".View.LiveConversationChat"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"/>
         <activity
             android:name=".View.sender_massage"
             android:exported="false" />

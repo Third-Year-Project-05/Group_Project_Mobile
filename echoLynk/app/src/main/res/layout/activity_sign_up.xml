@@ -44,6 +44,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="280dp"
+            android:fontFamily="@font/poppins_regular"
+            android:freezesText="false"
+            android:text="Name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
         <EditText
             android:id="@+id/signUp_name"
             android:layout_width="350dp"
@@ -64,21 +80,6 @@
             app:layout_constraintHorizontal_bias="0.314"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="280dp"
-            android:fontFamily="@font/poppins_regular"
-            android:freezesText="false"
-            android:text="Name"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <TextView
             android:id="@+id/textView8"
@@ -187,10 +188,11 @@
             android:layout_height="64dp"
             android:layout_marginTop="460dp"
             android:layout_marginEnd="4dp"
-            android:backgroundTint="#3D4E8B"
+            android:backgroundTint="#573D4E8B"
             android:fontFamily="@font/poppins_semibold"
             android:text="Sign Up"
             android:textSize="24sp"
+            android:clickable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.382"
             app:layout_constraintStart_toStartOf="parent"
@@ -212,8 +214,8 @@
 
         <ImageButton
             android:id="@+id/signUp_facebook"
-            android:layout_width="70dp"
-            android:layout_height="69dp"
+            android:layout_width="75dp"
+            android:layout_height="73dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="100dp"
             android:backgroundTint="#00FFFFFF"
@@ -227,8 +229,8 @@
 
         <ImageButton
             android:id="@+id/sign_up_google"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="75dp"
+            android:layout_height="73dp"
             android:layout_marginStart="50dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="#00FFFFFF"
@@ -263,6 +265,7 @@
             android:text="Sign In"
             android:textColor="#3D4E8B"
             android:textSize="16sp"
+            android:onClick="signInOnclick"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.873"
             app:layout_constraintStart_toStartOf="parent"
