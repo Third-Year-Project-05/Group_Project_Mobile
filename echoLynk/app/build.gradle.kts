@@ -60,7 +60,7 @@ dependencies {
     // Dakshina
     implementation(libs.firebase.auth)
     implementation(libs.google.firebase.auth)
-
+    implementation(libs.play.services.auth)
 
 
 

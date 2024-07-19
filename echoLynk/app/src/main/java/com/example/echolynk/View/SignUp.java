@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUp extends AppCompatActivity {
 
-    private EditText userName,userEmail,userPassword;
+    private EditText userName, userEmail, userPassword, userPhoneNumber;
 
     private CheckBox termsConditions;
     private Button signUp;
@@ -37,20 +37,21 @@ public class SignUp extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_up);
 
-        mAuth=FirebaseAuth.getInstance();
-        userName=findViewById(R.id.signUp_name);
-        userEmail=findViewById(R.id.signUp_email);
-        userPassword=findViewById(R.id.signUp_password);
-        termsConditions=findViewById(R.id.checkBox);
-        signUp=findViewById(R.id.signUp_button);
+        mAuth = FirebaseAuth.getInstance();
+        userName = findViewById(R.id.signUp_name);
+        userEmail = findViewById(R.id.signUp_email);
+        userPhoneNumber = findViewById(R.id.signUp_phoneNumber);
+        userPassword = findViewById(R.id.signUp_password);
+        termsConditions = findViewById(R.id.checkBox);
+        signUp = findViewById(R.id.signUp_button);
 
         termsConditions.setOnClickListener(view -> {
-            boolean termsState=termsConditions.isChecked();
-            if (termsState){
+            boolean termsState = termsConditions.isChecked();
+            if (termsState) {
                 signUp.setBackgroundColor(Color.parseColor("#3D4E8B"));
                 signUp.setClickable(true);
                 //3D4E8B
-            }else {
+            } else {
                 signUp.setBackgroundColor(Color.parseColor("#573D4E8B"));
                 signUp.setClickable(false);
             }
@@ -59,43 +60,47 @@ public class SignUp extends AppCompatActivity {
 
         signUp.setOnClickListener(view -> {
 
-           String name= userName.getText().toString();
-           String email= userEmail.getText().toString();
-           String pass= userPassword.getText().toString();
+            String name = userName.getText().toString();
+            String email = userEmail.getText().toString();
+            String pass = userPassword.getText().toString();
+            String phone = userPhoneNumber.getText().toString();
 
 
-           if (!name.isEmpty() && !email.isEmpty() && !pass.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() && pass.length()>=6){
+            if (!name.isEmpty() && !email.isEmpty() && !pass.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches() && pass.length() >= 6 && !phone.isEmpty()) {
 
-               // handle the sign up function
-               mAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                   @Override
-                   public void onComplete(@NonNull Task<AuthResult> task) {
-                       if (task.isSuccessful()) {
-                           Intent intent=new Intent(SignUp.this,SignIn.class);
-                           intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                           startActivity(intent);
-                       }else {
-                           Toast.makeText(SignUp.this, "SignUp failed "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                       }
-                   }
-               });
-
-
-           }else if (name.isEmpty()){
-               userName.setError("User name can't be empty.");
-               userPassword.setText("");
-           }else if (email.isEmpty()){
-               userEmail.setError("User email can't be empty.");
-               userPassword.setText("");
-           } else if (pass.isEmpty()) {
-               userPassword.setError("Password can't be empty.");
-               userPassword.setText("");
-           }else if (pass.length()>=6){
-               userPassword.setError("Password length must be grater than 6 characters.");
-           }else {
-               userEmail.setError("Please enter valid email.");
-               userPassword.setText("");
-           }
+                // check the phone number validation
+                if ((phone.length() == 12)) {
+                    if ((phone.charAt(0) == '+' && phone.charAt(1) == '9' && phone.charAt(2) == '4')) {
+                        // handle the sign up function
+                        Intent intent = new Intent(SignUp.this, VerifyCode.class);
+                        intent.putExtra("email", email);
+                        intent.putExtra("name", name);
+                        intent.putExtra("password", pass);
+                        intent.putExtra("telNumber", phone);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SignUp.this, "Phone number should be like +94********* ", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(SignUp.this, "Phone number length should be 12.", Toast.LENGTH_SHORT).show();
+                }
+            } else if (name.isEmpty()) {
+                userName.setError("User name can't be empty.");
+                userPassword.setText("");
+            } else if (email.isEmpty()) {
+                userEmail.setError("User email can't be empty.");
+                userPassword.setText("");
+            } else if (pass.isEmpty()) {
+                userPassword.setError("Password can't be empty.");
+                userPassword.setText("");
+            } else if (pass.length() >= 6) {
+                userPassword.setError("Password length must be grater than 6 characters.");
+            } else if (phone.isEmpty()) {
+                userPhoneNumber.setError("Phone number can't be empty.");
+            } else {
+                userEmail.setError("Please enter valid email.");
+                userPassword.setText("");
+            }
 
         });
 
