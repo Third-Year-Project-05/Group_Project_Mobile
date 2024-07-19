@@ -79,10 +79,10 @@ public class SignUp extends AppCompatActivity {
                         intent.putExtra("telNumber", phone);
                         startActivity(intent);
                     } else {
-                        Toast.makeText(SignUp.this, "Phone number should be like +94********* ", Toast.LENGTH_SHORT).show();
+                        userPhoneNumber.setError("Phone number should be like +94********* ");
                     }
                 } else {
-                    Toast.makeText(SignUp.this, "Phone number length should be 12.", Toast.LENGTH_SHORT).show();
+                    userPhoneNumber.setError("Phone number length should be 12.");
                 }
             } else if (name.isEmpty()) {
                 userName.setError("User name can't be empty.");
@@ -98,6 +98,7 @@ public class SignUp extends AppCompatActivity {
             } else if (phone.isEmpty()) {
                 userPhoneNumber.setError("Phone number can't be empty.");
             } else {
+                System.out.println(email);
                 userEmail.setError("Please enter valid email.");
                 userPassword.setText("");
             }

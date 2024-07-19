@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.google.firebase.auth)
     implementation(libs.play.services.auth)
+    implementation (libs.firebase.auth.v2101)
 
 
 
