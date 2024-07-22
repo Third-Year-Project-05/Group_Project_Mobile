@@ -200,7 +200,7 @@ public class VerifyCode extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(VerifyCode.this, "failed" + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(VerifyCode.this,  Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(VerifyCode.this, SignUp.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
