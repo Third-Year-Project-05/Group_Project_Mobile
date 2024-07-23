@@ -62,7 +62,7 @@ dependencies {
     implementation(libs.google.firebase.auth)
     implementation(libs.play.services.auth)
     implementation (libs.firebase.auth.v2101)
-
+    implementation (libs.facebook.android.sdk)
 
 
     // Sandaru
