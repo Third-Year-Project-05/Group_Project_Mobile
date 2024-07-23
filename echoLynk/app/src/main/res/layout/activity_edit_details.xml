@@ -21,7 +21,7 @@
 
 
         <TextView
-            android:id="@+id/textView25"
+            android:id="@+id/edit_details_cancel_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -38,15 +38,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@+id/textView27"
-            android:layout_toEndOf="@+id/textView25"
+            android:layout_toStartOf="@+id/edit_details_done_btn"
+            android:layout_toEndOf="@+id/edit_details_cancel_btn"
             android:gravity="center"
             android:text="Edit Details"
             android:textSize="25sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textView27"
+            android:id="@+id/edit_details_done_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -55,7 +55,7 @@
             android:layout_marginEnd="24dp"
             android:gravity="center"
             android:text="Done"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -104,7 +104,7 @@
             android:paddingStart="10dp"/>
 
         <EditText
-            android:id="@+id/editTextText2"
+            android:id="@+id/edit_details_name"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_below="@+id/textView29"
@@ -124,7 +124,7 @@
             android:id="@+id/textView30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextText2"
+            android:layout_below="@+id/edit_details_name"
             android:layout_alignParentStart="true"
             android:layout_marginStart="24dp"
             android:layout_marginTop="20dp"
@@ -134,7 +134,7 @@
             />
 
         <EditText
-            android:id="@+id/editTextText3"
+            android:id="@+id/edit_details_email"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_below="@+id/textView30"
@@ -153,7 +153,7 @@
             android:id="@+id/textView31"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/editTextText3"
+            android:layout_below="@+id/edit_details_email"
             android:layout_alignParentStart="true"
             android:layout_marginStart="24dp"
             android:paddingStart="10dp"
@@ -163,7 +163,7 @@
             />
 
         <EditText
-            android:id="@+id/editTextText4"
+            android:id="@+id/edit_details_dob"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_below="@+id/textView31"
@@ -181,7 +181,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/editTextText4"
+            android:layout_below="@+id/edit_details_dob"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="24dp"
@@ -190,7 +190,7 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/textView27a"
+                android:id="@+id/change_password_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Change Password"

@@ -30,6 +30,7 @@ import com.example.echolynk.databinding.ActivityMainBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
-        binding.bottomNavigationView.setSelectedItemId(R.id.home_frame);
+    //    replaceFragment(new HomeFragment());
+//        binding.bottomNavigationView.setSelectedItemId(R.id.home_frame);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -62,8 +63,28 @@ public class MainActivity extends AppCompatActivity {
         userImage = findViewById(R.id.user_image);
         mainLayoutHeader = findViewById(R.id.main_header);
 
-        replaceFragment(new HomeFragment());
-        setHeader(true);
+//        replaceFragment(new HomeFragment());
+//        setHeader(true);
+        Intent intent = getIntent();
+        if(intent != null && intent.hasExtra("load_fragment")){
+            String loadFragment = intent.getStringExtra("load_fragment");
+            if (Objects.equals(loadFragment, "profile")){
+                replaceFragment(new ProfileFragment());
+                mainLayoutHeader.setVisibility(View.GONE);
+                setHeader(false);
+                binding.bottomNavigationView.setSelectedItemId(R.id.profile_frame);
+            }
+            else{
+                replaceFragment(new HomeFragment());
+                setHeader(true);
+                binding.bottomNavigationView.setSelectedItemId(R.id.home_frame);
+
+            }
+        }else{
+            replaceFragment(new HomeFragment());
+            setHeader(true);
+            binding.bottomNavigationView.setSelectedItemId(R.id.home_frame);
+        }
 
 
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
