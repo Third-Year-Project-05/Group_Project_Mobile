@@ -9,4 +9,8 @@
         <item name="cornerSize">100%</item>
     </style>
 
+    <style name="image_rounded_conner">
+        <item name="cornerSize">20dp</item>
+    </style>
+
 </resources>

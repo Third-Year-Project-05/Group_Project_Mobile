@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/close"
+        android:title=""
+        android:icon="@drawable/cancel_icon"/>
+
+    <item android:title=""
+        android:id="@+id/postButton"
+        android:icon="@drawable/pause_icon"/>
+
+    <item android:id="@+id/textToSpeech"
+        android:icon="@drawable/speeach_icon"
+        android:title="" />
+
+    <item android:id="@+id/senderInput"
+        android:icon="@drawable/keyboard_icon"
+        android:title=""
+        android:iconTint="#4B77D1"/>
+
+
+</menu>
