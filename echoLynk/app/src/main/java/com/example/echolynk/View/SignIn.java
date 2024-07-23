@@ -162,7 +162,7 @@ public class SignIn extends AppCompatActivity {
                 intent.putExtra("name",user.getDisplayName());
                 intent.putExtra("id",user.getUid());
                 startActivity(intent);
-
+                finish();
             } else {
                 // User is signed out
             }
