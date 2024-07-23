@@ -12,7 +12,20 @@
           "package_name": "com.example.echolynk"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "403359480178-s1mvnc9pnvovseur0j7t575gr2q4r533.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.echolynk",
+            "certificate_hash": "42dcf7b86d878eec0cbb31472a87e18989636140"
+          }
+        },
+        {
+          "client_id": "403359480178-3vg7ma8sn6r35sm89qatph22lfn59brf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAysvaqEqybR-fkUhfIAPOzL6tREgtoZ48"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403359480178-3vg7ma8sn6r35sm89qatph22lfn59brf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

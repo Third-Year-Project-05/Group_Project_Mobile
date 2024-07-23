@@ -54,9 +54,10 @@
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <EditText
-            android:id="@+id/verifyuOneDigit"
+            android:id="@+id/verifyOneDigit"
             android:layout_width="50dp"
             android:layout_height="56dp"
+            android:maxLength="1"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="280dp"
             android:background="@drawable/verify_box"
@@ -71,13 +72,14 @@
 
 
         <EditText
-            android:id="@+id/verifuTowDigit"
+            android:id="@+id/verifyTowDigit"
             android:layout_width="50dp"
             android:layout_height="56dp"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="166dp"
             android:background="@drawable/verify_box"
             android:ems="10"
+            android:maxLength="1"
             android:inputType="numberDecimal"
             android:textAlignment="center"
             android:textColor="#040303"
@@ -87,13 +89,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <EditText
-            android:id="@+id/verifuFourDigit"
+            android:id="@+id/verifyFourDigit"
             android:layout_width="50dp"
             android:layout_height="56dp"
             android:layout_marginStart="64dp"
             android:layout_marginTop="48dp"
             android:background="@drawable/verify_box"
             android:ems="10"
+            android:maxLength="1"
             android:inputType="numberDecimal"
             android:textAlignment="center"
             android:textColor="#040303"
@@ -103,13 +106,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <EditText
-            android:id="@+id/verifuThgreeDigit"
+            android:id="@+id/verifyThreeDigit"
             android:layout_width="50dp"
             android:layout_height="56dp"
             android:layout_marginTop="48dp"
             android:layout_marginEnd="52dp"
             android:background="@drawable/verify_box"
             android:ems="10"
+            android:maxLength="1"
             android:inputType="numberDecimal"
             android:textAlignment="center"
             android:textColor="#040303"
@@ -119,13 +123,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <EditText
-            android:id="@+id/verifuFiveDigit"
+            android:id="@+id/verifyFiveDigit"
             android:layout_width="50dp"
             android:layout_height="56dp"
             android:layout_marginStart="180dp"
             android:layout_marginTop="48dp"
             android:background="@drawable/verify_box"
             android:ems="10"
+            android:maxLength="1"
             android:inputType="numberDecimal"
             android:textAlignment="center"
             android:textColor="#040303"
@@ -136,12 +141,13 @@
 
 
         <EditText
-            android:id="@+id/verifyuSixDigit"
+            android:id="@+id/verifySixDigit"
             android:layout_width="50dp"
             android:layout_height="56dp"
             android:layout_marginTop="48dp"
             android:background="@drawable/verify_box"
             android:ems="10"
+            android:maxLength="1"
             android:inputType="numberDecimal"
             android:textAlignment="center"
             android:textColor="#040303"
