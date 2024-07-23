@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.AddBlogMainActivity">
+
+    <ImageView
+        android:id="@+id/add_to_blog_back_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/arrow_left_icon" />
+
+    <TextView
+        android:id="@+id/textView38"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/add_to_blog_back_btn"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:gravity="center"
+        android:text="Add Blog"
+        android:textColor="@color/black"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView39"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView38"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:textSize="15dp"
+        android:text="Add Topic" />
+
+    <EditText
+        android:id="@+id/blog_topic"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_below="@+id/textView39"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="Blog Name"
+        android:padding="15dp"
+        android:paddingEnd="15dp"
+        android:background="@drawable/edittext_background"/>
+
+
+    <TextView
+        android:id="@+id/textView39q"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/blog_topic"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:text="Description"
+        android:textSize="15dp" />
+
+    <EditText
+        android:id="@+id/blog_description"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
+        android:layout_below="@+id/textView39q"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:gravity="top|start"
+        android:hint="Description"
+        android:padding="10dp"
+        android:background="@drawable/edittext_background"
+        android:scrollbars="vertical"
+        android:overScrollMode="always"/>
+
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/change_voice_button"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/blog_description"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="50dp"
+        android:background="@drawable/button_background"
+        android:text="Next"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

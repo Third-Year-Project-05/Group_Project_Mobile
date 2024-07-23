@@ -16,5 +16,5 @@
         android:icon="@drawable/gamepad_solid"/>
     <item android:title="Profile"
         android:id="@+id/profile_frame"
-        android:icon="@drawable/user_nav_regular"/>
+        android:icon="@drawable/profile_icon"/>
 </menu>
