@@ -50,6 +50,7 @@ public class SignUp extends AppCompatActivity {
     private ImageButton google;
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 9001;
+    private static final int EMAIL_VERIFICATION_REQUEST_CODE = 1001;
     private GoogleSignInClient mGoogleSignInClient;
     private Handler handler = new Handler();
 
@@ -121,7 +122,7 @@ public class SignUp extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            // check the mail verification
+
                                             handler.postDelayed(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -131,12 +132,12 @@ public class SignUp extends AppCompatActivity {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (user.isEmailVerified()) {
-                                                                    handler.removeCallbacksAndMessages(null);
                                                                     Toast.makeText(SignUp.this, "Email verified.", Toast.LENGTH_SHORT).show();
                                                                     Intent intent = new Intent(SignUp.this, MainActivity.class);
                                                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                     startActivity(intent);
                                                                     finish();
+                                                                    handler.removeCallbacksAndMessages(null);
 
                                                                 } else {
                                                                     // Email is not verified, prompt user to verify email
@@ -150,15 +151,11 @@ public class SignUp extends AppCompatActivity {
                                                     handler.postDelayed(this, 5000);
                                                 }
                                             }, 5000);
-
                                         } else {
-                                            Toast.makeText(SignUp.this, "Unsuccessful Email verification.", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(SignUp.this, "Unsuccessful send the verification mail.", Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
-
-
-
                             } else {
                                 Toast.makeText(SignUp.this, "SignUp email password authentication failed ", Toast.LENGTH_SHORT).show();
                             }
@@ -220,6 +217,9 @@ public class SignUp extends AppCompatActivity {
             } catch (ApiException e) {
                 Log.w(TAG, "Google sign in failed", e);
             }
+        } else if (requestCode == EMAIL_VERIFICATION_REQUEST_CODE) {
+            // check the mail verification
+
         }
     }
 
