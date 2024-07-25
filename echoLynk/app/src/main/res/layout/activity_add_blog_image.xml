@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.AddBlogImageActivity">
+    tools:context=".View.Blog.AddBlogImageActivity">
 
     <ImageView
         android:id="@+id/add_to_blog_image_back_btn"

@@ -6,7 +6,7 @@
     android:id="@+id/verifyCode"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.VerifyCode">
+    tools:context=".View.SignInSignUp.VerifyCode">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="354dp"
