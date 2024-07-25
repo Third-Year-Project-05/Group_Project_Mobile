@@ -44,6 +44,7 @@ public class VerifyCode extends AppCompatActivity {
     private String verificationId;
     private String email;
     private String password;
+    String phoneNumber;
     private String name;
     final Handler handler = new Handler();
     Timer timer = new Timer();
@@ -58,7 +59,8 @@ public class VerifyCode extends AppCompatActivity {
         name = getIntent().getStringExtra("name");
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
-        String phoneNumber = getIntent().getStringExtra("telNumber");
+        phoneNumber = getIntent().getStringExtra("telNumber");
+
         verifyBUtton = findViewById(R.id.verify_button);
 
         mAuth = FirebaseAuth.getInstance();
@@ -77,9 +79,10 @@ public class VerifyCode extends AppCompatActivity {
         setupEditTextNavigation(digitFive, digitSix);
         setupEditTextNavigation(digitSix, null);
 
-        sentOTP(phoneNumber, mAuth);
-
-
+        if (email.equalsIgnoreCase("null")){
+            sentOTP(phoneNumber, mAuth);
+        }
+        
         verifyBUtton.setOnClickListener(view -> {
             String otp = digitOne.getText().toString() + digitTwo.getText().toString() + digitThree.getText().toString() + digitFour.getText().toString() + digitFive.getText().toString() + digitSix.getText().toString();
             Log.d(TAG, "SMS : " + otp);
@@ -88,6 +91,7 @@ public class VerifyCode extends AppCompatActivity {
 
 
     }
+
 
 
     private void sentOTP(String phoneNumber, FirebaseAuth mAuth) {
@@ -105,7 +109,6 @@ public class VerifyCode extends AppCompatActivity {
     }
 
     private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
-
             mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
         // below method is used when
@@ -149,7 +152,7 @@ public class VerifyCode extends AppCompatActivity {
 
             signInWithCredential(phoneAuthCredential);
 
-            //   verifyOTP(code);
+            verifyOTP(code);
 
 
         }
@@ -183,22 +186,11 @@ public class VerifyCode extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Intent intent = new Intent(VerifyCode.this, MainActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                Toast.makeText(VerifyCode.this, "SignUp email password authentication failed ", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(VerifyCode.this, SignUp.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                            }
-                        }
-                    });
+                    // handel the otp success
+                    Intent intent = new Intent(VerifyCode.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(VerifyCode.this,  Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(VerifyCode.this, SignUp.class);

@@ -18,6 +18,8 @@
         android:theme="@style/Theme.Echolynk"
         tools:targetApi="31">
 
+        <!-- Sandaru -->
+
         <activity
             android:name=".View.StatisticsActivity"
             android:exported="false" />
@@ -50,8 +52,6 @@
             android:name=".View.EditDetailsActivity"
             android:exported="false" />
 
-
-        <!-- Sandaru -->
 
         <activity
             android:name=".View.HomeActivity"
