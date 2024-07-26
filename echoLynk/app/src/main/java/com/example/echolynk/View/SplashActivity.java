@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.echolynk.R;
+import com.example.echolynk.View.SignInSignUp.SignIn;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -19,19 +20,28 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        },3000);
+        boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+
+        if (isFirstRun) {
+            // Show the Get Started page
+            Intent intent = new Intent(SplashActivity.this, StartupActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            // Proceed as normal
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(SplashActivity.this, SignIn.class);
+                    startActivity(intent);
+                    finish();
+                }
+            },3000);
+
+        }
+
+
     }
 }

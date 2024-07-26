@@ -25,6 +25,8 @@ import com.example.echolynk.Model.UserModel;
 import com.example.echolynk.R;
 import com.example.echolynk.Utils.ColorUtil;
 import com.example.echolynk.Utils.FirebaseUtils;
+import com.example.echolynk.View.SignInSignUp.SignIn;
+import com.example.echolynk.View.SignInSignUp.VerifyCode;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -65,7 +67,6 @@ public class SignUp extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         userName = findViewById(R.id.signUp_name);
         userEmail = findViewById(R.id.signUp_email);
-        userPhoneNumber = findViewById(R.id.signUp_phoneNumber);
         userPassword = findViewById(R.id.signUp_password);
         termsConditions = findViewById(R.id.checkBox);
         signUp = findViewById(R.id.signUp_button);

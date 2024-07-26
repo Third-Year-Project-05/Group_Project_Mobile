@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    tools:context=".View.CustomLiveConversationTab">
+    tools:context=".View.LiveConversation.CustomLiveConversationTab">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile_image"

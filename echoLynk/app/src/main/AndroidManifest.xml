@@ -18,49 +18,66 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Echolynk"
         tools:targetApi="31">
+
         <activity
             android:name=".View.ChatActivity"
             android:exported="false"/>
         <activity
             android:name=".View.SearchUserActivity"
             android:exported="false" />
+
         <activity
-            android:name=".View.StatisticsActivity"
+            android:name=".View.SignInSignUp.ForgotPassword"
+            android:exported="false" />
+        <!-- Sandaru -->
+        <activity
+            android:name=".View.Profile.StatisticsActivity"
             android:exported="false" />
         <activity
-            android:name=".View.SwitchToPremiumActivity"
+            android:name=".View.Profile.SwitchToPremiumActivity"
             android:exported="false" />
         <activity
-            android:name=".View.SupportContactActivity"
+            android:name=".View.Profile.SupportContactActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".View.AddBlogImageActivity"
+            android:name=".View.Blog.AddBlogImageActivity"
             android:exported="true" />
         <activity
-            android:name=".View.AddBlogMainActivity"
+            android:name=".View.Blog.AddBlogMainActivity"
             android:exported="false" />
         <activity
-            android:name=".View.ChangeVoiceActivity"
+            android:name=".View.Profile.ChangeVoiceActivity"
             android:exported="false" />
         <activity
-            android:name=".View.AccountDetailsActivity"
+            android:name=".View.Profile.AccountDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".View.ChangePasswordActivity"
+            android:name=".View.Profile.ChangePasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".View.ChangePasswordEnterEmailActivity"
+            android:name=".View.Profile.ChangePasswordEnterEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".View.EditDetailsActivity"
-            android:exported="false" /> <!-- Sandaru -->
+            android:name=".View.Profile.EditDetailsActivity"
+            android:exported="false" />
         <activity
-            android:name=".View.HomeActivity"
+            android:name=".View.Home.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".View.StartupActivity"
             android:exported="false" /> <!-- Dakshina -->
+
+
+        <activity
+            android:name=".View.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity> <!-- Dakshina -->
+
         <activity
             android:name=".View.LandingPage"
             android:exported="false" />
@@ -69,7 +86,7 @@
             android:configChanges="orientation|screenSize"
             android:exported="true" />
         <activity
-            android:name=".View.SignIn"
+            android:name=".View.SignInSignUp.SignIn"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -77,47 +94,45 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".View.VerifyCode"
+            android:name=".View.SignInSignUp.VerifyCode"
             android:exported="false" />
         <activity
-            android:name=".View.SignUp"
-            android:exported="true" />
-        <activity
-            android:name=".View.HomeBlog"
+            android:name=".View.SignInSignUp.SignUp"
             android:exported="false" />
         <activity
-            android:name=".View.blog_card_custom"
+            android:name=".View.Blog.HomeBlog"
             android:exported="false" />
         <activity
-            android:name=".View.BlogView"
+            android:name=".View.Blog.blog_card_custom"
+            android:exported="false" />
+        <activity
+            android:name=".View.Blog.BlogView"
             android:exported="false" />
         <activity
             android:name=".View.EmptyPage"
             android:exported="false" />
         <activity
-            android:name=".View.BlogViewRecentArticlesCustom"
+            android:name=".View.Blog.BlogViewRecentArticlesCustom"
             android:exported="false" />
         <activity
-            android:name=".View.VoiceAssistanceThree"
+            android:name=".View.LiveConversation.VoiceAssistanceThree"
             android:exported="false" />
         <activity
-            android:name=".View.LiveConversation"
+            android:name=".View.LiveConversation.LiveConversation"
             android:exported="false" />
         <activity
-            android:name=".View.CustomLiveConversationTab"
+            android:name=".View.LiveConversation.CustomLiveConversationTab"
             android:exported="false" />
         <activity
-            android:name=".View.LiveConversationChat"
+            android:name=".View.LiveConversation.LiveConversationChat"
             android:exported="false" />
         <activity
-            android:name=".View.sender_massage"
+            android:name=".View.LiveConversation.sender_massage"
             android:exported="false" />
         <activity
-            android:name=".View.reserveMessage"
-            android:exported="false" />
-        <activity
-            android:name=".View.Suggestion_massage"
+            android:name=".View.LiveConversation.reserveMessage"
             android:exported="false" />
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -136,12 +151,6 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <meta-data
-            android:name="com.facebook.sdk.ClientToken"
-            android:value="@string/facebook_client_token" />
     </application>
 
 </manifest>

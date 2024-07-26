@@ -10,7 +10,7 @@
     android:paddingEnd="8dp"
     android:layout_marginBottom="4dp"
     android:background="@drawable/sender_massage_shape"
-    tools:context=".View.sender_massage">
+    tools:context=".View.LiveConversation.sender_massage">
 
     <TextView
         android:id="@+id/massage_text"
