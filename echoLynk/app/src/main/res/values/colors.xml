@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="primary_blue">#3D4E8B</color>
     <color name="warning_red">#FF0000</color>
+
+    <color name="msg_sender_color">#A4353535</color>
+    <color name="msg_receiver_color">#3D4E8B</color>
 </resources>
