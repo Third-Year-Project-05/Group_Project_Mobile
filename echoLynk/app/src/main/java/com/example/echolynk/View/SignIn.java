@@ -18,7 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import com.example.echolynk.Model.UserModel;
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.FirebaseUtils;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,6 +48,8 @@ public class SignIn extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
+
+    private UserModel userModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,11 +145,19 @@ public class SignIn extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            // Update UI with user info
-                            Intent intent=new Intent(SignIn.this,MainActivity.class);
-                            intent.putExtra("name",user.getDisplayName());
-                            intent.putExtra("id",user.getUid());
-                            startActivity(intent);
+                            userModel = new UserModel(user.getDisplayName().toLowerCase(), user.getPhoneNumber(),user.getEmail(), Timestamp.now(), FirebaseUtils.currentUserId());
+                            FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        // Update UI with user info
+                                        Intent intent=new Intent(SignIn.this,MainActivity.class);
+                                        intent.putExtra("name",user.getDisplayName());
+                                        intent.putExtra("id",user.getUid());
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                         } else {
                             // Handle error
                             Toast.makeText(SignIn.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();

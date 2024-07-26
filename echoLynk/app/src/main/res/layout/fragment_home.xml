@@ -74,7 +74,7 @@
                 <!-- Voice Assistant Button -->
 
                 <LinearLayout
-                    android:id="@+id/video_call5"
+                    android:id="@+id/goto_games"
                     android:layout_width="100dp"
                     android:layout_height="150dp"
                     android:layout_marginStart="20dp"
@@ -85,7 +85,7 @@
                     android:orientation="vertical"
                     android:paddingTop="25dp"
                     android:paddingBottom="25dp"
-                    app:layout_constraintStart_toEndOf="@+id/video_call"
+                    app:layout_constraintStart_toEndOf="@+id/goto_voice_assistent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
@@ -106,7 +106,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/video_call3"
+                    android:id="@+id/goto_video_call"
                     android:layout_width="100dp"
                     android:layout_height="150dp"
                     android:layout_marginTop="72dp"
@@ -117,7 +117,7 @@
                     android:orientation="vertical"
                     android:paddingTop="25dp"
                     android:paddingBottom="25dp"
-                    app:layout_constraintEnd_toStartOf="@+id/video_call"
+                    app:layout_constraintEnd_toStartOf="@+id/goto_voice_assistent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
@@ -138,7 +138,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/video_call"
+                    android:id="@+id/goto_voice_assistent"
                     android:layout_width="100dp"
                     android:layout_height="150dp"
                     android:background="@drawable/shortcut_navigation_background"
@@ -149,7 +149,7 @@
                     android:paddingBottom="25dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="0dp">
+                    app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
                         android:layout_width="48dp"
