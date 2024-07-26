@@ -118,7 +118,7 @@
                 android:backgroundTintMode="src_in"
                 android:ems="10"
                 android:fontFamily="@font/poppins_light"
-                android:hint="example@gmail.com"
+                android:hint="Enter email or phone number"
                 android:inputType="textEmailAddress"
                 android:paddingStart="16dp"
                 android:textAlignment="textStart"

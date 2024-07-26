@@ -81,7 +81,6 @@ public class SignIn extends AppCompatActivity {
             if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 
                 if (!pass.isEmpty()){
-
                     mAuth.signInWithEmailAndPassword(email,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
@@ -103,8 +102,10 @@ public class SignIn extends AppCompatActivity {
                 }
             }else if (email.isEmpty()){
                 userEMail.setError("Email can't be empty.");
+            }else if (Patterns.PHONE.matcher(email).matches()){
+               // mAuth.
             }else {
-                userEMail.setError("Please enter valid email.");
+                userEMail.setError("Please enter valid email or phone number.");
             }
         });
 
