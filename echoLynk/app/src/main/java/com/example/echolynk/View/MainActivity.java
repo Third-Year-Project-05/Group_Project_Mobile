@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
@@ -19,10 +17,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.example.echolynk.R;
+import com.example.echolynk.View.Call.CallFragment;
+import com.example.echolynk.View.Game.GamesFragment;
+import com.example.echolynk.View.Home.HomeFragment;
+import com.example.echolynk.View.LiveConversation.SpeechFragment;
+import com.example.echolynk.View.Profile.ProfileFragment;
 import com.example.echolynk.databinding.ActivityMainBinding;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;

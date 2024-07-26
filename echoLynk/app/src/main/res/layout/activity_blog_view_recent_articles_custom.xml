@@ -11,7 +11,7 @@
     android:onClick="recentBlogOnClick"
     android:orientation="vertical"
     android:padding="8dp"
-    tools:context=".View.BlogViewRecentArticlesCustom">
+    tools:context=".View.Blog.BlogViewRecentArticlesCustom">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/blog_view_image"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#3D4E8B"
-    tools:context=".View.LiveConversation">
+    tools:context=".View.LiveConversation.LiveConversation">
 
 
     <ImageView

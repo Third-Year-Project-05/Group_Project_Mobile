@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="8dp"
-    tools:context=".View.HomeBlog">
+    tools:context=".View.Blog.HomeBlog">
 
 
     <androidx.constraintlayout.widget.Guideline
