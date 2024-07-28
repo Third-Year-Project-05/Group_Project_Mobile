@@ -33,20 +33,19 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="24dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImageView3"
+        <ImageView
+            android:id="@+id/edit_profile_btn"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="0dp"
-            android:src="@drawable/baseline_notifications_24"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:src="@drawable/profile_edit_icon"
             app:civ_border_color="#FFFFFF"
-            app:civ_border_width="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:civ_border_width="1dp" />
 
         <TextView
             android:id="@+id/textView21"
@@ -54,8 +53,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
-            android:layout_toStartOf="@+id/edit_profile_btn"
-            android:layout_toEndOf="@+id/circleImageView3"
+            android:layout_toStartOf="@+id/logout_btn"
+            android:layout_toEndOf="@+id/edit_profile_btn"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Profile"
@@ -64,14 +63,14 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/edit_profile_btn"
+            android:id="@+id/logout_btn"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="0dp"
-            android:src="@drawable/profile_edit_icon"
+            android:src="@drawable/logout_icon"
             app:civ_border_color="#FFFFFF"
             app:civ_border_width="1dp"
             app:layout_constraintBottom_toBottomOf="parent"

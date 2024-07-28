@@ -3,7 +3,9 @@ agp = "8.4.2"
 circleimageview = "3.1.0"
 facebookAndroidSdk = "latest.release"
 firebaseAuth = "23.0.0"
+glide = "4.16.0"
 googleServices = "4.4.2"
+imagepicker = "2.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
@@ -19,6 +21,7 @@ googleGmsGoogleServicesVersion = "4.4.2"
 firebaseAuthVersion = "23.0.0"
 firebaseFirestore = "25.0.0"
 firebaseUiFirestore = "8.0.2"
+firebaseStorage = "21.0.0"
 
 
 
@@ -29,8 +32,10 @@ circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circ
 facebook-android-sdk = { module = "com.facebook.android:facebook-android-sdk", version.ref = "facebookAndroidSdk" }
 firebase-auth-v2101 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
+imagepicker = { module = "com.github.dhaval2404:imagepicker", version.ref = "imagepicker" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -44,6 +49,7 @@ recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version
 lottie = { group = "com.airbnb.android", name = "lottie", version.ref ="lottie"}
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthVersion" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 
 
 

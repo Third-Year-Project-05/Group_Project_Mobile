@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/chat_message_background"
+        android:background="@drawable/chat_message_receiver_background"
         android:backgroundTint="@color/msg_sender_color"
         android:padding="8dp"
         android:layout_marginEnd="80dp"
@@ -23,7 +23,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/chat_message_background"
+        android:background="@drawable/chat_message_sender_background"
         android:backgroundTint="@color/msg_receiver_color"
         android:layout_alignParentEnd="true"
         android:padding="8dp"
