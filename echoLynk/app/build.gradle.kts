@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.firebase.firestore)
     implementation (libs.firebase.ui.firestore)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -73,6 +74,8 @@ dependencies {
 
     implementation(libs.roundimage)
     implementation(libs.lottie)
+    implementation(libs.imagepicker)
+    implementation(libs.glide)
 
 
 

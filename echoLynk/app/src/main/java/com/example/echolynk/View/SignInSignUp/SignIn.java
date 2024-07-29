@@ -40,10 +40,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -240,17 +240,35 @@ public class SignIn extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                            userModel = new UserModel(user.getDisplayName().toLowerCase(), user.getPhoneNumber(),user.getEmail(), Timestamp.now(), FirebaseUtils.currentUserId());
-                            FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            FirebaseUtils.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()){
-                                        // Update UI with user info
-                                        Intent intent=new Intent(SignIn.this,MainActivity.class);
-                                        intent.putExtra("name",user.getDisplayName());
-                                        intent.putExtra("id",user.getUid());
-                                        startActivity(intent);
-                                        finish();
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()){
+                                        userModel = task.getResult().toObject(UserModel.class);
+
+                                        if (userModel == null){
+                                            //first time login
+                                            userModel = new UserModel(user.getDisplayName().toLowerCase(),user.getPhoneNumber(),user.getEmail(),Timestamp.now(),FirebaseUtils.currentUserId(),"","user");
+                                            FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    // Update UI with user info
+                                                    Intent intent = new Intent(SignIn.this, MainActivity.class);
+                                                    intent.putExtra("name", user.getDisplayName());
+                                                    intent.putExtra("id", user.getUid());
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    startActivity(intent);
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            //2nd time login
+                                            Intent intent = new Intent(SignIn.this, MainActivity.class);
+                                            intent.putExtra("name", user.getDisplayName());
+                                            intent.putExtra("id", user.getUid());
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                        }
                                     }
                                 }
                             });

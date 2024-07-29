@@ -29,7 +29,7 @@ public class SearchUserActivity extends AppCompatActivity {
     private ImageView backBtn;
     private EditText searchText;
     private SearchUseRecyclerAdapter adapter;
-    private RecyclerView recyclerView123;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class SearchUserActivity extends AppCompatActivity {
         });
 
         searchText = findViewById(R.id.searchUserEditTextInSearchActivity);
-        recyclerView123 = findViewById(R.id.searchUserRecyclerView);
+        recyclerView = findViewById(R.id.searchUserRecyclerView);
 
         backBtn = findViewById(R.id.backToChatBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
@@ -87,8 +87,8 @@ public class SearchUserActivity extends AppCompatActivity {
                 .setQuery(query, UserModel.class).build();
 
         adapter = new SearchUseRecyclerAdapter(options, getApplicationContext());
-        recyclerView123.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView123.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
         adapter.startListening();
     }
 

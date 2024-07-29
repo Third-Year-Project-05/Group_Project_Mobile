@@ -58,6 +58,7 @@
             android:textSize="15sp"/>
     </RelativeLayout>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="700dp"
@@ -68,22 +69,23 @@
         android:layout_marginEnd="0dp"
         android:layout_marginTop="20dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circleImageView3"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_alignParentStart="true"
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profile_pic"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/dummyprofileimage"
-            app:civ_border_color="#FFFFFF"
-            app:civ_border_width="1dp" />
+            android:layout_marginTop="0dp"
+            android:scaleType="centerCrop"
+            android:layout_centerHorizontal="true"
+            app:shapeAppearanceOverlay="@style/roundImageView"
+            android:src="@drawable/user_profile_pic"/>
 
         <TextView
-            android:id="@+id/textView28"
+            android:id="@+id/edit_image_Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/circleImageView3"
+            android:layout_below="@+id/profile_pic"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="10dp"
@@ -95,13 +97,15 @@
             android:id="@+id/textView29"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView28"
+            android:layout_below="@+id/edit_image_Button"
             android:layout_alignParentStart="true"
             android:text="Name"
             android:textSize="15sp"
             android:layout_marginTop="10dp"
             android:layout_marginStart="24dp"
             android:paddingStart="10dp"/>
+
+
 
         <EditText
             android:id="@+id/edit_details_name"
@@ -203,6 +207,7 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>
