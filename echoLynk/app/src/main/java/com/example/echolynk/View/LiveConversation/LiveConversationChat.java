@@ -5,13 +5,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.view.MotionEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -21,14 +20,18 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.echolynk.Utils.ApiServices.ApiServices;
+import com.example.echolynk.Model.HistoryMassage;
+import com.example.echolynk.Model.PersonalData;
+import com.example.echolynk.Model.SpeechToTextMassage;
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.ApiClient;
 import com.example.echolynk.Utils.RecycleViewCustomItemDirection;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.AnswerAdapter;
@@ -40,26 +43,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LiveConversationChat extends AppCompatActivity implements onClickListener {
 
+    // current user ge persona details tika ganna one
+    // sql light dala history eka ganna one
 
-    RelativeLayout relativeLayout;
-    RecyclerView recyclerView;
-    RecyclerView chatRecycleView;
-    RecyclerView suggestion_answer;
+
+    private RelativeLayout relativeLayout;
+    private RecyclerView recyclerView;
+    private RecyclerView chatRecycleView;
+    private RecyclerView suggestion_answer;
     private EditText massageBox;
     private SpeechRecognizer speechRecognizer;
-    private ImageButton keyboardBtn;
+    private ImageButton keyboardBtn,sendButton;
     private ImageButton mikeBtn;
     private ImageButton pauseBtn;
     private ImageButton closeBtn;
-    private boolean isRecording = false;
-    AlertDialog.Builder alertSpeechDialog;
-    AlertDialog alertDialog;
-
-
     private static final int RecodeAudioRequestCode = 1;
-
+    ApiServices apiServices = ApiClient.getInstance().create(ApiServices.class);
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
     @Override
@@ -78,11 +84,53 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         pauseBtn = findViewById(R.id.pause_icon);
         closeBtn = findViewById(R.id.close_icon);
         massageBox = findViewById(R.id.write_massage);
+        sendButton = findViewById(R.id.send_massage);
 
 
         List<Integer> live_users = new ArrayList<>();
         List<String> massageList = new ArrayList<>();
+        List<SpeechToTextMassage> reseverMassageList = new ArrayList<>();
         List<String> suggestions = new ArrayList<>();
+
+        pauseBtn.setOnClickListener(view -> {
+            ArrayList<HistoryMassage> history=new ArrayList<>();
+            ArrayList<PersonalData> personalData=new ArrayList<>();
+
+            history.add(new HistoryMassage("user","How old are you?"));
+            history.add(new HistoryMassage("assistant","I am 30 years old."));
+
+            personalData.add(new PersonalData("Saman"));
+
+            SpeechToTextMassage massage = new SpeechToTextMassage("what is your name", history, personalData);
+
+            Call<ResponseBody> call=apiServices.postSpeechToTextMassage(massage);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Log.d("request", "request: "+call.clone());
+
+                    Log.d("request", "request: "+response.message()+" "+response.code());
+                    if (response.isSuccessful()) {
+                        ResponseBody body = response.body();
+                        Log.d("response ok", "Created User ID: " + body.toString());
+                    }else {
+                        Log.d("response not", "Created User ID: "+response.body() );
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.d("response failed", "Created User ID: " + t.getLocalizedMessage());
+                    Log.d("response failed", "Created User ID: " + t.getMessage());
+                    Log.d("response failed", "Created User ID: " + call.isCanceled());
+                    Log.d("response failed", "Created User ID: " + call.isExecuted());
+                    Log.d("response failed", "Created User ID: " + call.timeout());
+                    Log.d("response failed", "Created User ID: " + call.request().body());
+                }
+            });
+
+        });
 
 
         // set suggestions
@@ -103,33 +151,19 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
 
         // set data for live chat view
-      //  setLiveChat(chatRecycleView, massageList,0);
+        //  setLiveChat(chatRecycleView, massageList,0);
 
         //sender click the sent Btn
-        massageBox.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent event) {
 
-                if (event.getAction()==MotionEvent.ACTION_UP){
-                    Drawable drawableEnd=massageBox.getCompoundDrawables()[2];
-
-                    if (drawableEnd!=null){
-                        int drawableWidth=drawableEnd.getBounds().width();
-                        if (event.getRawX() >= (massageBox.getRight() - drawableWidth)) {
-                            // handel the sender massage
-                            String massage=massageBox.getText().toString();
-                            if (!massage.isEmpty()) {
-                                massageList.add(massage);
-                                setLiveChat(chatRecycleView,massageList,0);
-                                return true;
-                            }
-                        }
-                    }
-                }
-
-                return false;
+        sendButton.setOnClickListener(view -> {
+            String massage=massageBox.getText().toString();
+            if (!massage.isEmpty()) {
+                massageList.add(massage);
+                setUpLiveChat(chatRecycleView,massageList,0);
+                massageBox.setText("");
             }
         });
+
 
 
         // check the audio recoding permission
@@ -138,11 +172,12 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         }
 
 
-        speechRecognizer=SpeechRecognizer.createSpeechRecognizer(this);
+        speechRecognizer=SpeechRecognizer.createSpeechRecognizer(LiveConversationChat.this);
         final Intent speechIntent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 
-        speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        //speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, new Locale("si", "LK"));
 
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
 
@@ -186,9 +221,47 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             @Override
             public void onResults(Bundle bundle) {
                 ArrayList<String> arrayList=bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                massageList.add(arrayList.get(0));
-                setLiveChat(chatRecycleView, massageList,1);
+                ArrayList<HistoryMassage> history=new ArrayList<>();
+                ArrayList<PersonalData> personalData=new ArrayList<>();
 
+                history.add(new HistoryMassage("user","How old are you?"));
+                history.add(new HistoryMassage("assistant","I am 30 years old."));
+
+                personalData.add(new PersonalData("Saman"));
+
+
+
+                massageList.add(arrayList.get(0));
+                setUpLiveChat(chatRecycleView, massageList,1);
+
+                /*reseverMassageList.add(new SpeechToTextMassage("did you eat?", history, personalData));
+                reseverMassageList.add(new SpeechToTextMassage(arrayList.get(0), history, personalData));*/
+
+                SpeechToTextMassage massage = new SpeechToTextMassage(arrayList.get(0), history, personalData);
+
+                Call<ResponseBody> call=apiServices.postSpeechToTextMassage(massage);
+                call.enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            ResponseBody body = response.body();
+                            Log.d("response ok", "Created User ID: " + body.toString());
+                        }else {
+                            Log.d("response not", "Created User ID: "+response.body() );
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.d("response failed", "Created User ID: " + t.getLocalizedMessage());
+                        Log.d("response failed", "Created User ID: " + t.getMessage());
+                        Log.d("response failed", "Created User ID: " + call.isCanceled());
+                        Log.d("response failed", "Created User ID: " + call.isExecuted());
+                        Log.d("response failed", "Created User ID: " + call.timeout());
+                        Log.d("response failed", "Created User ID: " + call.request().body());
+                    }
+                });
             }
 
             @Override
@@ -213,6 +286,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         });
 
 
+
     }
 
     private void checkPermission() {
@@ -224,7 +298,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
 
 
-    private void setLiveChat (RecyclerView chatRecycleView, List < String > massageList,int type){
+    private void setUpLiveChat (RecyclerView chatRecycleView, List < String > massageList,int type){
 
         // type 0 is sender and type 1 is receiver
 
