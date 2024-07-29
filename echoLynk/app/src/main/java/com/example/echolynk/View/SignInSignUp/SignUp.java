@@ -116,7 +116,6 @@ public class SignUp extends AppCompatActivity {
 
                 if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 
-
                     // signUp use for the email
                     mAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override

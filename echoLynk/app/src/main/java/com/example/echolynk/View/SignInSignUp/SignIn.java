@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -40,20 +41,24 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
-
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 
 public class SignIn extends AppCompatActivity {
 
     private EditText userEMail,userPassword;
     private TextView forgotPassword;
-    private Button signInButton;
+    private Button signInButton,verifyOTP;
     private ImageButton google,facebook;
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 9001;
     private GoogleSignInClient mGoogleSignInClient;
     private UserModel userModel;
+    private String verificationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,7 @@ public class SignIn extends AppCompatActivity {
         facebook=findViewById(R.id.sign_in_facebook);
         google=findViewById(R.id.sign_in_google);
         forgotPassword=findViewById(R.id.forgotPassword);
+        verifyOTP=findViewById(R.id.signIn_verifyOTP);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -90,6 +96,7 @@ public class SignIn extends AppCompatActivity {
                             Intent intent=new Intent(SignIn.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
+                            finish();
                             Toast.makeText(SignIn.this, "Login successful ", Toast.LENGTH_SHORT).show();
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -106,7 +113,7 @@ public class SignIn extends AppCompatActivity {
             }else if (email.isEmpty()){
                 userEMail.setError("Email can't be empty.");
             }else if (Patterns.PHONE.matcher(email).matches()){
-               // mAuth.
+                sentOTP(email,mAuth);
             }else {
                 userEMail.setError("Please enter valid email or phone number.");
             }
@@ -125,7 +132,83 @@ public class SignIn extends AppCompatActivity {
             startActivity(intent);
         });
 
+        verifyOTP.setOnClickListener(view -> {
+            verifyOTP(userPassword.getText().toString().trim());
+        });
+
     }
+
+    private void sentOTP(String phoneNumber, FirebaseAuth mAuth) {
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber(phoneNumber)            // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this)                 // Activity (for callback binding)
+                        .setCallbacks(mCallBack)           // OnVerificationStateChangedCallbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks
+            mCallBack = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+        @Override
+        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            super.onCodeSent(s, forceResendingToken);
+            verificationId = s;
+        }
+
+        @Override
+        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+            final String code = phoneAuthCredential.getSmsCode();
+            userPassword.setText(code);
+            signInButton.setVisibility(View.GONE);
+            verifyOTP.setVisibility(View.VISIBLE);
+
+            // automatically verify OTP
+            verifyOTP(code);
+        }
+
+        @Override
+        public void onVerificationFailed(@NonNull FirebaseException e) {
+            if (e.getMessage().contains("We have blocked all requests from this device")) {
+                Toast.makeText(SignIn.this, "Request blocked due to unusual activity. Try again later.", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(SignIn.this, "Verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
+    private void verifyOTP(String code) {
+        try {
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+            signInWithCredential(credential);
+        } catch (Exception e) {
+            Toast.makeText(SignIn.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void signInWithCredential(PhoneAuthCredential credential) {
+        mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Intent intent = new Intent(SignIn.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Toast.makeText(SignIn.this, "SignUp failed "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(SignIn.this, "SignIn failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
