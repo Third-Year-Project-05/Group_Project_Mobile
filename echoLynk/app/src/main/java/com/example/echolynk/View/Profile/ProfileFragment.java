@@ -1,6 +1,7 @@
 package com.example.echolynk.View.Profile;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,9 +16,12 @@ import android.widget.ImageView;
 
 import com.example.echolynk.Model.SignIn;
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.AndroidUtils;
 import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.View.Blog.AddBlogMainActivity;
 import com.example.echolynk.View.SplashActivity;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileFragment extends Fragment {
@@ -40,6 +44,8 @@ public class ProfileFragment extends Fragment {
         ConstraintLayout accountDetails,addToBlog,switchToPremium,statistics,supportContact;
         ImageView editProfileDetails;
         ImageView logoutBtn;
+        CircleImageView profilePic;
+
 
         accountDetails = view.findViewById(R.id.account_details_btn);
         addToBlog = view.findViewById(R.id.add_blog_btn);
@@ -48,6 +54,16 @@ public class ProfileFragment extends Fragment {
         supportContact = view.findViewById(R.id.support_contact_btn);
         editProfileDetails = view.findViewById(R.id.edit_profile_btn);
         logoutBtn = view.findViewById(R.id.logout_btn);
+        profilePic = view.findViewById(R.id.profile_pic_profile_fragment);
+
+
+        FirebaseUtils.getCurrentProfilePicStorageRef().getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Uri uri = task.getResult();
+                        AndroidUtils.setProfilePic(getContext(),uri,profilePic);
+                    }
+                });
 
 
         accountDetails.setOnClickListener(new View.OnClickListener() {

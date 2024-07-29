@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="13dp"
-        android:src="@drawable/dummy_user_image" />
+        android:src="@drawable/user_profile_pic" />
 
     <TextView
         android:id="@+id/searchUserRecyclerRowUserName"

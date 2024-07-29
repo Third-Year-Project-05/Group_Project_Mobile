@@ -59,7 +59,7 @@ public class SignUp extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private Handler handler = new Handler();
 
-    private UserModel userModel,abc;
+    private UserModel userModel;
 
 
     @SuppressLint("MissingInflatedId")
@@ -139,7 +139,7 @@ public class SignUp extends AppCompatActivity {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (user.isEmailVerified()) {
-                                                                    userModel = new UserModel(name.toLowerCase(),"",email, Timestamp.now(), FirebaseUtils.currentUserId());
+                                                                    userModel = new UserModel(name.toLowerCase(),"",email, Timestamp.now(), FirebaseUtils.currentUserId(),pass,"user");
 
                                                                     FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
@@ -258,7 +258,7 @@ public class SignUp extends AppCompatActivity {
 
                                         if(userModel == null){
                                             //first time login
-                                            userModel = new UserModel(user.getDisplayName().toLowerCase(),user.getPhoneNumber(),user.getEmail(),Timestamp.now(),FirebaseUtils.currentUserId());
+                                            userModel = new UserModel(user.getDisplayName().toLowerCase(),user.getPhoneNumber(),user.getEmail(),Timestamp.now(),FirebaseUtils.currentUserId(),"","user");
                                             FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {

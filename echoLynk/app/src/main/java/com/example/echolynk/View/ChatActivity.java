@@ -1,7 +1,10 @@
 package com.example.echolynk.View;
 
+import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -53,11 +56,13 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_chat);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.chat_activity_main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        setKeyboardListener();
 
         otherUser = AndroidUtils.getUserModelFromIntent(getIntent());
         backBtn = findViewById(R.id.chat_back_button);
@@ -73,6 +78,15 @@ public class ChatActivity extends AppCompatActivity {
             onBackPressed();
         });
 
+        FirebaseUtils.getOtherUserProfilePicStorageRef(otherUser.getUserId()).getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Uri uri = task.getResult();
+                        AndroidUtils.setProfilePic(ChatActivity.this,uri,otherUserProfilePicture);
+                    }
+                });
+
+        //set user name
         otherUserName.setText(otherUser.getUserName());
 
         getOrCreateChatRoomModel(FirebaseUtils.currentUserId(), otherUser.getUserId());
@@ -150,6 +164,25 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setKeyboardListener() {
+        final View rootLayout = findViewById(R.id.chat_activity_main); // Replace with your root layout id
+        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                rootLayout.getWindowVisibleDisplayFrame(r);
+                int screenHeight = rootLayout.getRootView().getHeight();
+                int keypadHeight = screenHeight - r.bottom;
+
+                if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+                    // keyboard is opened
+                    rootLayout.setPadding(0, 75, 0, keypadHeight);
+                }
+            }
+        });
+    }
+
 
 
 

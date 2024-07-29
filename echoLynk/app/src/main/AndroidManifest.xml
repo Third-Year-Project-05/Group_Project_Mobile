@@ -21,6 +21,7 @@
 
         <activity
             android:name=".View.ChatActivity"
+
             android:exported="false"/>
         <activity
             android:name=".View.SearchUserActivity"

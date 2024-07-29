@@ -53,7 +53,7 @@ public class FirebaseUtils {
     }
 
     public static String timeStampToString(Timestamp timestamp){
-        return new SimpleDateFormat("HH:MM").format(timestamp.toDate());
+        return new SimpleDateFormat("HH:mm").format(timestamp.toDate());
     }
 
     public static CollectionReference allChatroomCollectionReference(){
@@ -67,6 +67,11 @@ public class FirebaseUtils {
     public static StorageReference getCurrentProfilePicStorageRef(){
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
                 .child(FirebaseUtils.currentUserId());
+    }
+
+    public static StorageReference getOtherUserProfilePicStorageRef(String otherUserId){
+        return FirebaseStorage.getInstance().getReference().child("profile_pic")
+                .child(otherUserId);
     }
 
 }

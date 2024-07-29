@@ -190,7 +190,7 @@ public class VerifyCode extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
-                    userModel = new UserModel(name.toLowerCase(),phoneNumber,email, Timestamp.now(),FirebaseUtils.currentUserId());
+                   // userModel = new UserModel(name.toLowerCase(),phoneNumber,email, Timestamp.now(),FirebaseUtils.currentUserId());
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {

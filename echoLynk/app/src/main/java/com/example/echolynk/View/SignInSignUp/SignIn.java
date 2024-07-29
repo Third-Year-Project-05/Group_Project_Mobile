@@ -165,7 +165,7 @@ public class SignIn extends AppCompatActivity {
 
                                         if (userModel == null){
                                             //first time login
-                                            userModel = new UserModel(user.getDisplayName().toLowerCase(),user.getPhoneNumber(),user.getEmail(),Timestamp.now(),FirebaseUtils.currentUserId());
+                                            userModel = new UserModel(user.getDisplayName().toLowerCase(),user.getPhoneNumber(),user.getEmail(),Timestamp.now(),FirebaseUtils.currentUserId(),"","user");
                                             FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {

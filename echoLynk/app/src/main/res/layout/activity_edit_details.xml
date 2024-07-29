@@ -58,6 +58,7 @@
             android:textSize="15sp"/>
     </RelativeLayout>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="700dp"
@@ -68,6 +69,7 @@
         android:layout_marginEnd="0dp"
         android:layout_marginTop="20dp">
 
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profile_pic"
             android:layout_width="160dp"
@@ -75,9 +77,9 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="0dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/dummy_blog_img2"
             android:layout_centerHorizontal="true"
-            app:shapeAppearanceOverlay="@style/roundImageView" />
+            app:shapeAppearanceOverlay="@style/roundImageView"
+            android:src="@drawable/user_profile_pic"/>
 
         <TextView
             android:id="@+id/edit_image_Button"

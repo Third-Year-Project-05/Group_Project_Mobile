@@ -3,10 +3,12 @@ package com.example.echolynk.View.Profile;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.storage.UploadTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import kotlin.Unit;
@@ -81,8 +84,26 @@ public class EditDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 validateInputs();
-                updateDatabase();
-                onBackPressed();
+
+                if(selectedImageUri != null){
+                    FirebaseUtils.getCurrentProfilePicStorageRef().putFile(selectedImageUri)
+                            .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                    updateDatabase();
+
+                                    Intent intent = new Intent(EditDetailsActivity.this, MainActivity.class);
+                                    intent.putExtra("load_fragment", "profile");
+                                    startActivity(intent);
+                                }
+                            });
+                }
+                else {
+                    updateDatabase();
+                    Intent intent = new Intent(EditDetailsActivity.this, MainActivity.class);
+                    intent.putExtra("load_fragment", "profile");
+                    startActivity(intent);
+                }
             }
         });
 
@@ -111,10 +132,18 @@ public class EditDetailsActivity extends AppCompatActivity {
                         });
             }
         });
-
     }
 
     private void getUserData(){
+
+        FirebaseUtils.getCurrentProfilePicStorageRef().getDownloadUrl()
+                        .addOnCompleteListener(task -> {
+                            if(task.isSuccessful()){
+                                Uri uri = task.getResult();
+                                AndroidUtils.setProfilePic(EditDetailsActivity.this,uri,profilePicture);
+                            }
+                        });
+
         FirebaseUtils.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {

@@ -2,6 +2,7 @@ package com.example.echolynk.View.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,19 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
                 if (task.isSuccessful()){
                     Boolean lastMessageSentByMe = model.getLastMessageSenderId().equals(FirebaseUtils.currentUserId());
 
+                    //get other user data
                     UserModel otherUserModel = task.getResult().toObject(UserModel.class);
+
+                    //get other user profile pic
+
+                    FirebaseUtils.getOtherUserProfilePicStorageRef(otherUserModel.getUserId()).getDownloadUrl()
+                            .addOnCompleteListener(getPictask -> {
+                                if(getPictask.isSuccessful()){
+                                    Uri uri = getPictask.getResult();
+                                    AndroidUtils.setProfilePic(context,uri,holder.otherUserProfilePicture);
+                                }
+                            });
+
                     holder.otherUserUserName.setText(otherUserModel.getUserName());
                     holder.lastMessageTime.setText(FirebaseUtils.timeStampToString(model.getLastMessageTimestamp()));
 
@@ -87,7 +100,7 @@ public class RecentChatRecyclerAdapter extends FirestoreRecyclerAdapter<Chatroom
         public ChatRoomModelViewHolder(@NonNull View itemView) {
             super(itemView);
 
-         //   otherUserProfilePicture = itemView.findViewById(R.id.contactImageView);
+            otherUserProfilePicture = itemView.findViewById(R.id.contactImageView);
             otherUserUserName = itemView.findViewById(R.id.contactNameView);
             lastMessage = itemView.findViewById(R.id.lastMessageTextView);
             lastMessageTime = itemView.findViewById(R.id.dateTextView);
