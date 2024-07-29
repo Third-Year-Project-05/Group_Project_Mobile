@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -39,9 +40,9 @@ public class VerifyCode extends AppCompatActivity {
 
     // phone number eka validate karanna country code eken
 
-    EditText digitOne, digitTwo, digitThree, digitFour, digitFive, digitSix;
-    Button verifyBUtton;
-
+    private EditText digitOne, digitTwo, digitThree, digitFour, digitFive, digitSix;
+    private Button verifyBUtton;
+    private TextView resendOTP;
     private FirebaseAuth mAuth;
     private String verificationId;
     private String email;
@@ -51,7 +52,7 @@ public class VerifyCode extends AppCompatActivity {
     final Handler handler = new Handler();
     Timer timer = new Timer();
     UserModel userModel;
-
+    private PhoneAuthProvider.ForceResendingToken resendToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +74,7 @@ public class VerifyCode extends AppCompatActivity {
         digitFour = findViewById(R.id.verifyFourDigit);
         digitFive = findViewById(R.id.verifyFiveDigit);
         digitSix = findViewById(R.id.verifySixDigit);
-
+        resendOTP=findViewById(R.id.verification_resend_code);
 
         setupEditTextNavigation(digitOne, digitTwo);
         setupEditTextNavigation(digitTwo, digitThree);
@@ -82,24 +83,58 @@ public class VerifyCode extends AppCompatActivity {
         setupEditTextNavigation(digitFive, digitSix);
         setupEditTextNavigation(digitSix, null);
 
-        if (email.equalsIgnoreCase("null")){
+        if (email.equalsIgnoreCase("null")) {
             sentOTP(phoneNumber, mAuth);
         }
-        
+
         verifyBUtton.setOnClickListener(view -> {
             String otp = digitOne.getText().toString() + digitTwo.getText().toString() + digitThree.getText().toString() + digitFour.getText().toString() + digitFive.getText().toString() + digitSix.getText().toString();
             Log.d(TAG, "SMS : " + otp);
             verifyOTP(otp.trim());
         });
 
+        resendOTP.setOnClickListener(view -> {
+            resendOTP(phoneNumber);
+        });
+
 
     }
 
+    private void resendOTP(String phoneNumber) {
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber(phoneNumber)
+                        .setTimeout(60L, TimeUnit.SECONDS)
+                        .setActivity(this)
+                        .setCallbacks(mCallbacks)
+                        .setForceResendingToken(resendToken)
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks =
+            new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+
+                @Override
+                public void onCodeSent(@NonNull String verificationId,
+                                       @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                    VerifyCode.this.verificationId = verificationId;
+                    resendToken = token;
+                    Toast.makeText(VerifyCode.this, "OTP sent", Toast.LENGTH_SHORT).show();
+                }
+                @Override
+                public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
+
+                }
+
+                @Override
+                public void onVerificationFailed(@NonNull FirebaseException e) {
+
+                }
+            };
 
 
     private void sentOTP(String phoneNumber, FirebaseAuth mAuth) {
-        System.out.println(phoneNumber);
-        Log.d("phone number", phoneNumber);
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(phoneNumber)            // Phone number to verify
@@ -121,8 +156,6 @@ public class VerifyCode extends AppCompatActivity {
         public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken token) {
             super.onCodeSent(s, token);
             verificationId = s;
-            Log.d(TAG, "verification code : " + s);
-
         }
 
 
@@ -190,7 +223,7 @@ public class VerifyCode extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
-                    userModel = new UserModel(name.toLowerCase(),phoneNumber,email, Timestamp.now(),FirebaseUtils.currentUserId());
+                    userModel = new UserModel(name.toLowerCase(), phoneNumber, email, Timestamp.now(), FirebaseUtils.currentUserId());
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -199,7 +232,7 @@ public class VerifyCode extends AppCompatActivity {
                                 FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
+                                        if (task.isSuccessful()) {
                                             Intent intent = new Intent(VerifyCode.this, MainActivity.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
@@ -209,7 +242,7 @@ public class VerifyCode extends AppCompatActivity {
                                 });
 
                             } else {
-                                Toast.makeText(VerifyCode.this, "SignUp email password authentication failed ", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VerifyCode.this, "SignUp failed " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(VerifyCode.this, SignUp.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
@@ -218,7 +251,7 @@ public class VerifyCode extends AppCompatActivity {
                     });
 
                 } else {
-                    Toast.makeText(VerifyCode.this,  Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(VerifyCode.this, Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(VerifyCode.this, SignUp.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
