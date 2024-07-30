@@ -26,7 +26,6 @@ firebaseFirestore = "25.0.0"
 firebaseUiFirestore = "8.0.2"
 volley = "1.2.1"
 firebaseStorage = "21.0.0"
-volley = "1.2.1"
 lottie = "6.4.1"
 
 
@@ -63,7 +62,7 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 volley = { group = "com.android.volley", name = "volley", version.ref="volley"}
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
-volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
+
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 
 

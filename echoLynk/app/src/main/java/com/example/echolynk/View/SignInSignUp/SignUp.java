@@ -144,6 +144,12 @@ public class SignUp extends AppCompatActivity {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()){
+                                                                                //set sheard preference
+                                                                                getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                                                                                        .edit()
+                                                                                        .putBoolean("isLogged", true)
+                                                                                        .apply();
+
                                                                                 Toast.makeText(SignUp.this, "Email verified.", Toast.LENGTH_SHORT).show();
                                                                                 Intent intent = new Intent(SignUp.this, MainActivity.class);
                                                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -261,6 +267,12 @@ public class SignUp extends AppCompatActivity {
                                             FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
+                                                    //set sheard preference
+                                                    getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                                                            .edit()
+                                                            .putBoolean("isLogged", true)
+                                                            .apply();
+
                                                     // Update UI with user info
                                                     Intent intent = new Intent(SignUp.this, MainActivity.class);
                                                     intent.putExtra("name", user.getDisplayName());
@@ -270,11 +282,18 @@ public class SignUp extends AppCompatActivity {
                                             });
                                         }
                                         else {
+                                            //set sheard preference
+                                            getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                                                    .edit()
+                                                    .putBoolean("isLogged", true)
+                                                    .apply();
+
                                             //2nd time login
                                             Intent intent = new Intent(SignUp.this, MainActivity.class);
                                             intent.putExtra("name", user.getDisplayName());
                                             intent.putExtra("id", user.getUid());
                                             startActivity(intent);
+
                                         }
                                     }
                                 }

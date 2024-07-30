@@ -78,6 +78,9 @@ public class SignIn extends AppCompatActivity {
         verifyOTP=findViewById(R.id.signIn_verifyOTP);
         sendOTPButton=findViewById(R.id.send_otp);
 
+
+
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -110,7 +113,11 @@ public class SignIn extends AppCompatActivity {
         });
 
         sendOTPButton.setOnClickListener(view -> {
+            Log.d(TAG, "onCreate send otp : userEMail.getText().toString().trim()");
+
             sentOTP(userEMail.getText().toString().trim(),mAuth);
+            sendOTPButton.setVisibility(View.GONE);
+            verifyOTP.setVisibility(View.VISIBLE);
         });
 
         signInButton.setOnClickListener(view->{
@@ -124,6 +131,12 @@ public class SignIn extends AppCompatActivity {
                     mAuth.signInWithEmailAndPassword(email,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                         @Override
                         public void onSuccess(AuthResult authResult) {
+                            //set sheard preference
+                            getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                                    .edit()
+                                    .putBoolean("isLogged", true)
+                                    .apply();
+
                             Intent intent=new Intent(SignIn.this, MainActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
@@ -219,11 +232,18 @@ public class SignIn extends AppCompatActivity {
         }
     }
 
+
     private void signInWithCredential(PhoneAuthCredential credential) {
         mAuth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+                    //set sheard preference
+                    getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                            .edit()
+                            .putBoolean("isLogged", true)
+                            .apply();
+
                     Intent intent = new Intent(SignIn.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
@@ -283,6 +303,11 @@ public class SignIn extends AppCompatActivity {
                                             FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
+                                                    //set sheard preference
+                                                    getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                                                            .edit()
+                                                            .putBoolean("isLogged", true)
+                                                            .apply();
                                                     // Update UI with user info
                                                     Intent intent = new Intent(SignIn.this, MainActivity.class);
                                                     intent.putExtra("name", user.getDisplayName());
@@ -310,39 +335,9 @@ public class SignIn extends AppCompatActivity {
                     }
                 });
     }
-    FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-        @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user != null) {
-                // User is signed in
-                Intent intent=new Intent(SignIn.this,MainActivity.class);
-                intent.putExtra("name",user.getDisplayName());
-                intent.putExtra("id",user.getUid());
-                startActivity(intent);
-                finish();
-            } else {
-                // User is signed out
-            }
-        }
-    };
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseAuth.getInstance().addAuthStateListener(authStateListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (authStateListener != null) {
-            FirebaseAuth.getInstance().removeAuthStateListener(authStateListener);
-        }
-    }
 
     public void signUpOnclick(View view) {
         startActivity(new Intent(SignIn.this, SignUp.class));
     }
 }
-
