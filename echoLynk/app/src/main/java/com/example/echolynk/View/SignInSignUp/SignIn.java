@@ -6,6 +6,8 @@ import static android.content.ContentValues.TAG;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -52,7 +54,7 @@ public class SignIn extends AppCompatActivity {
 
     private EditText userEMail,userPassword;
     private TextView forgotPassword;
-    private Button signInButton,verifyOTP;
+    private Button signInButton,verifyOTP,sendOTPButton;
     private ImageButton google,facebook;
     private FirebaseAuth mAuth;
     private static final int RC_SIGN_IN = 9001;
@@ -74,6 +76,7 @@ public class SignIn extends AppCompatActivity {
         google=findViewById(R.id.sign_in_google);
         forgotPassword=findViewById(R.id.forgotPassword);
         verifyOTP=findViewById(R.id.signIn_verifyOTP);
+        sendOTPButton=findViewById(R.id.send_otp);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -81,6 +84,34 @@ public class SignIn extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        userEMail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String phoneNumber=editable.toString();
+                if (Patterns.PHONE.matcher(phoneNumber).matches()){
+                    sendOTPButton.setVisibility(View.VISIBLE);
+                    signInButton.setVisibility(View.GONE);
+                }else {
+                    sendOTPButton.setVisibility(View.GONE);
+                    signInButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        sendOTPButton.setOnClickListener(view -> {
+            sentOTP(userEMail.getText().toString().trim(),mAuth);
+        });
 
         signInButton.setOnClickListener(view->{
 
@@ -113,7 +144,7 @@ public class SignIn extends AppCompatActivity {
             }else if (email.isEmpty()){
                 userEMail.setError("Email can't be empty.");
             }else if (Patterns.PHONE.matcher(email).matches()){
-                sentOTP(email,mAuth);
+                //sentOTP(email,mAuth);
             }else {
                 userEMail.setError("Please enter valid email or phone number.");
             }

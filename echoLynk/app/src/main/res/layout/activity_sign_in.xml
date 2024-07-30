@@ -144,6 +144,21 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
+            android:id="@+id/send_otp"
+            android:layout_width="300dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="380dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="#3D4E8B"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Send OTP"
+            android:visibility="gone"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
             android:id="@+id/signIn_verifyOTP"
             android:layout_width="300dp"
             android:layout_height="64dp"
@@ -162,13 +177,13 @@
             android:id="@+id/sign_in_facebook"
             android:layout_width="75dp"
             android:layout_height="73dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="70dp"
             android:backgroundTint="#00FFFFFF"
             android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signIn_button"
+            app:layout_constraintTop_toBottomOf="@+id/textView27"
             app:srcCompat="@drawable/facebook" />
 
         <ImageButton
@@ -176,18 +191,18 @@
             android:layout_width="75dp"
             android:layout_height="73dp"
             android:layout_marginStart="70dp"
-            android:layout_marginTop="80dp"
-            android:padding="8dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="#00FFFFFF"
+            android:padding="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signIn_button"
+            app:layout_constraintTop_toBottomOf="@+id/textView27"
             app:srcCompat="@drawable/google" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="180dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="60dp"
             android:fontFamily="@font/poppins_medium"
             android:text="Don’t have an account?"
@@ -195,34 +210,35 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signIn_button" />
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_facebook" />
 
         <TextView
             android:id="@+id/signIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="146dp"
-            android:layout_marginTop="180dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="@font/poppins_medium"
+            android:onClick="signUpOnclick"
             android:text="Sign Up"
             android:textColor="#3D4E8B"
             android:textSize="16sp"
-            android:onClick="signUpOnclick"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signIn_button" />
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_google" />
 
         <TextView
+            android:id="@+id/textView27"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="128dp"
             android:fontFamily="@font/poppins_medium"
             android:text="Or sign in with"
             android:textColor="#828181"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/signIn_button" />
+            app:layout_constraintTop_toBottomOf="@+id/forgotPassword" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
