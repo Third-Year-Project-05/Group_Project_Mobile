@@ -3,11 +3,13 @@ package com.example.echolynk.View;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -16,13 +18,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.echolynk.Model.UserModel;
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.AndroidUtils;
+import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.View.Call.CallFragment;
 import com.example.echolynk.View.Game.GamesFragment;
 import com.example.echolynk.View.Home.HomeFragment;
 import com.example.echolynk.View.LiveConversation.SpeechFragment;
 import com.example.echolynk.View.Profile.ProfileFragment;
 import com.example.echolynk.databinding.ActivityMainBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Objects;
 
@@ -33,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout mainLayout, mainLayoutHeader;
     TextView userName;
     de.hdodenhof.circleimageview.CircleImageView userImage;
+    UserModel userModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +67,23 @@ public class MainActivity extends AppCompatActivity {
         userName = findViewById(R.id.user_name);
         userImage = findViewById(R.id.user_image);
         mainLayoutHeader = findViewById(R.id.main_header);
+
+        //set user image
+        FirebaseUtils.getCurrentProfilePicStorageRef().getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Uri uri = task.getResult();
+                        AndroidUtils.setProfilePic(MainActivity.this,uri,userImage);
+                    }
+                });
+
+        //get user details
+        FirebaseUtils.currentUserDetails().get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                userModel = task.getResult().toObject(UserModel.class);
+                userName.setText(userModel.getUserName());
+            }
+        });
 
 //        replaceFragment(new HomeFragment());
 //        setHeader(true);

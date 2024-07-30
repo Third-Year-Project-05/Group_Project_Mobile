@@ -2,6 +2,7 @@ package com.example.echolynk.View.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.echolynk.Model.UserModel;
 import com.example.echolynk.R;
 import com.example.echolynk.Utils.AndroidUtils;
+import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.View.ChatActivity;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -29,6 +31,14 @@ public class SearchUseRecyclerAdapter extends FirestoreRecyclerAdapter<UserModel
     @Override
     protected void onBindViewHolder(@NonNull UserModelViewHolder holder, int position, @NonNull UserModel model) {
         holder.userName.setText(model.getUserName());
+
+        FirebaseUtils.getOtherUserProfilePicStorageRef(model.getUserId()).getDownloadUrl()
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        Uri uri = task.getResult();
+                        AndroidUtils.setProfilePic(context,uri,holder.profilePicture);
+                    }
+                });
         //profile picture ekat metanin connect kranna
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +49,6 @@ public class SearchUseRecyclerAdapter extends FirestoreRecyclerAdapter<UserModel
                 context.startActivity(intent);
             }
         });
-
     }
 
     @NonNull

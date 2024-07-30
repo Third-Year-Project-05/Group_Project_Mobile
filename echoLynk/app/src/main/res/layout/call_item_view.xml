@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="75dp">
+    android:layout_height="75dp"
+    xmlns:tool="http://schemas.android.com/tools">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/contactImageView"
@@ -12,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="13dp"
-        android:src="@drawable/dummy_user_image" />
+        android:src="@drawable/user_profile_pic" />
 
     <TextView
         android:id="@+id/contactNameView"
@@ -24,7 +25,7 @@
         android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/contactImageView"
-        android:text="Alex Boltan Alex Boltan Alex Boltan Alex Boltan"
+        tool:text="Alex Boltan Alex Boltan Alex Boltan Alex Boltan"
         android:textSize="17dp"
         android:textStyle="bold"
         android:textColor="@color/black"/>
@@ -40,7 +41,7 @@
         android:textSize="10sp"
         android:textColor="@color/primary_blue"
         android:layout_toEndOf="@+id/contactImageView"
-        android:text="TextView 3ff43f34f 3g erg e ger er ge ge rg eg eg erg er ge ge rge rg erg egre" />
+        tool:text="TextView 3ff43f34f 3g erg e ger er ge ge rg eg eg erg er ge ge rge rg erg egre" />
 
     <TextView
         android:id="@+id/dateTextView"
@@ -50,7 +51,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="13dp"
-        android:text="2024-10-17"
+        tool:text="2024-10-17"
         android:textColor="@color/primary_blue"
         android:textSize="10sp"/>
 

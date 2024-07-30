@@ -1,5 +1,5 @@
 package com.example.echolynk.View.Call;
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,23 +15,24 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.example.echolynk.Model.Call_Item;
+import com.example.echolynk.Model.ChatroomModel;
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.FirebaseUtils;
+import com.example.echolynk.View.Adapter.RecentChatRecyclerAdapter;
 import com.example.echolynk.View.SearchUserActivity;
-import com.example.echolynk.ViewModel.MyCallsAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.firestore.Query;
 
 public class CallFragment extends Fragment {
 
 
-    private RecyclerView recyclerView;
-    private ImageView searchUserBtn;
-    private EditText searchUserEditText;
-    private String searchText;
-    private FloatingActionButton newConversationBtn;
+     RecyclerView recyclerView;
+     ImageView searchUserBtn;
+     EditText searchUserEditText;
+     String searchText;
+     FloatingActionButton newConversationBtn;
+     RecentChatRecyclerAdapter adapter;
 
     public CallFragment() {
         // Required empty public constructor
@@ -40,15 +41,7 @@ public class CallFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_call, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+        View view = inflater.inflate(R.layout.fragment_call, container, false);
         searchUserEditText = view.findViewById(R.id.searchUserEditText);
         newConversationBtn = view.findViewById(R.id.newConversationButton);
         newConversationBtn.setOnClickListener(new View.OnClickListener() {
@@ -59,32 +52,51 @@ public class CallFragment extends Fragment {
             }
         });
 
-        List<Call_Item> items = new ArrayList<>();
-        items.add(new Call_Item("Nick Jonas", "hellow", "Yesterday", "4", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("John Doe", "Hi there", "Today", "3", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Jane Smith", "Good morning", "2 days ago", "2", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Alice Johnson", "How are you?", "Last week", "1", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Bob Brown", "Nice to meet you", "A month ago", "5", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Charlie Black", "See you soon", "A year ago", "10", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Dave White", "What's up?", "Yesterday", "4", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Emma Green", "Hello!", "An hour ago", "6", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Frank Blue", "Goodbye", "Last night", "7", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Grace Pink", "Take care", "3 days ago", "8", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Hank Yellow", "Call me", "4 days ago", "9", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Ivy Orange", "See you later", "5 days ago", "11", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Jack Red", "Thanks!", "6 days ago", "12", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Karen Gray", "You're welcome", "Last month", "13", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Leo Violet", "Good night", "2 weeks ago", "14", R.drawable.dummyprofileimage));
-        items.add(new Call_Item("Mia Cyan", "Good evening", "3 weeks ago", "15", R.drawable.dummyprofileimage));
-
+        // Inflate the layout for this fragment
 
         recyclerView = view.findViewById(R.id.callsRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setHasFixedSize(true);
-        MyCallsAdapter myCallsAdapter = new MyCallsAdapter(getContext(), items);
-        recyclerView.setAdapter(myCallsAdapter);
-        myCallsAdapter.notifyDataSetChanged();
+        setUpRecyclerView();
+        return view;
+    }
 
+    private void setUpRecyclerView() {
+        Query query = FirebaseUtils.allChatroomCollectionReference()
+                .whereArrayContains("userIds", FirebaseUtils.currentUserId())
+                .orderBy("lastMessageTimestamp",Query.Direction.DESCENDING);
+
+        FirestoreRecyclerOptions<ChatroomModel> options = new FirestoreRecyclerOptions.Builder<ChatroomModel>()
+                .setQuery(query,ChatroomModel.class).build();
+
+        adapter = new RecentChatRecyclerAdapter(options,getContext());
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
+        adapter.startListening();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(adapter!=null){
+            adapter.startListening();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(adapter!=null){
+            adapter.stopListening();
+        }
 
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(adapter!=null){
+            adapter.notifyDataSetChanged();
+        }
+    }
+
 }

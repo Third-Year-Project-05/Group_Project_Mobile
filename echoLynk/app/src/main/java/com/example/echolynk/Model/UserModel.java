@@ -9,16 +9,36 @@ public class UserModel {
     private String email;
     private Timestamp createdTimestamp;
     private String userId;
+    private String password;
+    private String role;
 
     public UserModel() {
     }
 
-    public UserModel(String userName, String phoneNumber, String email, Timestamp timestamp, String userId) {
+    public UserModel(String userName, String phoneNumber, String email, Timestamp timestamp, String userId,String password,String role) {
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.createdTimestamp = timestamp;
         this.userId = userId;
+        this.password = password;
+        this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getUserName() {
