@@ -1,4 +1,5 @@
 import com.android.tools.r8.internal.de
+import org.gradle.internal.impldep.com.fasterxml.jackson.core.JsonPointer.compile
 
 plugins {
     alias(libs.plugins.android.application)
@@ -66,9 +67,11 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation (libs.firebase.auth.v2101)
     implementation (libs.facebook.android.sdk)
-    implementation (libs.retrofit)
-    implementation (libs.converter.gson)
+//    implementation (libs.retrofit)
+//    implementation (libs.converter.gson)
     implementation (libs.okhttp)
+    implementation (libs.volley)
+
 
     // Sandaru
 

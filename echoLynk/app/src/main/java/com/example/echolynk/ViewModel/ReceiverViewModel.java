@@ -2,6 +2,7 @@ package com.example.echolynk.ViewModel;
 
 import static androidx.core.content.ContentProviderCompat.requireContext;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.View;
@@ -17,13 +18,17 @@ import com.example.echolynk.Utils.ColorUtil;
 
 public class ReceiverViewModel extends RecyclerView.ViewHolder {
 
-    public Drawable shapeReceiverChat;
-    public TextView receiverMassage;
 
-    public ReceiverViewModel(@NonNull View itemView,Context context ) {
+    public TextView receiverMassage,senderMassage;
+
+    public LinearLayout left,right;
+
+    @SuppressLint("WrongViewCast")
+    public ReceiverViewModel(@NonNull View itemView, Context context ) {
         super(itemView);
-        receiverMassage=itemView.findViewById(R.id.reserve_massage_text);
-        shapeReceiverChat= ContextCompat.getDrawable(context,R.drawable.resever_chat_shape);
-
+        receiverMassage=itemView.findViewById(R.id.left_chat_textview);
+        senderMassage=itemView.findViewById(R.id.right_chat_textview);
+        left=itemView.findViewById(R.id.left_chat_layout);
+        right=itemView.findViewById(R.id.right_chat_layout);
     }
 }
