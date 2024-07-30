@@ -72,15 +72,12 @@ dependencies {
     implementation (libs.okhttp)
     implementation (libs.volley)
 
-
     // Sandaru
 
     implementation(libs.roundimage)
     implementation(libs.lottie)
     implementation(libs.imagepicker)
     implementation(libs.glide)
-
-    implementation(libs.volley)
     annotationProcessor(libs.compiler)
 
 

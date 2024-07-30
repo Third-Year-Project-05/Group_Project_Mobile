@@ -59,6 +59,11 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
     }
 
     @Override
+    public void onInit(int status) {
+
+    }
+
+    @Override
     public void onClick(int position, View view) {
         Intent intent = new Intent(HomeBlog.this, BlogView.class);
         intent.putExtra("blogTitle","What is Text-to-Speech?");

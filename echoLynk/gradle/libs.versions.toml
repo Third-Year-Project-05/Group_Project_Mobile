@@ -5,6 +5,7 @@ converterGson = "2.9.0"
 converterScalars = "2.3.0"
 facebookAndroidSdk = "latest.release"
 firebaseAuth = "23.0.0"
+freetts = "1.2.2"
 glide = "4.16.0"
 googleServices = "4.4.2"
 imagepicker = "2.1"
@@ -41,6 +42,7 @@ circleimageview = { module = "de.hdodenhof:circleimageview", version.ref = "circ
 facebook-android-sdk = { module = "com.facebook.android:facebook-android-sdk", version.ref = "facebookAndroidSdk" }
 firebase-auth-v2101 = { module = "com.google.firebase:firebase-auth", version.ref = "firebaseAuth" }
 firebase-database = { module = "com.google.firebase:firebase-database" }
+freetts = { module = "com.sun.speech.freetts:freetts", version.ref = "freetts" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 google-firebase-auth = { module = "com.google.firebase:firebase-auth" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }

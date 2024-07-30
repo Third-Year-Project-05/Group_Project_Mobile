@@ -33,6 +33,7 @@ import com.example.echolynk.View.Game.GamesFragment;
 import com.example.echolynk.View.Home.HomeFragment;
 import com.example.echolynk.View.LiveConversation.SpeechFragment;
 import com.example.echolynk.View.Profile.ProfileFragment;
+import com.example.echolynk.View.SignInSignUp.SignIn;
 import com.example.echolynk.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -106,11 +107,16 @@ public class MainActivity extends AppCompatActivity {
                 setHeader(false);
                 binding.bottomNavigationView.setSelectedItemId(R.id.profile_frame);
             }
+            else if (Objects.equals(loadFragment, "speech")){
+                replaceFragment(new SpeechFragment());
+                mainLayoutHeader.setVisibility(View.VISIBLE);
+                setHeader(true);
+                binding.bottomNavigationView.setSelectedItemId(R.id.speech_frame);
+            }
             else{
                 replaceFragment(new HomeFragment());
                 setHeader(true);
                 binding.bottomNavigationView.setSelectedItemId(R.id.home_frame);
-
             }
         }else{
             replaceFragment(new HomeFragment());
