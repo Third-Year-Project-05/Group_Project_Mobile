@@ -1,14 +1,24 @@
 package com.example.echolynk.View;
 
+import static android.content.ContentValues.TAG;
+
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -19,6 +29,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.echolynk.Model.ChatMessageModel;
 import com.example.echolynk.Model.ChatroomModel;
 import com.example.echolynk.Model.UserModel;
@@ -34,8 +53,16 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import android.graphics.Bitmap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -47,9 +74,17 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private EditText messageInput;
     private ImageButton sendMessageBtn;
+    private ImageButton generateImage;
     private String chatRoomId;
     private ChatroomModel chatroomModel;
     private ChatRecyclerAdapter adapter;
+    private static final String apiKey = "sk-proj-XmRmjjHi5qvdQbkFT7tXT3BlbkFJEZpbfe9lRYALeoVAKEx6";
+    private static String stringOutput = "";
+    Handler handler = new Handler();
+    ProgressDialog progressDialog;
+    ImageView responseView;
+    Dialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +106,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.chat_recycler_view);
         messageInput = findViewById(R.id.chat_message_input);
         sendMessageBtn = findViewById(R.id.message_send_btn);
+        generateImage = findViewById(R.id.get_img_btn);
 
         chatRoomId = FirebaseUtils.getChatRoomId(FirebaseUtils.currentUserId(), otherUser.getUserId());
 
@@ -104,6 +140,21 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
         setUpChatRecyclerView();
+
+        generateImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = messageInput.getText().toString().trim();
+                if (message.isEmpty()){
+                    return;
+                }
+                else{
+                    ImageGenarator(v, "beautiful "+message);
+                    messageInput.setText("");
+                }
+            }
+        });
+
     }
 
     private void setUpChatRecyclerView() {
@@ -183,7 +234,153 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    private void showPopup(String imageUrl) {
+        Log.d(TAG, "showPopup: " + imageUrl);
+        dialog = new Dialog(this);
+        dialog.setContentView(R.layout.popup_layout);
+
+        Button closePopupButton = dialog.findViewById(R.id.closePopupButton);
+        responseView = dialog.findViewById(R.id.imageView);
+
+        closePopupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    public void ImageGenarator(View view,String text) {
+
+        // Get the ProgressBar from the layout
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+
+        // Show the ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+
+            jsonObject.put("prompt", text);
+            jsonObject.put("size", "256x256");
+
+            Log.d(TAG, "Request to Dalle: " + jsonObject.toString());
+
+        } catch (JSONException e) {
+
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            throw new RuntimeException(e);
+        }
+
+        String imageEndPoint = "https://api.openai.com/v1/images/generations";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, imageEndPoint, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progressBar.setVisibility(View.GONE);
+                        try {
+                            stringOutput = response.getJSONArray("data").
+                                    getJSONObject(0).
+                                    getString("url");
+
+                            Log.d(TAG, "Request to Dalle: " + stringOutput);
+                            new FetchImage(stringOutput).start();
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                        Log.d(TAG, "Request to GPT-3: " + stringOutput);
+                    }
+                },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Request to GPT-3: " + error.getMessage());
+                progressBar.setVisibility(View.GONE);
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> mapHeaders = new HashMap<>();
+
+                mapHeaders.put("Content-Type", "application/json");
+                mapHeaders.put("Authorization", "Bearer " + apiKey);
+
+                return mapHeaders;
+            }
+
+            @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                return super.parseNetworkError(volleyError);
+            }
+
+        };
+
+        int timeOutPeriod = 60000;
+
+        RetryPolicy policy = new DefaultRetryPolicy(
+                timeOutPeriod,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        );
+
+        jsonObjectRequest.setRetryPolicy(policy);
+
+        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+
+    }
+
+    class FetchImage extends Thread{
+        String URL;
+        Bitmap bitmap;
+
+        FetchImage(String URL){
+            this.URL = URL;
+        }
+
+        @Override
+        public void run() {
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    progressDialog = new ProgressDialog(ChatActivity.this);
+                    progressDialog.setMessage("Loading...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
+                }
+            });
 
 
+            try {
+                InputStream inputStream = new java.net.URL(URL).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                        showPopup(URL);
+
+                    }
+                    responseView.setImageBitmap(bitmap);
+                    dialog.show();
+
+
+                }
+            });
+        }
+
+    }
 
 }

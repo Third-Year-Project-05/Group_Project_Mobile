@@ -1,5 +1,7 @@
 package com.example.echolynk.View;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -88,10 +90,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     userName.setText(userModel.getUserName());
                 }catch (Exception e){
-                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Log.d("current user", "onCreate: "+e.getMessage());
+                    Log.d("current user", "onCreate: "+e.getLocalizedMessage());
+                    Toast.makeText(MainActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 

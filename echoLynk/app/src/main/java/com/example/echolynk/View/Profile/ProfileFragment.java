@@ -46,7 +46,6 @@ public class ProfileFragment extends Fragment {
         ImageView logoutBtn;
         CircleImageView profilePic;
 
-
         accountDetails = view.findViewById(R.id.account_details_btn);
         addToBlog = view.findViewById(R.id.add_blog_btn);
         switchToPremium = view.findViewById(R.id.switch_to_premium_btn);
@@ -116,7 +115,7 @@ public class ProfileFragment extends Fragment {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseUtils.logOut();
+                FirebaseUtils.logOut(getContext());
                 Intent intent = new Intent(getContext(), SplashActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

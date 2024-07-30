@@ -78,6 +78,7 @@ dependencies {
     implementation(libs.lottie)
     implementation(libs.imagepicker)
     implementation(libs.glide)
+    annotationProcessor(libs.compiler)
 
 
 

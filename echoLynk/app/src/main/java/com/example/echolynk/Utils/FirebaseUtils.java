@@ -1,5 +1,11 @@
 package com.example.echolynk.Utils;
 
+import android.content.Context;
+
+import com.example.echolynk.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -12,6 +18,13 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class FirebaseUtils {
+
+    public  static Boolean isLoggedIn(){
+        if(currentUserId() != null){
+            return true;
+        }
+        return false;
+    }
 
     public static String currentUserId(){
         return FirebaseAuth.getInstance().getUid();
@@ -60,9 +73,29 @@ public class FirebaseUtils {
         return FirebaseFirestore.getInstance().collection("chatrooms");
     }
 
-    public static void logOut(){
+//    public static void logOut(){
+//        FirebaseAuth.getInstance().signOut();
+//    }
+
+    public static void logOut(Context context){
+        // Firebase sign out
         FirebaseAuth.getInstance().signOut();
+
+        // Google sign out
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(context.getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(context, gso);
+        googleSignInClient.signOut().addOnCompleteListener(task -> {
+            // Additional actions after sign out if needed
+        });
+
+        // Clear any other session data here if needed
+
+        // Optionally, you can navigate the user to the login screen or show a logout confirmation
     }
+
 
     public static StorageReference getCurrentProfilePicStorageRef(){
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
