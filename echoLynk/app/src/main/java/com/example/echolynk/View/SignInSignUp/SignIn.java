@@ -110,7 +110,11 @@ public class SignIn extends AppCompatActivity {
         });
 
         sendOTPButton.setOnClickListener(view -> {
+            Log.d(TAG, "onCreate send otp : userEMail.getText().toString().trim()");
+
             sentOTP(userEMail.getText().toString().trim(),mAuth);
+            sendOTPButton.setVisibility(View.GONE);
+            verifyOTP.setVisibility(View.VISIBLE);
         });
 
         signInButton.setOnClickListener(view->{

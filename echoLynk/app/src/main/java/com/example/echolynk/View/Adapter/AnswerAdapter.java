@@ -1,6 +1,7 @@
 package com.example.echolynk.View.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,8 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.echolynk.Model.MassageModel;
 import com.example.echolynk.R;
 import com.example.echolynk.Utils.onClickListener;
+import com.example.echolynk.View.LiveConversation.LiveConversationChat;
 import com.example.echolynk.ViewModel.SuggestionMassageViewModel;
 
 import java.util.List;
@@ -19,6 +22,8 @@ public class AnswerAdapter extends RecyclerView.Adapter<SuggestionMassageViewMod
     Context context;
     List<String> answer;
     onClickListener listener;
+
+    private final LiveConversationChat liveConversationChat=new LiveConversationChat();
 
     public AnswerAdapter(Context context, List<String> answer, onClickListener listener) {
         this.context = context;
@@ -36,6 +41,11 @@ public class AnswerAdapter extends RecyclerView.Adapter<SuggestionMassageViewMod
     @Override
     public void onBindViewHolder(@NonNull SuggestionMassageViewModel holder, int position) {
         holder.answer.setText(answer.get(position));
+        holder.itemView.setOnClickListener(view -> {
+            Log.d("sugesstion click", "onBindViewHolder: click wenwa ");
+            liveConversationChat.massageList.add(new MassageModel(answer.get(position),0));
+            liveConversationChat.setUpLiveChat(liveConversationChat.chatRecycleView, liveConversationChat.massageList);
+        });
     }
 
     @Override

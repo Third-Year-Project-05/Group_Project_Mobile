@@ -72,7 +72,6 @@ dependencies {
     implementation (libs.okhttp)
     implementation (libs.volley)
 
-
     // Sandaru
 
     implementation(libs.roundimage)

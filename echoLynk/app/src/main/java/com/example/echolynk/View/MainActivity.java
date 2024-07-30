@@ -5,9 +5,12 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +31,7 @@ import com.example.echolynk.View.Game.GamesFragment;
 import com.example.echolynk.View.Home.HomeFragment;
 import com.example.echolynk.View.LiveConversation.SpeechFragment;
 import com.example.echolynk.View.Profile.ProfileFragment;
+import com.example.echolynk.View.SignInSignUp.SignIn;
 import com.example.echolynk.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -81,7 +85,13 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUtils.currentUserDetails().get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 userModel = task.getResult().toObject(UserModel.class);
-                userName.setText(userModel.getUserName());
+                try {
+                    userName.setText(userModel.getUserName());
+                }catch (Exception e){
+                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("current user", "onCreate: "+e.getMessage());
+                }
+
             }
         });
 
@@ -96,11 +106,16 @@ public class MainActivity extends AppCompatActivity {
                 setHeader(false);
                 binding.bottomNavigationView.setSelectedItemId(R.id.profile_frame);
             }
+            else if (Objects.equals(loadFragment, "speech")){
+                replaceFragment(new SpeechFragment());
+                mainLayoutHeader.setVisibility(View.VISIBLE);
+                setHeader(true);
+                binding.bottomNavigationView.setSelectedItemId(R.id.speech_frame);
+            }
             else{
                 replaceFragment(new HomeFragment());
                 setHeader(true);
                 binding.bottomNavigationView.setSelectedItemId(R.id.home_frame);
-
             }
         }else{
             replaceFragment(new HomeFragment());

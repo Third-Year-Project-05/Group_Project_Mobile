@@ -34,7 +34,7 @@
                 android:layout_below="@+id/live_users"
                 android:layout_marginTop="39dp"
                 android:background="@drawable/image_rounded_background"
-                android:backgroundTint="#57ECE6CC"
+                android:backgroundTint="#57FFFFFF"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:spanCount="1" />
 
@@ -44,6 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/chat_view"
                 android:layout_marginTop="8dp"
+
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -56,7 +57,14 @@
                     app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                     app:spanCount="1" />
 
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"/>
+
                 <LinearLayout
+                    android:id="@+id/sender_massage_laout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -120,9 +128,9 @@
             android:id="@+id/close_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="#B99592EA"
+            android:backgroundTint="@color/primary_blue"
             android:layout_weight="1"
-            android:contentDescription="close Icon"
+            android:contentDescription="close icon"
             android:paddingStart="8dp"
             android:layout_margin="8dp"
             android:paddingEnd="8dp"
@@ -137,7 +145,7 @@
             android:id="@+id/pause_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="#B99592EA"
+            android:backgroundTint="@color/primary_blue"
             android:contentDescription="pause icon"
             android:layout_weight="1"
             android:layout_margin="8dp"
@@ -154,7 +162,7 @@
             android:id="@+id/speech_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:backgroundTint="#B99592EA"
+            android:backgroundTint="@color/primary_blue"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:contentDescription="speech icon"
@@ -174,7 +182,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="@drawable/icon_background"
-            android:backgroundTint="#B99592EA"
+            android:backgroundTint="@color/primary_blue"
             android:contentDescription="keyboard icon"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"

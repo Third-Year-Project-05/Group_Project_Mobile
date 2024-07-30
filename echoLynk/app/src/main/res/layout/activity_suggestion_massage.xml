@@ -14,12 +14,13 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_weight="1"
-            android:fontFamily="@font/poppins_semibold"
-            android:textColor="@color/white"
             android:background="@drawable/button_background"
-            android:backgroundTint="#B99592EA"
+            android:backgroundTint="@color/primary_blue"
             android:contentDescription="suggestion one "
-            android:text="Button" />
+            android:fontFamily="@font/poppins_semibold"
+            android:onClick="sendSuggestion"
+            android:text="Button"
+            android:textColor="@color/white" />
 
 
 </LinearLayout>

@@ -1,9 +1,11 @@
 package com.example.echolynk.View.LiveConversation;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +27,8 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class SpeechFragment extends Fragment {
+
+    ConstraintLayout constraintLayout;
 
     private RecyclerView recyclerView;
 
@@ -79,6 +83,8 @@ public class SpeechFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        constraintLayout = view.findViewById(R.id.constraintLayout001);
+
         List<Conversation_Item> items = new ArrayList<>();
         items.add(new Conversation_Item("University Conversation", "I am going to meet my friend jhon tomorrow. There fore i can't attend the lecture", "Yesterday", "45 min"));
         items.add(new Conversation_Item("Work Update", "I completed the report you asked for.", "Today", "10 min"));
@@ -105,5 +111,15 @@ public class SpeechFragment extends Fragment {
         MyConversationsAdapter myConversationsAdapter = new MyConversationsAdapter(getContext(), items);
         recyclerView.setAdapter(myConversationsAdapter);
         myConversationsAdapter.notifyDataSetChanged();
+
+        constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), LiveConversationChat.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 }

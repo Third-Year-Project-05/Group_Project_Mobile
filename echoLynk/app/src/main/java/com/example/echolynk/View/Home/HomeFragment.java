@@ -13,7 +13,8 @@ import android.widget.LinearLayout;
 import com.example.echolynk.R;
 public class HomeFragment extends Fragment {
 
-    LinearLayout videoCallBtn,voiceAssistent,games;
+    LinearLayout videoCallBtn,voiceAssistent,games,blog01,blog02;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -26,7 +27,9 @@ public class HomeFragment extends Fragment {
         videoCallBtn = view.findViewById(R.id.goto_video_call);
         voiceAssistent = view.findViewById(R.id.goto_voice_assistent);
         games = view.findViewById(R.id.goto_games);
+        blog01 = view.findViewById(R.id.blog1);
 
+        
         return view;
     }
 }
