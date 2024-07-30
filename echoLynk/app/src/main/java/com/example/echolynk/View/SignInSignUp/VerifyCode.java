@@ -223,7 +223,7 @@ public class VerifyCode extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
 
-                   // userModel = new UserModel(name.toLowerCase(), phoneNumber, email, Timestamp.now(), FirebaseUtils.currentUserId());
+                    userModel = new UserModel(name.toLowerCase(), phoneNumber, email, Timestamp.now(), FirebaseUtils.currentUserId(),password,"user");
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -233,6 +233,7 @@ public class VerifyCode extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+
                                             Intent intent = new Intent(VerifyCode.this, MainActivity.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);
@@ -258,7 +259,6 @@ public class VerifyCode extends AppCompatActivity {
                 }
             }
         });
-
     }
 
 

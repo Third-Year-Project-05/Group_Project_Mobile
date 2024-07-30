@@ -20,17 +20,13 @@
         tools:targetApi="31"
         android:networkSecurityConfig="@xml/network_security_config"
         >
-
         <!-- Sandaru -->
-
         <activity
             android:name=".View.ChatActivity"
-
             android:exported="false"/>
         <activity
             android:name=".View.SearchUserActivity"
             android:exported="false" />
-
         <activity
             android:name=".View.SignInSignUp.ForgotPassword"
             android:exported="false" />
@@ -74,11 +70,11 @@
 
         <activity
             android:name=".View.SplashActivity"
-            android:exported="false">
-            <!--<intent-filter>
+            android:exported="true">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
 
 
@@ -126,11 +122,7 @@
             android:exported="false" />
         <activity
             android:name=".View.LiveConversation.LiveConversationChat"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false" >
         </activity>
         <activity
             android:name=".View.LiveConversation.sender_massage"
@@ -138,8 +130,6 @@
         <activity
             android:name=".View.LiveConversation.reserveMessage"
             android:exported="false" />
-
-
     </application>
 
 </manifest>
