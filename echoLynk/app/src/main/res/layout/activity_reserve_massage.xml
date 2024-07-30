@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/reserve_massage"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp"
-    android:layout_marginBottom="4dp"
-    android:background="@drawable/resever_chat_shape"
-    tools:context=".View.LiveConversation.reserveMessage">
+    android:padding="8dp">
 
-
-
-    <TextView
-        android:id="@+id/reserve_massage_text"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/left_chat_layout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:maxWidth="256dp"
-        android:fontFamily="@font/poppins_regular"
-        android:textSize="18sp"
-        android:paddingStart="8dp"
-        android:textColor="@color/white"
-        android:text="Test messdsdssdsadsadadadaadadadadasage"
-        tools:ignore="RtlSymmetry" />
-</LinearLayout>
+        android:background="@drawable/chat_message_background"
+        android:backgroundTint="@color/msg_sender_color"
+        android:padding="8dp"
+        android:layout_marginEnd="80dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:id="@+id/left_chat_textview"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/right_chat_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/chat_message_background"
+        android:backgroundTint="@color/msg_receiver_color"
+        android:layout_alignParentEnd="true"
+        android:padding="8dp"
+        android:layout_marginStart="80dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:id="@+id/right_chat_textview"/>
+    </LinearLayout>
+
+</RelativeLayout>
