@@ -319,6 +319,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
     private void setndPostMethod(String massage) {
 
+        suggestions.clear();
+
             JSONObject jsonObject1 = new JSONObject();
             JSONObject jsonObject2 = new JSONObject();
             try {
