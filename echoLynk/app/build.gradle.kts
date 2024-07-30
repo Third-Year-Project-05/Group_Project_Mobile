@@ -80,6 +80,9 @@ dependencies {
     implementation(libs.imagepicker)
     implementation(libs.glide)
 
+    implementation(libs.volley)
+    annotationProcessor(libs.compiler)
+
 
 
 
