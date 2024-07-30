@@ -1,13 +1,18 @@
 package com.example.echolynk.View;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -81,7 +86,12 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUtils.currentUserDetails().get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 userModel = task.getResult().toObject(UserModel.class);
-                userName.setText(userModel.getUserName());
+                try {
+                    userName.setText(userModel.getUserName());
+                }catch (Exception e){
+                    Log.d("current user", "onCreate: "+e.getLocalizedMessage());
+                    Toast.makeText(MainActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

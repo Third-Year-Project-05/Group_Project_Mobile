@@ -141,7 +141,6 @@ public class ChatActivity extends AppCompatActivity {
         });
         setUpChatRecyclerView();
 
-
         generateImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -46,7 +46,6 @@ public class ProfileFragment extends Fragment {
         ImageView logoutBtn;
         CircleImageView profilePic;
 
-
         accountDetails = view.findViewById(R.id.account_details_btn);
         addToBlog = view.findViewById(R.id.add_blog_btn);
         switchToPremium = view.findViewById(R.id.switch_to_premium_btn);
