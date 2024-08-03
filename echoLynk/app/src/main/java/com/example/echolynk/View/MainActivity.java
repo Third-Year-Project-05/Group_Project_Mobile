@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.speech_frame) {
                 replaceFragment(new SpeechFragment());
                 setHeaderColours(1);
+
                 setHeader(true);
             } else if (item.getItemId() == R.id.games_frame) {
                 replaceFragment(new GamesFragment());
@@ -164,8 +165,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout,fragment);
         fragmentTransaction.commit();
     }
-
-
 
     @Override
     public void onBackPressed() {
