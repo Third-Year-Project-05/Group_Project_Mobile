@@ -67,8 +67,6 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation (libs.firebase.auth.v2101)
     implementation (libs.facebook.android.sdk)
-//    implementation (libs.retrofit)
-//    implementation (libs.converter.gson)
     implementation (libs.okhttp)
     implementation (libs.volley)
 

@@ -111,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 replaceFragment(new SpeechFragment());
                 mainLayoutHeader.setVisibility(View.VISIBLE);
                 setHeader(true);
+                setHeaderColours(1);
                 binding.bottomNavigationView.setSelectedItemId(R.id.speech_frame);
             }
             else{

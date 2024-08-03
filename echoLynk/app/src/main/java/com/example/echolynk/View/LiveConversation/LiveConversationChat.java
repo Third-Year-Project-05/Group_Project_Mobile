@@ -79,7 +79,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private RecyclerView suggestion_answer;
     private EditText massageBox;
     private SpeechRecognizer speechRecognizer;
-    private ImageButton keyboardBtn,sendButton;
+    private ImageButton keyboardBtn, sendButton;
     private ImageButton mikeBtn;
     private ImageButton pauseBtn;
     private ImageButton closeBtn;
@@ -89,7 +89,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private static final int RecodeAudioRequestCode = 1;
     private TextToSpeech tts;
     private UserModel user;
-    private static final String endPoint= "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
+    private static final String endPoint = "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
 //    ApiServices apiServices = ApiClient.getInstance().create(ApiServices.class);
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
@@ -99,7 +99,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_live_conversation_chat);
 
-        massageLayout=findViewById(R.id.sender_massage_laout);
+        massageLayout = findViewById(R.id.sender_massage_laout);
         relativeLayout = findViewById(R.id.live_conversation_chat);
         recyclerView = findViewById(R.id.live_users);
         chatRecycleView = findViewById(R.id.chat_view);
@@ -110,7 +110,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         closeBtn = findViewById(R.id.close_icon);
         massageBox = findViewById(R.id.write_massage);
         sendButton = findViewById(R.id.send_massage);
-        progressBar=findViewById(R.id.progress_bar);
+        progressBar = findViewById(R.id.progress_bar);
 
         List<Integer> live_users = new ArrayList<>();
         // Initialize current user
@@ -118,14 +118,13 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    user=task.getResult().toObject(UserModel.class);
+                    user = task.getResult().toObject(UserModel.class);
                 }
             }
         });
 
         // Initialize TextToSpeech
         tts = new TextToSpeech(LiveConversationChat.this, this::onInit);
-
 
 
         pauseBtn.setOnClickListener(view -> {
@@ -231,15 +230,14 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         //sender click the sent Btn
 
         sendButton.setOnClickListener(view -> {
-            String massage=massageBox.getText().toString();
+            String massage = massageBox.getText().toString();
             if (!massage.isEmpty()) {
-                massageList.add(new MassageModel(massage,0));
-                setUpLiveChat(chatRecycleView,massageList);
+                massageList.add(new MassageModel(massage, 0));
+                setUpLiveChat(chatRecycleView, massageList);
                 textToSpeech(massage);
                 massageBox.setText("");
             }
         });
-
 
 
         // check the audio recoding permission
@@ -248,9 +246,9 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         }
 
 
-        speechRecognizer=SpeechRecognizer.createSpeechRecognizer(LiveConversationChat.this);
-        final Intent speechIntent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(LiveConversationChat.this);
+        final Intent speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 
         //speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         speechIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
@@ -259,6 +257,15 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             public void onReadyForSpeech(Bundle bundle) {
+
+/*
+                try {
+                    ArrayList<String> arrayList = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                    Log.d(TAG, "onReadyForSpeech: "+arrayList.get(0));
+                }catch (Exception e){
+                    Log.d(TAG, "onReadyForSpeech: "+e.getMessage());
+                }*/
+
 
             }
 
@@ -296,9 +303,9 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             public void onResults(Bundle bundle) {
-                ArrayList<String> arrayList=bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                ArrayList<String> arrayList = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
-                massageList.add(new MassageModel(arrayList.get(0),1));
+                massageList.add(new MassageModel(arrayList.get(0), 1));
 
                 setUpLiveChat(chatRecycleView, massageList);
 
@@ -309,7 +316,12 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             public void onPartialResults(Bundle bundle) {
-
+                /*ArrayList<String> partialMatches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                if (partialMatches != null && !partialMatches.isEmpty()) {
+                    String partialText = partialMatches.get(0);
+                    Log.d(TAG, "onPartialResults: " + partialText);
+                    // Handle the partial recognized text here
+                }*/
             }
 
             @Override
@@ -325,8 +337,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         });
 
         closeBtn.setOnClickListener(view -> {
-            Intent intent=new Intent(LiveConversationChat.this, MainActivity.class);
-            intent.putExtra("load_fragment","speech");
+            Intent intent = new Intent(LiveConversationChat.this, MainActivity.class);
+            intent.putExtra("load_fragment", "speech");
             startActivity(intent);
         });
 
@@ -339,7 +351,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show();
             } else {
-               // btnSpeak.setEnabled(true);
+                // btnSpeak.setEnabled(true);
             }
         } else {
             Toast.makeText(this, "Initialization Failed!", Toast.LENGTH_SHORT).show();
@@ -353,140 +365,138 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         progressBar.setVisibility(View.VISIBLE);
         suggestion_answer.setVisibility(View.GONE);
 
-            JSONObject jsonObject1 = new JSONObject();
-            JSONObject jsonObject2 = new JSONObject();
-            try {
-                jsonObject1.put("role","user");
-                jsonObject1.put("content","How old are you?");
-                jsonObject2.put("name",user.getUserName());
-                jsonObject2.put("email",user.getEmail());
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
+        JSONObject jsonObject1 = new JSONObject();
+        JSONObject jsonObject2 = new JSONObject();
+        try {
+            jsonObject1.put("role", "user");
+            jsonObject1.put("content", "How old are you?");
+            jsonObject2.put("name", user.getUserName());
+            jsonObject2.put("email", user.getEmail());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.put(jsonObject1);
+        JSONArray history = new JSONArray();
+        history.put(jsonObject1);
 
-            JSONArray jsonArray2 = new JSONArray();
-            jsonArray2.put(jsonObject2);
+        JSONArray personalData = new JSONArray();
+        personalData.put(jsonObject2);
 
-            JSONObject paramObject = new JSONObject();
-            try {
-                paramObject.put("question", massage);
-                paramObject.put("history",jsonArray);
-                paramObject.put("personal_data",jsonArray2);
+        JSONObject paramObject = new JSONObject();
+        try {
+            paramObject.put("question", massage);
+            paramObject.put("history", history);
+            paramObject.put("personal_data", personalData);
 
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
-            Log.d(TAG, "Request to GPT-3: " + paramObject.toString());
+        Log.d(TAG, "Request to GPT-3: " + paramObject.toString());
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endPoint, paramObject,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // display the response
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // display the response
 
-                            if (response==null ) {
+                        if (response == null) {
+                            progressBar.setVisibility(View.GONE);
+                            suggestion_answer.setVisibility(View.VISIBLE);
+                            Toast.makeText(LiveConversationChat.this, "Response is null", Toast.LENGTH_SHORT).show();
+                        } else {
+                            try {
                                 progressBar.setVisibility(View.GONE);
                                 suggestion_answer.setVisibility(View.VISIBLE);
-                                Toast.makeText(LiveConversationChat.this, "Response is null",Toast.LENGTH_SHORT).show();
-                            }else {
-                                try {
-                                    progressBar.setVisibility(View.GONE);
-                                    suggestion_answer.setVisibility(View.VISIBLE);
-                                    JSONArray suggetions = response.getJSONArray("suggetions");
-                                    for (int i = 0; i < suggetions.length(); i++) {
-                                        String suggestion = suggetions.getString(i);
-                                        suggestions.add(suggestion);
-                                        setSuggestions(suggestions,suggestion_answer);
+                                JSONArray suggetions = response.getJSONArray("suggetions");
+                                for (int i = 0; i < suggetions.length(); i++) {
+                                    String suggestion = suggetions.getString(i);
+                                    suggestions.add(suggestion);
+                                    setSuggestions(suggestions, suggestion_answer);
 
-                                    }
-                                } catch (JSONException e) {
-                                    throw new RuntimeException(e);
                                 }
-                                Log.d(TAG, "Request to GPT-3: " + response);
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
                             }
-
-
+                            Log.d(TAG, "Request to GPT-3: " + response);
                         }
-                    },new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.d(TAG, "Request to GPT-3: " + error.getMessage());
 
-                }
-            }){
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
 
-                    Map<String, String> mapHeaders = new HashMap<>();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Request to GPT-3: " + error.getMessage());
 
-                    mapHeaders.put("Content-Type", "application/json");
-                    mapHeaders.put("x-vercel-protection-bypass", "WzZBi8VJg6JKhYQXapGCThQhaaNWicLQ");
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
 
-                    return mapHeaders;
-                }
+                Map<String, String> mapHeaders = new HashMap<>();
 
-                @Override
-                protected VolleyError parseNetworkError(VolleyError volleyError) {
-                    return super.parseNetworkError(volleyError);
-                }
+                mapHeaders.put("Content-Type", "application/json");
+                mapHeaders.put("x-vercel-protection-bypass", "WzZBi8VJg6JKhYQXapGCThQhaaNWicLQ");
 
-            };
+                return mapHeaders;
+            }
 
-            int timeOutPeriod = 60000;
+            @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                return super.parseNetworkError(volleyError);
+            }
 
-            RetryPolicy policy = new DefaultRetryPolicy(
-                    timeOutPeriod,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
-            );
+        };
 
-            jsonObjectRequest.setRetryPolicy(policy);
+        int timeOutPeriod = 60000;
 
-            Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+        RetryPolicy policy = new DefaultRetryPolicy(
+                timeOutPeriod,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        );
+
+        jsonObjectRequest.setRetryPolicy(policy);
+
+        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
 
 
     }
 
     private void checkPermission() {
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECORD_AUDIO},RecodeAudioRequestCode);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, RecodeAudioRequestCode);
         }
     }
 
-    public void setUpLiveChat (RecyclerView chatRecycleView, List<MassageModel> massageList){
+    public void setUpLiveChat(RecyclerView chatRecycleView, List<MassageModel> massageList) {
 
         // type 0 is sender and type 1 is receiver
 
-        chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(),massageList));
+        chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(), massageList));
 
     }
 
-    private void setLiveUsers (List < Integer > live_users, RecyclerView recyclerView){
-        live_users.add(R.drawable.dummy_user_image);
-        live_users.add(R.drawable.dummyprofileimage);
-        live_users.add(R.drawable.dummy_blog_img2);
-        live_users.add(R.drawable.facebook);
-        live_users.add(R.drawable.dummy_user_image);
-        live_users.add(R.drawable.dummy_user_image);
-        live_users.add(R.drawable.dummy_user_image);
+    private void setLiveUsers(List<Integer> live_users, RecyclerView recyclerView) {
+        live_users.add(R.drawable.user_profile_pic);
+        live_users.add(R.drawable.user_profile_pic);
+        live_users.add(R.drawable.user_profile_pic);
+        live_users.add(R.drawable.user_profile_pic);
+        live_users.add(R.drawable.user_profile_pic);
 
         if (recyclerView != null) {
             recyclerView.setAdapter(new LiveUserAdapter(getApplicationContext(), live_users, this));
         }
     }
 
-    private void setSuggestions (List < String > suggestions, RecyclerView suggestionAnswer){
+    private void setSuggestions(List<String> suggestions, RecyclerView suggestionAnswer) {
         if (suggestionAnswer != null) {
             suggestionAnswer.setAdapter(new AnswerAdapter(getApplicationContext(), suggestions, this));
         }
     }
 
     @Override
-    public void onRequestPermissionsResult ( int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == RecodeAudioRequestCode) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -499,23 +509,22 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     }
 
 
-
     @Override
     public void onClick(int position, View view) {
 
         if (view instanceof Button) {
             Button button = (Button) view;
             String buttonText = button.getText().toString();
-            massageList.add(new MassageModel(buttonText,0));
+            massageList.add(new MassageModel(buttonText, 0));
             setUpLiveChat(chatRecycleView, massageList);
             textToSpeech(buttonText);
             suggestions.clear();
-            setSuggestions(suggestions,suggestion_answer);
+            setSuggestions(suggestions, suggestion_answer);
         }
 
     }
 
-    public void textToSpeech(String text){
+    public void textToSpeech(String text) {
 
         float pitch = (1.0f);
         if (pitch < 0.1) pitch = 0.1f;

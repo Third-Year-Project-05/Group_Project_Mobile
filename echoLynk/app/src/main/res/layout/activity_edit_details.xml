@@ -151,7 +151,9 @@
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:layout_marginEnd="24dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:enabled="false"
+            />
 
         <TextView
             android:id="@+id/textView31"
@@ -164,6 +166,7 @@
             android:textSize="15sp"
             android:text="Date of Birth"
             android:layout_marginTop="20sp"
+            android:visibility="gone"
             />
 
         <EditText
@@ -180,7 +183,8 @@
             android:background="@drawable/edittext_background"
             android:layout_marginEnd="24dp"
             android:padding="10dp"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
