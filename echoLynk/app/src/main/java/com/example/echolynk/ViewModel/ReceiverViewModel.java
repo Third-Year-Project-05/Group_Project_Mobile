@@ -30,5 +30,7 @@ public class ReceiverViewModel extends RecyclerView.ViewHolder {
         senderMassage=itemView.findViewById(R.id.right_chat_textview);
         left=itemView.findViewById(R.id.left_chat_layout);
         right=itemView.findViewById(R.id.right_chat_layout);
+
+
     }
 }
