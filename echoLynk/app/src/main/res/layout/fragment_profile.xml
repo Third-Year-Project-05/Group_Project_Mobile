@@ -136,7 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Account Details"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageView11a"
                     app:layout_constraintStart_toEndOf="@+id/imageView10a"
@@ -180,7 +180,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Add to Blog"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageViewBeta"
                     app:layout_constraintStart_toEndOf="@+id/imageViewAlpha"
@@ -224,7 +224,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Switch to Premium"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageViewDelta"
                     app:layout_constraintStart_toEndOf="@+id/imageViewGamma"
@@ -268,7 +268,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Statistics"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageViewZeta"
                     app:layout_constraintStart_toEndOf="@+id/imageViewEpsilon"
@@ -313,7 +313,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Support Contact"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/imageViewIota"
                     app:layout_constraintStart_toEndOf="@+id/imageViewTheta"
@@ -329,9 +329,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:padding="10dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
         </LinearLayout>
     </ScrollView>
 
