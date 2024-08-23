@@ -1,20 +1,16 @@
 package com.example.echolynk.View.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echolynk.Model.MassageModel;
 import com.example.echolynk.R;
-import com.example.echolynk.Utils.ColorUtil;
 import com.example.echolynk.ViewModel.ReceiverViewModel;
-import com.example.echolynk.ViewModel.SenderViewModel;
 
 import java.util.List;
 

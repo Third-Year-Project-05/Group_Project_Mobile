@@ -7,7 +7,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
@@ -16,7 +15,6 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +26,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -42,9 +41,11 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.echolynk.Model.LiveChatRoomModel;
 import com.example.echolynk.Model.MassageModel;
 import com.example.echolynk.Model.UserModel;
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.DB.DBHelper;
 import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.AnswerAdapter;
@@ -52,13 +53,21 @@ import com.example.echolynk.View.Adapter.LiveUserAdapter;
 import com.example.echolynk.View.Adapter.ReceiverAdapter;
 import com.example.echolynk.View.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,20 +84,25 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private RelativeLayout relativeLayout;
     private RecyclerView recyclerView;
     private LinearLayout massageLayout;
-    public RecyclerView chatRecycleView;
+    private RecyclerView chatRecycleView;
     private RecyclerView suggestion_answer;
     private EditText massageBox;
     private SpeechRecognizer speechRecognizer;
     private ImageButton keyboardBtn, sendButton;
-    private ImageButton mikeBtn;
+    private ImageButton mikeBtn,muteMike;
     private ImageButton pauseBtn;
     private ImageButton closeBtn;
     private ProgressBar progressBar;
-    public List<MassageModel> massageList = new ArrayList<>();
+    private List<MassageModel> massageList = new ArrayList<>();
     private List<String> suggestions = new ArrayList<>();
     private static final int RecodeAudioRequestCode = 1;
     private TextToSpeech tts;
     private UserModel user;
+    private FirebaseFirestore db;
+
+    private String conversationStartTime;
+
+    private DBHelper dbHelper=new DBHelper(LiveConversationChat.this);
     private static final String endPoint = "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
 //    ApiServices apiServices = ApiClient.getInstance().create(ApiServices.class);
 
@@ -99,6 +113,10 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_live_conversation_chat);
 
+        //initialize cloud firestore
+        db = FirebaseFirestore.getInstance();
+        conversationStartTime=getCurrentTime();
+
         massageLayout = findViewById(R.id.sender_massage_laout);
         relativeLayout = findViewById(R.id.live_conversation_chat);
         recyclerView = findViewById(R.id.live_users);
@@ -106,6 +124,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         suggestion_answer = findViewById(R.id.suggestion_answers);
         keyboardBtn = findViewById(R.id.keyboard_icon);
         mikeBtn = findViewById(R.id.speech_icon);
+        muteMike = findViewById(R.id.speech_icon_mute);
         pauseBtn = findViewById(R.id.pause_icon);
         closeBtn = findViewById(R.id.close_icon);
         massageBox = findViewById(R.id.write_massage);
@@ -113,6 +132,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         progressBar = findViewById(R.id.progress_bar);
 
         List<Integer> live_users = new ArrayList<>();
+
         // Initialize current user
         FirebaseUtils.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -127,84 +147,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         tts = new TextToSpeech(LiveConversationChat.this, this::onInit);
 
 
-        pauseBtn.setOnClickListener(view -> {
-
-            /*ArrayList<HistoryMassage> history=new ArrayList<>();
-            ArrayList<PersonalData> personalData=new ArrayList<>();
-
-            history.add(new HistoryMassage("user","How old are you?"));
-            history.add(new HistoryMassage("assistant","I am 30 years old."));
-
-            personalData.add(new PersonalData("Saman"));
-
-           // SpeechToTextMassage massage = new SpeechToTextMassage("what is your name", history, personalData);
-
-
-            JSONObject jsonObject1 = new JSONObject();
-            JSONObject jsonObject2 = new JSONObject();
-            try {
-                jsonObject1.put("role","user");
-                jsonObject1.put("role","assistant");
-                jsonObject1.put("content","How old are you?");
-                jsonObject1.put("content","I am 30 years old.");
-                jsonObject2.put("name","sdad");
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-
-
-            JSONArray jsonArray = new JSONArray();
-            jsonArray.put(jsonObject1);
-
-            JSONArray jsonArray2 = new JSONArray();
-            jsonArray2.put(jsonObject2);
-
-            JSONObject paramObject = new JSONObject();
-            try {
-                paramObject.put("question","what is your name");
-                paramObject.put("history",jsonArray);
-                paramObject.put("personal_data",jsonArray2);
-
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
-            }
-
-            Log.d("request one", paramObject.toString());
-
-            Handler handler = new Handler(Looper.getMainLooper());
-
-            Call<ResponseBody> call=apiServices.postSpeechToTextMassage(paramObject);
-
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-
-                    Log.d("request----1", "request: "+response.message()+" "+response.code());
-                    if (response.isSuccessful()) {
-                        ResponseBody body = response.body();
-                        Log.d("response ok", "Created User ID: " + body.toString());
-                    }else {
-                        Log.d("response not", "Created User ID: "+response.body() );
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Log.d("response failed", "Created User ID: " + t.getLocalizedMessage());
-                    Log.d("response failed", "Created User ID: " + t.getMessage());
-                    Log.d("response failed", "Created User ID: " + call.isCanceled());
-                    Log.d("response failed", "Created User ID: " + call.isExecuted());
-                    Log.d("response failed", "Created User ID: " + call.timeout());
-                    Log.d("response failed", "Created User ID: " + call.request().body());
-                }
-            });
-
-           // handler.postDelayed(()->,6000);
-            */
-
-        });
+        pauseBtn.setOnClickListener(view -> {});
 
 
         // set suggestions
@@ -223,9 +166,6 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             }
         });
 
-
-        // set data for live chat view
-        //  setLiveChat(chatRecycleView, massageList,0);
 
         //sender click the sent Btn
 
@@ -257,28 +197,11 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             public void onReadyForSpeech(Bundle bundle) {
-
-/*
-                try {
-                    ArrayList<String> arrayList = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                    Log.d(TAG, "onReadyForSpeech: "+arrayList.get(0));
-                }catch (Exception e){
-                    Log.d(TAG, "onReadyForSpeech: "+e.getMessage());
-                }*/
-
-
             }
 
             @Override
             public void onBeginningOfSpeech() {
-                /*ViewGroup viewGroup=findViewById(android.R.id.content);
-                View dialogView= LayoutInflater.from(LiveConversationChat.this).inflate(R.layout.alert_custom,viewGroup,false);*/
 
-                /*alertSpeechDialog=new AlertDialog.Builder(LiveConversationChat.this);
-                alertSpeechDialog.setMessage("Listening....");
-                alertSpeechDialog.setView(dialogView);
-                alertDialog=alertSpeechDialog.create();
-                alertDialog.show();*/
             }
 
             @Override
@@ -303,13 +226,17 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             public void onResults(Bundle bundle) {
+
+                muteMike.setVisibility(View.GONE);
+                mikeBtn.setVisibility(View.VISIBLE);
+
                 ArrayList<String> arrayList = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 
                 massageList.add(new MassageModel(arrayList.get(0), 1));
 
                 setUpLiveChat(chatRecycleView, massageList);
 
-                setndPostMethod(arrayList.get(0));
+                getSuggestions(arrayList.get(0));
 
 
             }
@@ -333,15 +260,50 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
         //click the mike btn
         mikeBtn.setOnClickListener(view -> {
+            mikeBtn.setVisibility(View.GONE);
+            muteMike.setVisibility(View.VISIBLE);
             speechRecognizer.startListening(speechIntent);
         });
 
         closeBtn.setOnClickListener(view -> {
-            Intent intent = new Intent(LiveConversationChat.this, MainActivity.class);
-            intent.putExtra("load_fragment", "speech");
-            startActivity(intent);
+
+
+
+            LiveChatRoomModel conversation=null;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                LocalDate currentDate = LocalDate.now();
+
+              //  conversation = new LiveChatRoomModel(currentDate,conversationStartTime,getCurrentTime(),massageList,massageList.get(massageList.size()-1).getMassage());
+                if (dbHelper.insertConversation(currentDate.toString(),conversationStartTime,getCurrentTime(),"title",massageList.get(massageList.size()-1).getMassage(),massageList)) {
+                    Log.d(TAG, "Success the save the massage list");
+                }else {
+                    Log.d(TAG, "Unsaved the massage list");
+                }
+            }
+
         });
 
+    }
+
+    private String getCurrentTime() {
+
+        // Specify the time zone for Sri Lanka
+        ZoneId zoneId = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            zoneId = ZoneId.of("Asia/Colombo");
+        }
+
+        // Get the current date and time in the specified time zone
+        ZonedDateTime zonedDateTime = null;
+        DateTimeFormatter formatter = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            zonedDateTime = ZonedDateTime.now(zoneId);
+            formatter = DateTimeFormatter.ofPattern("hh:mm a");
+            return zonedDateTime.format(formatter);
+        }
+
+        return null;
     }
 
     @Override
@@ -359,7 +321,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     }
 
 
-    private void setndPostMethod(String massage) {
+    private void getSuggestions(String massage) {
 
         suggestions.clear();
         progressBar.setVisibility(View.VISIBLE);
@@ -370,8 +332,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         try {
             jsonObject1.put("role", "user");
             jsonObject1.put("content", "How old are you?");
-            jsonObject2.put("name", user.getUserName());
-            jsonObject2.put("email", user.getEmail());
+            jsonObject2.put("name", "tharindu dakshina");
+            jsonObject2.put("email", "tharindudakshina527@gmail.com");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -391,8 +353,6 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
-        Log.d(TAG, "Request to GPT-3: " + paramObject.toString());
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endPoint, paramObject,
                 new Response.Listener<JSONObject>() {
@@ -418,15 +378,15 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                             } catch (JSONException e) {
                                 throw new RuntimeException(e);
                             }
-                            Log.d(TAG, "Request to GPT-3: " + response);
                         }
-
-
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "Request to GPT-3: " + error.getMessage());
+                Log.d(TAG, "Request to GPT-3 error: " + error.getMessage());
+                progressBar.setVisibility(View.GONE);
+                suggestion_answer.setVisibility(View.VISIBLE);
+                Toast.makeText(LiveConversationChat.this, "Response is "+error.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         }) {
@@ -470,9 +430,6 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     }
 
     public void setUpLiveChat(RecyclerView chatRecycleView, List<MassageModel> massageList) {
-
-        // type 0 is sender and type 1 is receiver
-
         chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(), massageList));
 
     }

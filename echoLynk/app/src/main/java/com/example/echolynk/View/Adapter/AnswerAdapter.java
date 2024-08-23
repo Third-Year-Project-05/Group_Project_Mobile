@@ -41,11 +41,6 @@ public class AnswerAdapter extends RecyclerView.Adapter<SuggestionMassageViewMod
     @Override
     public void onBindViewHolder(@NonNull SuggestionMassageViewModel holder, int position) {
         holder.answer.setText(answer.get(position));
-        holder.itemView.setOnClickListener(view -> {
-            Log.d("sugesstion click", "onBindViewHolder: click wenwa ");
-            liveConversationChat.massageList.add(new MassageModel(answer.get(position),0));
-            liveConversationChat.setUpLiveChat(liveConversationChat.chatRecycleView, liveConversationChat.massageList);
-        });
     }
 
     @Override

@@ -18,7 +18,6 @@
             android:backgroundTint="@color/primary_blue"
             android:contentDescription="suggestion one "
             android:fontFamily="@font/poppins_semibold"
-            android:onClick="sendSuggestion"
             android:text="Button"
             android:textColor="@color/white" />
 

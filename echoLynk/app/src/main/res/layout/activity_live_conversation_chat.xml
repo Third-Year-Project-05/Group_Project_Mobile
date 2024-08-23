@@ -61,6 +61,7 @@
                     android:id="@+id/progress_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:outlineAmbientShadowColor="@color/primary_blue"
                     android:visibility="gone"/>
 
                 <LinearLayout
@@ -170,6 +171,20 @@
             android:paddingEnd="8dp"
             android:background="@drawable/icon_background"
             app:srcCompat="@drawable/speeach_icon" />
+
+        <ImageButton
+            android:id="@+id/speech_icon_mute"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/primary_blue"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:contentDescription="speech icon"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:background="@drawable/icon_background"
+            app:srcCompat="@drawable/live_chat_mute_mic" />
 
         <Space
             android:layout_width="8dp"
