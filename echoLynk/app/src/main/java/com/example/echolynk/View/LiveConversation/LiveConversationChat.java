@@ -16,6 +16,7 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -44,6 +45,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.echolynk.Model.Conversation_Item;
 import com.example.echolynk.Model.MassageModel;
 import com.example.echolynk.Model.UserModel;
 import com.example.echolynk.R;
@@ -137,7 +139,6 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         massageBox = findViewById(R.id.write_massage);
         sendButton = findViewById(R.id.send_massage);
         progressBar = findViewById(R.id.progress_bar);
-
         save_prompt = dialog.findViewById(R.id.save_prompt);
         conversation_title_text = dialog.findViewById(R.id.conversation_title_text);
         conversationYesBtn = dialog.findViewById(R.id.yes_btn);
@@ -162,7 +163,9 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         tts = new TextToSpeech(LiveConversationChat.this, this::onInit);
 
 
-        pauseBtn.setOnClickListener(view -> {});
+        pauseBtn.setOnClickListener(view -> {
+            ArrayList<Conversation_Item> conversations = dbHelper.getConversations();
+        });
 
 
         // set suggestions
@@ -291,19 +294,23 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
         conversationSaveBtn.setOnClickListener(View->{
             String title = conversationTitle.getText().toString().trim();
-            Log.d("Title", title);
 
-            dialog.dismiss();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                LocalDate currentDate = LocalDate.now();
+            if (title.isEmpty()) {
+                conversationTitle.setError("Please fill this field.");
+            }else {
+                dialog.dismiss();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    LocalDate currentDate = LocalDate.now();
 
-                if (dbHelper.insertConversation(currentDate.toString(),conversationStartTime,getCurrentTime(),title,massageList.get(massageList.size()-1).getMassage(),massageList)) {
-                    Log.d(TAG, "Success the save the massage list");
-                    Toast.makeText(LiveConversationChat.this,"Success the save the massages",Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(LiveConversationChat.this,"Unsaved the manages.",Toast.LENGTH_SHORT).show();
+                    if (dbHelper.insertConversation(currentDate.toString(),conversationStartTime,getCurrentTime(),title,massageList.get(massageList.size()-1).getMassage(),massageList)) {
+                        Log.d(TAG, "Success the save the massage list");
+                        Toast.makeText(LiveConversationChat.this,"Success the save the massages",Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(LiveConversationChat.this,"Unsaved the manages.",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
+
         });
 
         closeBtn.setOnClickListener(view -> {

@@ -8,10 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.echolynk.Model.Conversation_Item;
 import com.example.echolynk.Model.MassageModel;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -99,8 +99,27 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
+
     @SuppressLint("Range")
-    public int getConversationLastId(){
+    public  ArrayList<Conversation_Item> getConversations(){
+        ArrayList<Conversation_Item> conversationList=new ArrayList<>();
+        Cursor cursor = this.getWritableDatabase().rawQuery("select conversation_id,title,last_massage,date,start_time,end_time from conversation", null);
+        while (cursor.moveToNext()){
+            conversationList.add(new Conversation_Item(
+                    cursor.getInt(cursor.getColumnIndex("conversation_id")),
+                    cursor.getString(cursor.getColumnIndex("title")),
+                    cursor.getString(cursor.getColumnIndex("last_massage")),
+                    cursor.getString(cursor.getColumnIndex("date")),
+                    cursor.getString(cursor.getColumnIndex("start_time")),
+                    cursor.getString(cursor.getColumnIndex("end_time"))
+            ));
+        }
+
+        return conversationList;
+    }
+
+    @SuppressLint("Range")
+     private int getConversationLastId(){
         int lastId=-1;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery("select conversation_id from conversation ORDER BY conversation_id DESC LIMIT 1", null);
@@ -110,5 +129,21 @@ public class DBHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return lastId;
+    }
+
+    @SuppressLint("Range")
+    public ArrayList<MassageModel> getMassageList(int conversationId){
+        ArrayList<MassageModel> massageList=new ArrayList<>();
+        Cursor cursor = this.getWritableDatabase().rawQuery("select massage,type from massages where conversation_id_fk = ?",
+                new String[]{String.valueOf(conversationId)});
+
+        while (cursor.moveToNext()){
+            String massage = cursor.getString(cursor.getColumnIndex("massage"));
+            int type = cursor.getInt(cursor.getColumnIndex("type"));
+
+            massageList.add(new MassageModel(massage,type));
+        }
+
+        return massageList;
     }
 }
