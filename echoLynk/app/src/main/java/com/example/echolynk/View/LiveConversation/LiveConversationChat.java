@@ -57,6 +57,7 @@ import com.example.echolynk.View.Adapter.LiveUserAdapter;
 import com.example.echolynk.View.Adapter.ReceiverAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.LogDescriptor;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -360,21 +361,42 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         progressBar.setVisibility(View.VISIBLE);
         suggestion_answer.setVisibility(View.GONE);
 
-        JSONObject jsonObject1 = new JSONObject();
+        JSONArray history = new JSONArray();
+        JSONArray personalData = new JSONArray();
+
+        //get the history
+        ArrayList<MassageModel> allMassages = dbHelper.getAllMassages();
+
+        for (MassageModel tempMassage:allMassages) {
+
+            JSONObject jsonObject1 = new JSONObject();
+            String role="user";
+            if (tempMassage.getType()==0){
+                role="sender";
+            }else {
+                role="receiver";
+            }
+
+            try {
+                jsonObject1.put("role", role);
+                jsonObject1.put("content", tempMassage.getMassage());
+            }catch (JSONException e){
+                Toast.makeText(LiveConversationChat.this, "Response is "+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            history.put(jsonObject1);
+        }
+
+
+
         JSONObject jsonObject2 = new JSONObject();
         try {
-            jsonObject1.put("role", "user");
-            jsonObject1.put("content", "How old are you?");
+
             jsonObject2.put("name", "tharindu dakshina");
             jsonObject2.put("email", "tharindudakshina527@gmail.com");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
 
-        JSONArray history = new JSONArray();
-        history.put(jsonObject1);
-
-        JSONArray personalData = new JSONArray();
         personalData.put(jsonObject2);
 
         JSONObject paramObject = new JSONObject();

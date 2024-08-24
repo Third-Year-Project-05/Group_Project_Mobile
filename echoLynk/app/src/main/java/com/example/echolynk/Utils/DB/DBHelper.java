@@ -146,4 +146,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return massageList;
     }
+
+    @SuppressLint("Range")
+    public ArrayList<MassageModel> getAllMassages(){
+        ArrayList<MassageModel> massageList=new ArrayList<>();
+        Cursor cursor = this.getWritableDatabase().rawQuery("select massage,type from massages", null);
+
+        while (cursor.moveToNext()){
+            massageList.add(new MassageModel(
+                    cursor.getString(cursor.getColumnIndex("massage")),
+                    cursor.getInt(cursor.getColumnIndex("type"))
+            ));
+        }
+
+        return massageList;
+    }
 }
