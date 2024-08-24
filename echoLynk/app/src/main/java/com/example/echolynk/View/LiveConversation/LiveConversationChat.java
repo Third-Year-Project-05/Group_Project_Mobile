@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,8 +14,10 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,11 +25,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -41,7 +44,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.echolynk.Model.LiveChatRoomModel;
 import com.example.echolynk.Model.MassageModel;
 import com.example.echolynk.Model.UserModel;
 import com.example.echolynk.R;
@@ -51,12 +53,8 @@ import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.AnswerAdapter;
 import com.example.echolynk.View.Adapter.LiveUserAdapter;
 import com.example.echolynk.View.Adapter.ReceiverAdapter;
-import com.example.echolynk.View.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -80,18 +78,19 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     // current user ge persona details tika ganna one
     // sql light dala history eka ganna one
 
-
+    private TextView save_prompt,conversation_title_text;
     private RelativeLayout relativeLayout;
     private RecyclerView recyclerView;
     private LinearLayout massageLayout;
     private RecyclerView chatRecycleView;
     private RecyclerView suggestion_answer;
-    private EditText massageBox;
+    private EditText massageBox,conversationTitle;
     private SpeechRecognizer speechRecognizer;
     private ImageButton keyboardBtn, sendButton;
     private ImageButton mikeBtn,muteMike;
     private ImageButton pauseBtn;
     private ImageButton closeBtn;
+    private Button conversationYesBtn,conversationNoBtn,conversationSaveBtn;
     private ProgressBar progressBar;
     private List<MassageModel> massageList = new ArrayList<>();
     private List<String> suggestions = new ArrayList<>();
@@ -99,19 +98,27 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private TextToSpeech tts;
     private UserModel user;
     private FirebaseFirestore db;
-
     private String conversationStartTime;
+    private Dialog dialog;
 
     private DBHelper dbHelper=new DBHelper(LiveConversationChat.this);
     private static final String endPoint = "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
 //    ApiServices apiServices = ApiClient.getInstance().create(ApiServices.class);
 
-    @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility"})
+    @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_live_conversation_chat);
+
+
+        // setup dialog box
+        dialog=new Dialog(LiveConversationChat.this);
+        dialog.setContentView(R.layout.custom_dialog_box);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_bgckground));
+        dialog.setCancelable(false);
 
         //initialize cloud firestore
         db = FirebaseFirestore.getInstance();
@@ -130,6 +137,14 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         massageBox = findViewById(R.id.write_massage);
         sendButton = findViewById(R.id.send_massage);
         progressBar = findViewById(R.id.progress_bar);
+
+        save_prompt = dialog.findViewById(R.id.save_prompt);
+        conversation_title_text = dialog.findViewById(R.id.conversation_title_text);
+        conversationYesBtn = dialog.findViewById(R.id.yes_btn);
+        conversationNoBtn = dialog.findViewById(R.id.no_btn);
+        conversationSaveBtn = dialog.findViewById(R.id.save_conversation);
+        conversationTitle = dialog.findViewById(R.id.conversation_title);
+
 
         List<Integer> live_users = new ArrayList<>();
 
@@ -221,7 +236,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             public void onError(int i) {
-
+                muteMike.setVisibility(View.GONE);
+                mikeBtn.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -243,12 +259,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             public void onPartialResults(Bundle bundle) {
-                /*ArrayList<String> partialMatches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                if (partialMatches != null && !partialMatches.isEmpty()) {
-                    String partialText = partialMatches.get(0);
-                    Log.d(TAG, "onPartialResults: " + partialText);
-                    // Handle the partial recognized text here
-                }*/
+
             }
 
             @Override
@@ -265,23 +276,38 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             speechRecognizer.startListening(speechIntent);
         });
 
-        closeBtn.setOnClickListener(view -> {
+        conversationNoBtn.setOnClickListener(view -> {
+            dialog.dismiss();
+        });
 
+        conversationYesBtn.setOnClickListener(view -> {
+            save_prompt.setVisibility(View.GONE);
+            conversationYesBtn.setVisibility(View.GONE);
+            conversationNoBtn.setVisibility(View.GONE);
+            conversation_title_text.setVisibility(View.VISIBLE);
+            conversationTitle.setVisibility(View.VISIBLE);
+            conversationSaveBtn.setVisibility(View.VISIBLE);
+        });
 
+        conversationSaveBtn.setOnClickListener(View->{
+            String title = conversationTitle.getText().toString().trim();
+            Log.d("Title", title);
 
-            LiveChatRoomModel conversation=null;
-
+            dialog.dismiss();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 LocalDate currentDate = LocalDate.now();
 
-              //  conversation = new LiveChatRoomModel(currentDate,conversationStartTime,getCurrentTime(),massageList,massageList.get(massageList.size()-1).getMassage());
-                if (dbHelper.insertConversation(currentDate.toString(),conversationStartTime,getCurrentTime(),"title",massageList.get(massageList.size()-1).getMassage(),massageList)) {
+                if (dbHelper.insertConversation(currentDate.toString(),conversationStartTime,getCurrentTime(),title,massageList.get(massageList.size()-1).getMassage(),massageList)) {
                     Log.d(TAG, "Success the save the massage list");
+                    Toast.makeText(LiveConversationChat.this,"Success the save the massages",Toast.LENGTH_SHORT).show();
                 }else {
-                    Log.d(TAG, "Unsaved the massage list");
+                    Toast.makeText(LiveConversationChat.this,"Unsaved the manages.",Toast.LENGTH_SHORT).show();
                 }
             }
+        });
 
+        closeBtn.setOnClickListener(view -> {
+            dialog.show();
         });
 
     }
