@@ -45,10 +45,12 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.echolynk.Model.ConversationModel;
 import com.example.echolynk.Model.Conversation_Item;
 import com.example.echolynk.Model.MassageModel;
 import com.example.echolynk.Model.UserModel;
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.Conversations;
 import com.example.echolynk.Utils.DB.DBHelper;
 import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.Utils.onClickListener;
@@ -104,7 +106,9 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private String conversationStartTime;
     private Dialog dialog;
 
-    private DBHelper dbHelper=new DBHelper(LiveConversationChat.this);
+    private final DBHelper dbHelper=new DBHelper(LiveConversationChat.this);
+
+    private final Conversations conversations=new Conversations();
     private static final String endPoint = "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
 //    ApiServices apiServices = ApiClient.getInstance().create(ApiServices.class);
 
@@ -114,6 +118,9 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_live_conversation_chat);
+
+        //load conversation
+        conversations.loadConversations();
 
 
         // setup dialog box
@@ -149,6 +156,9 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
 
         List<Integer> live_users = new ArrayList<>();
+
+        //load conversation default conversations
+        ArrayList<ConversationModel> conversationForCheck = conversations.getConversationForCheck();
 
         // Initialize current user
         FirebaseUtils.currentUserDetails().get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -247,6 +257,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             @Override
             public void onResults(Bundle bundle) {
 
+                boolean b=true;
+
                 muteMike.setVisibility(View.GONE);
                 mikeBtn.setVisibility(View.VISIBLE);
 
@@ -256,8 +268,19 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
                 setUpLiveChat(chatRecycleView, massageList);
 
-                getSuggestions(arrayList.get(0));
+                // find the default conversation list has the this massage
+                for (ConversationModel tempModel :conversationForCheck) {
+                    if (tempModel.getQuestion().equalsIgnoreCase(arrayList.get(0))){
+                        b=false;
+                        suggestion_answer.setVisibility(View.VISIBLE);
+                        suggestions.add(tempModel.getAnswer());
+                        setSuggestions(suggestions,suggestion_answer);
+                    }
+                }
 
+                if (b) {
+                    getSuggestions(arrayList.get(0));
+                }
 
             }
 
@@ -485,7 +508,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     }
 
     public void setUpLiveChat(RecyclerView chatRecycleView, List<MassageModel> massageList) {
-        chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(), massageList));
+        chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(), massageList,this));
 
     }
 
@@ -532,6 +555,10 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             textToSpeech(buttonText);
             suggestions.clear();
             setSuggestions(suggestions, suggestion_answer);
+        } else if (view instanceof TextView) {
+            TextView textView=(TextView) view;
+            String text = textView.getText().toString().trim();
+            textToSpeech(text);
         }
 
     }
@@ -543,8 +570,12 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         float speed = (9.5f / 10.0f);
         if (speed < 0.1) speed = 0.1f;  // Minimum speech rate value
 
-        tts.setPitch(pitch);
-        tts.setSpeechRate(speed);
+        try {
+            tts.setPitch(pitch);
+            tts.setSpeechRate(speed);
+        }catch (NullPointerException e){
+            tts = new TextToSpeech(getApplicationContext(), this::onInit);
+        }
 
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
     }

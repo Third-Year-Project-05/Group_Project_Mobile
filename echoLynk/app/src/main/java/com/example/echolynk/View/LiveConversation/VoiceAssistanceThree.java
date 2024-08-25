@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.echolynk.Model.MassageModel;
 import com.example.echolynk.R;
 import com.example.echolynk.Utils.DB.DBHelper;
+import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.ReceiverAdapter;
 
 import java.time.LocalDate;
@@ -80,7 +81,7 @@ public class VoiceAssistanceThree extends AppCompatActivity {
     }
 
     private void setUpLiveChat(RecyclerView chat_view, List<MassageModel> massageList) {
-        chat_view.setAdapter(new ReceiverAdapter(getApplicationContext(), massageList));
+        chat_view.setAdapter(new ReceiverAdapter(getApplicationContext(), massageList, (onClickListener) this));
     }
 
     private void setTimeAndDate(String date, String timeDuration) {
