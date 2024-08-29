@@ -1,6 +1,8 @@
 package com.example.echolynk.View.Adapter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ public class ReceiverAdapter extends RecyclerView.Adapter<ReceiverViewModel> {
     Context context;
     List<MassageModel> massgeList;
     onClickListener listener;
+
 
 
     public ReceiverAdapter(Context context, List<MassageModel> massgeList, onClickListener listener) {

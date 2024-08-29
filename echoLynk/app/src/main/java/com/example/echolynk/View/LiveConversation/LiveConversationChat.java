@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -17,6 +18,7 @@ import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -55,8 +57,10 @@ import com.example.echolynk.Utils.DB.DBHelper;
 import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.AnswerAdapter;
+import com.example.echolynk.View.Adapter.DifficultWordsAdapter;
 import com.example.echolynk.View.Adapter.LiveUserAdapter;
 import com.example.echolynk.View.Adapter.ReceiverAdapter;
+import com.example.echolynk.View.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.api.LogDescriptor;
@@ -67,6 +71,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -87,7 +92,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private RelativeLayout relativeLayout;
     private RecyclerView recyclerView;
     private LinearLayout massageLayout;
-    private RecyclerView chatRecycleView;
+    private RecyclerView chatRecycleView,difficultWordsRecycleView;
     private RecyclerView suggestion_answer;
     private EditText massageBox,conversationTitle;
     private SpeechRecognizer speechRecognizer;
@@ -109,6 +114,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private final DBHelper dbHelper=new DBHelper(LiveConversationChat.this);
 
     private final Conversations conversations=new Conversations();
+
     private static final String endPoint = "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
 //    ApiServices apiServices = ApiClient.getInstance().create(ApiServices.class);
 
@@ -147,6 +153,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         massageBox = findViewById(R.id.write_massage);
         sendButton = findViewById(R.id.send_massage);
         progressBar = findViewById(R.id.progress_bar);
+
         save_prompt = dialog.findViewById(R.id.save_prompt);
         conversation_title_text = dialog.findViewById(R.id.conversation_title_text);
         conversationYesBtn = dialog.findViewById(R.id.yes_btn);
@@ -173,9 +180,22 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         // Initialize TextToSpeech
         tts = new TextToSpeech(LiveConversationChat.this, this::onInit);
 
+        final Handler handler = new Handler();
+        final Runnable logRunnable = () -> Log.d("check 3", "onCreate: ");
 
-        pauseBtn.setOnClickListener(view -> {
-            ArrayList<Conversation_Item> conversations = dbHelper.getConversations();
+        pauseBtn.setOnTouchListener((view, motionEvent) -> {
+            switch (motionEvent.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    // Schedule the log statement to run after 30 seconds (0.5 minutes)
+                    handler.postDelayed(logRunnable, 1000/2); // 30000 milliseconds = 30 seconds
+                    break;
+                case MotionEvent.ACTION_UP:
+                    // Cancel the log statement if the touch is released before 30 seconds
+                    handler.removeCallbacks(logRunnable);
+                    Log.d("check 4", "onCreate: ");
+                    break;
+            }
+            return true;
         });
 
 
@@ -305,6 +325,10 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
         conversationNoBtn.setOnClickListener(view -> {
             dialog.dismiss();
+            //11111111111111
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("load_fragment", "speech");
+            startActivity(intent);
         });
 
         conversationYesBtn.setOnClickListener(view -> {
@@ -329,6 +353,10 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                     if (dbHelper.insertConversation(currentDate.toString(),conversationStartTime,getCurrentTime(),title,massageList.get(massageList.size()-1).getMassage(),massageList)) {
                         Log.d(TAG, "Success the save the massage list");
                         Toast.makeText(LiveConversationChat.this,"Success the save the massages",Toast.LENGTH_SHORT).show();
+                        //111111111111111
+                        Intent intent = new Intent(this, MainActivity.class);
+                        intent.putExtra("load_fragment", "speech");
+                        startActivity(intent);
                     }else {
                         Toast.makeText(LiveConversationChat.this,"Unsaved the manages.",Toast.LENGTH_SHORT).show();
                     }
@@ -342,6 +370,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         });
 
     }
+
+
 
     private String getCurrentTime() {
 
@@ -563,7 +593,31 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
     }
 
-    public void textToSpeech(String text) {
+    @SuppressLint("UseCompatLoadingForDrawables")
+    @Override
+    public boolean onLongClick(int position, View view) {
+        // setup difficult words dialog box
+        dialog.setContentView(R.layout.popup_difficult_words_layout);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_bgckground));
+        dialog.setCancelable(false);
+
+        difficultWordsRecycleView=dialog.findViewById(R.id.difficultWords);
+        if (view instanceof TextView) {
+            TextView textView=(TextView) view;
+            String text = textView.getText().toString().trim();
+            String[] s = text.split(" ");
+            difficultWordsRecycleView.setAdapter(new DifficultWordsAdapter(LiveConversationChat.this,s));
+        }
+
+        dialog.show();
+
+        return true;
+    }
+
+
+
+    private void textToSpeech(String text) {
 
         float pitch = (1.0f);
         if (pitch < 0.1) pitch = 0.1f;

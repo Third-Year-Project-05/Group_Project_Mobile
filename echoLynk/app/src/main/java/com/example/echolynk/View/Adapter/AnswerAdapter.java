@@ -23,7 +23,6 @@ public class AnswerAdapter extends RecyclerView.Adapter<SuggestionMassageViewMod
     List<String> answer;
     onClickListener listener;
 
-    private final LiveConversationChat liveConversationChat=new LiveConversationChat();
 
     public AnswerAdapter(Context context, List<String> answer, onClickListener listener) {
         this.context = context;
