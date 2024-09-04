@@ -23,6 +23,12 @@ import java.util.List;
 public class HomeBlog extends AppCompatActivity implements onClickListener {
 
     RecyclerView recyclerView;
+
+    @Override
+    public void onClickDifficultWord(int position, View view) {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

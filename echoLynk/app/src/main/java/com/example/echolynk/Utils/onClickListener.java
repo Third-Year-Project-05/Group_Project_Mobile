@@ -8,6 +8,8 @@ public interface onClickListener {
 
     void onClick(int position, View view);
 
+    void onClickDifficultWord(int position,View view);
+
     boolean onLongClick(int position, View view);
 
 }

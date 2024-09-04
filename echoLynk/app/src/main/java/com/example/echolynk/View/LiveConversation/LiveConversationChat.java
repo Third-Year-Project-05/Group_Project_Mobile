@@ -5,9 +5,12 @@ import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -55,6 +59,7 @@ import com.example.echolynk.R;
 import com.example.echolynk.Utils.Conversations;
 import com.example.echolynk.Utils.DB.DBHelper;
 import com.example.echolynk.Utils.FirebaseUtils;
+import com.example.echolynk.Utils.ImageGenerator;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.AnswerAdapter;
 import com.example.echolynk.View.Adapter.DifficultWordsAdapter;
@@ -71,6 +76,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -111,9 +118,18 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private String conversationStartTime;
     private Dialog dialog;
 
+    ImageView responseView;
     private final DBHelper dbHelper=new DBHelper(LiveConversationChat.this);
 
     private final Conversations conversations=new Conversations();
+
+    private ImageGenerator imageGenerator=new ImageGenerator();
+
+    private static String stringOutput = "";
+    ProgressDialog progressDialog;
+    Handler handler = new Handler();
+
+    private static final String apiKey = "sk-proj-XmRmjjHi5qvdQbkFT7tXT3BlbkFJEZpbfe9lRYALeoVAKEx6";
 
     private static final String endPoint = "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
 //    ApiServices apiServices = ApiClient.getInstance().create(ApiServices.class);
@@ -574,6 +590,19 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     }
 
 
+
+    @Override
+    public void onClickDifficultWord(int position, View view) {
+        dialog.dismiss();
+
+        if (view instanceof TextView) {
+            TextView textView=(TextView) view;
+
+            Log.d("text view test", "11111111111111111111111111111111->>>>>>>>>"+textView);
+          //  Generate(textView.toString().trim());
+        }
+    }
+
     @Override
     public void onClick(int position, View view) {
 
@@ -607,7 +636,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             TextView textView=(TextView) view;
             String text = textView.getText().toString().trim();
             String[] s = text.split(" ");
-            difficultWordsRecycleView.setAdapter(new DifficultWordsAdapter(LiveConversationChat.this,s));
+            difficultWordsRecycleView.setAdapter(new DifficultWordsAdapter(LiveConversationChat.this,s,this));
         }
 
         dialog.show();
@@ -644,6 +673,156 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         super.onDestroy();
     }
 
+
+    public void Generate(String text) {
+
+        // Get the ProgressBar from the layout
+        ProgressBar progressBar = dialog.findViewById(R.id.progressBarLiveChatImageGenaretor);
+
+        // Show the ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+
+            jsonObject.put("prompt", text);
+            jsonObject.put("size", "256x256");
+
+            Log.d(TAG, "Request to Dalle: " + jsonObject.toString());
+
+        } catch (JSONException e) {
+
+            Toast.makeText(this.dialog.getContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            throw new RuntimeException(e);
+        }
+
+        String imageEndPoint = "https://api.openai.com/v1/images/generations";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, imageEndPoint, jsonObject,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        progressBar.setVisibility(View.GONE);
+                        try {
+                            stringOutput = response.getJSONArray("data").
+                                    getJSONObject(0).
+                                    getString("url");
+
+                            Log.d(TAG, "Request to Dalle: " + stringOutput);
+                            new FetchImage(stringOutput).start();
+                        } catch (JSONException e) {
+                            throw new RuntimeException(e);
+                        }
+                        Log.d(TAG, "Request to GPT-3: " + stringOutput);
+                    }
+                },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "Request to GPT-3: " + error.getMessage());
+                progressBar.setVisibility(View.GONE);
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> mapHeaders = new HashMap<>();
+
+                mapHeaders.put("Content-Type", "application/json");
+                mapHeaders.put("Authorization", "Bearer " + apiKey);
+
+                return mapHeaders;
+            }
+
+            @Override
+            protected VolleyError parseNetworkError(VolleyError volleyError) {
+                return super.parseNetworkError(volleyError);
+            }
+
+        };
+
+        int timeOutPeriod = 60000;
+
+        RetryPolicy policy = new DefaultRetryPolicy(
+                timeOutPeriod,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        );
+
+        jsonObjectRequest.setRetryPolicy(policy);
+
+        Volley.newRequestQueue(this.dialog.getContext()).add(jsonObjectRequest);
+
+    }
+
+
+    class FetchImage extends Thread{
+        String URL;
+        Bitmap bitmap;
+
+        FetchImage(String URL){
+            this.URL = URL;
+        }
+
+        @Override
+        public void run() {
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    progressDialog = new ProgressDialog(dialog.getContext());
+                    progressDialog.setMessage("Loading...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+
+                }
+            });
+
+
+            try {
+                InputStream inputStream = new java.net.URL(URL).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                        showPopup(URL);
+
+                    }
+                    responseView.setImageBitmap(bitmap);
+                    dialog.show();
+
+
+                }
+            });
+        }
+
+    }
+
+    private void showPopup(String imageUrl) {
+        Log.d(TAG, "showPopup: " + imageUrl);
+        dialog = new Dialog(this.dialog.getContext());
+        dialog.setContentView(R.layout.popup_layout);
+
+        Button closePopupButton = dialog.findViewById(R.id.closePopupButton);
+        responseView = dialog.findViewById(R.id.imageView);
+
+        closePopupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
 
 }
 

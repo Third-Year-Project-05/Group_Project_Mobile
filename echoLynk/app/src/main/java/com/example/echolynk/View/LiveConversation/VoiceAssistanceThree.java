@@ -119,6 +119,11 @@ public class VoiceAssistanceThree extends AppCompatActivity implements onClickLi
     }
 
     @Override
+    public void onClickDifficultWord(int position, View view) {
+
+    }
+
+    @Override
     public boolean onLongClick(int position, View view) {
 
         Log.d("LongClickEvent", "Hold down action fired");
