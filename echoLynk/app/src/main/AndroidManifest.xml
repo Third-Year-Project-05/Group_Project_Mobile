@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="remove" />
@@ -123,10 +124,11 @@
         <activity
             android:name=".View.LiveConversation.LiveConversationChat"
             android:exported="false" >
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
-        <activity
-            android:name=".View.LiveConversation.sender_massage"
-            android:exported="false" />
         <activity
             android:name=".View.LiveConversation.reserveMessage"
             android:exported="false" />

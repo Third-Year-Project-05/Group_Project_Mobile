@@ -1,16 +1,28 @@
 package com.example.echolynk.Model;
 
 public class Conversation_Item {
-    String title;
-    String description;
-    String date;
-    String time;
+    private int conversationId;
+    private String title;
+    private String description;
+    private String conversationLastMassage;
+    private String date;
+    private String time;
+    private String endTime;
 
     public Conversation_Item(String title, String description, String date, String time) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.time = time;
+    }
+
+    public Conversation_Item(int conversationId, String title, String conversationLastMassage, String date, String time, String endTime) {
+        this.conversationId = conversationId;
+        this.title = title;
+        this.conversationLastMassage = conversationLastMassage;
+        this.date = date;
+        this.time = time;
+        this.endTime = endTime;
     }
 
     public String getTitle() {
@@ -43,5 +55,29 @@ public class Conversation_Item {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public int getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(int conversationId) {
+        this.conversationId = conversationId;
+    }
+
+    public String getConversationLastMassage() {
+        return conversationLastMassage;
+    }
+
+    public void setConversationLastMassage(String conversationLastMassage) {
+        this.conversationLastMassage = conversationLastMassage;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }

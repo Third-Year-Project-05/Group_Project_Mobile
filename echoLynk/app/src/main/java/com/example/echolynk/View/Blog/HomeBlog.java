@@ -3,6 +3,7 @@ package com.example.echolynk.View.Blog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +23,12 @@ import java.util.List;
 public class HomeBlog extends AppCompatActivity implements onClickListener {
 
     RecyclerView recyclerView;
+
+    @Override
+    public void onClickDifficultWord(int position, View view) {
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +81,11 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
                 "\u200D\n" +
                 "For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever.");
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onLongClick(int position, View view) {
+        return true;
     }
 
 

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/imageView12"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="111dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="111dp"
+            app:srcCompat="@drawable/save_icon" />
+
+        <TextView
+            android:id="@+id/save_prompt"
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="114dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:paddingStart="15dp"
+            android:text="Do you want to save the conversation?"
+            android:textSize="18sp"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/yes_btn"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_below="@+id/save_prompt"
+            android:layout_alignStart="@+id/save_prompt"
+            android:layout_marginStart="22dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_background"
+            android:backgroundTint="#073F65"
+            android:contentDescription="suggestion one "
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="16sp"
+            android:text="Yes"
+            android:textColor="@color/white"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/no_btn"
+            android:layout_width="120dp"
+            android:layout_height="48dp"
+            android:layout_below="@+id/save_prompt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_background"
+            android:backgroundTint="#073F65"
+            android:contentDescription="suggestion one "
+            android:fontFamily="@font/poppins_semibold"
+            android:textSize="16sp"
+            android:text="No"
+            android:textColor="@color/white"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/conversation_title_text"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="114dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:paddingStart="15dp"
+            android:text="Enter the title for conversation"
+            android:textSize="18sp"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/conversation_title"
+            android:layout_width="358dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="19dp"
+            android:layout_below="@+id/conversation_title_text"
+            android:layout_marginEnd="19dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-4dp"
+            android:background="@drawable/edittext_background"
+            android:fontFamily="@font/poppins_regular"
+            android:hint="Enter conversation title"
+            android:inputType="text"
+            android:paddingStart="15dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/save_conversation"
+            android:layout_width="181dp"
+            android:layout_height="56dp"
+            android:layout_below="@+id/conversation_title"
+            android:layout_alignStart="@+id/save_prompt"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="111dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="111dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_background"
+            android:backgroundTint="@color/primary_blue"
+            android:contentDescription="suggestion one "
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
