@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUtils.currentUserDetails().get().addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 userModel = task.getResult().toObject(UserModel.class);
+                System.out.println(userModel);
                 try {
                     userName.setText(userModel.getUserName());
                 }catch (Exception e){

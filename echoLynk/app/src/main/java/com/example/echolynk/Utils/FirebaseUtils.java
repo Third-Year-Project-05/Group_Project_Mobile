@@ -1,6 +1,7 @@
 package com.example.echolynk.Utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.echolynk.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -32,6 +33,10 @@ public class FirebaseUtils {
 
     public static DocumentReference currentUserDetails(){
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
+    }
+
+    public static DocumentReference currentUserTestingDetails(){
+        return FirebaseFirestore.getInstance().collection("usersTesting").document(currentUserId());
     }
 
     public static CollectionReference allUserCollectionReference(){
