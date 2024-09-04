@@ -133,43 +133,61 @@ public class SignUp extends AppCompatActivity {
                                                 @Override
                                                 public void run() {
                                                     FirebaseUser user = mAuth.getCurrentUser();
+                                                    Log.d("testing001", "Step - 1");
                                                     if (user != null) {
                                                         user.reload().addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (user.isEmailVerified()) {
-                                                                    userModel = new UserModel(name.toLowerCase(),"",email, Timestamp.now(), FirebaseUtils.currentUserId(),pass,"user");
+                                                                    userModel = new UserModel(name.toLowerCase(),"0000000000",email, Timestamp.now(), FirebaseUtils.currentUserId(),pass,"user");
+                                                                    Log.d("testing001", "Step - 2");
+                                                                    Log.d("testing001", name.toLowerCase());
+                                                                    Log.d("testing001", "0000000000");
+                                                                    Log.d("testing001", email);
+                                                                    Log.d("testing001", Timestamp.now().toString());
+                                                                    Log.d("testing001", FirebaseUtils.currentUserId());
+                                                                    Log.d("testing001", pass);
+                                                                    Log.d("testing001", "user");
+                                                                    Log.d("testing001", FirebaseUtils.currentUserId());
 
-                                                                    FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            if (task.isSuccessful()){
-                                                                                //set sheard preference
+                                                                    try {
+                                                                        FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(task1 -> {
+                                                                            if (task1.isSuccessful()) {
+                                                                                Log.d("testing001", "Step - 3");
+                                                                                // Set shared preference
                                                                                 getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                                                                                         .edit()
                                                                                         .putBoolean("isLogged", true)
                                                                                         .apply();
-
+                                                                                Log.d("testing001", "Step - 4");
                                                                                 Toast.makeText(SignUp.this, "Email verified.", Toast.LENGTH_SHORT).show();
                                                                                 Intent intent = new Intent(SignUp.this, MainActivity.class);
                                                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                                                 startActivity(intent);
                                                                                 finish();
                                                                                 handler.removeCallbacksAndMessages(null);
+                                                                            } else {
+                                                                                Log.d("testing001", "Step - infinity");
                                                                             }
-                                                                        }
-                                                                    });
+                                                                        }).addOnFailureListener(e -> {
+                                                                            Log.d("testing001", "Failed to set user details: " + e.getMessage());
+                                                                            Toast.makeText(SignUp.this, "Failed to set user details: " + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                                                        });
+                                                                    } catch (Exception e) {
+                                                                        Toast.makeText(SignUp.this, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                                                                    }
+
+
+
 
                                                                 } else {
                                                                     // Email is not verified, prompt user to verify email
                                                                     Toast.makeText(SignUp.this, "Please verify your email.", Toast.LENGTH_LONG).show();
+                                                                    Log.d("testing001", "Step - 5");
                                                                 }
                                                             }
                                                         });
                                                     }
-
-                                                    // Repeat every 5 seconds
-                                                    handler.postDelayed(this, 5000);
                                                 }
                                             }, 5000);
                                         } else {
