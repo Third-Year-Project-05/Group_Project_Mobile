@@ -1,5 +1,8 @@
 package com.example.echolynk.View.LiveConversation;
 
+import static com.example.echolynk.Utils.TetFilter.filterTextMassage;
+
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,7 +10,9 @@ import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.echolynk.Model.MassageModel;
 import com.example.echolynk.R;
 import com.example.echolynk.Utils.DB.DBHelper;
+import com.example.echolynk.Utils.ImageGenerator;
 import com.example.echolynk.Utils.onClickListener;
+import com.example.echolynk.View.Adapter.DifficultWordsAdapter;
 import com.example.echolynk.View.Adapter.ReceiverAdapter;
 import com.example.echolynk.View.MainActivity;
 
@@ -33,12 +40,12 @@ import java.util.Locale;
 public class VoiceAssistanceThree extends AppCompatActivity implements onClickListener {
 
     private TextView day,timeDurationTextView;
-    private RecyclerView chat_view;
+    private RecyclerView chat_view,difficultWordsRecycleView;
     private TextToSpeech tts;
-
     private ImageButton backBtn;
-    final Handler handler = new Handler();
-    final Runnable logRunnable = () -> Log.d("check 3", "onCreate: ");
+    private ProgressBar progressBar2;
+    private ImageGenerator imageGenerator=new ImageGenerator();
+    private Dialog dialog;
 
     private DBHelper dbHelper=new DBHelper(VoiceAssistanceThree.this);
     @Override
@@ -51,6 +58,7 @@ public class VoiceAssistanceThree extends AppCompatActivity implements onClickLi
 
         // Initialize TextToSpeech
         tts = new TextToSpeech(VoiceAssistanceThree.this, this::onInit);
+        dialog=new Dialog(VoiceAssistanceThree.this);
 
         int conversationId=intent.getIntExtra("conversationId",-1);
         String date=intent.getStringExtra("date");
@@ -60,6 +68,7 @@ public class VoiceAssistanceThree extends AppCompatActivity implements onClickLi
         timeDurationTextView=findViewById(R.id.timeDurationTW);
         chat_view=findViewById(R.id.chat_view);
         backBtn=findViewById(R.id.back_button);
+        progressBar2 = findViewById(R.id.progressConversationHistory);
 
         //set date and time duration
         setTimeAndDate(date,timeDuration);
@@ -120,14 +129,36 @@ public class VoiceAssistanceThree extends AppCompatActivity implements onClickLi
 
     @Override
     public void onClickDifficultWord(int position, View view) {
+        dialog.dismiss();
+
+        if (view instanceof TextView) {
+            TextView textView=(TextView) view;
+            String text = textView.getText().toString().trim();
+            imageGenerator.Generate(text,progressBar2,dialog.getContext());
+        }
 
     }
 
     @Override
     public boolean onLongClick(int position, View view) {
 
-        Log.d("LongClickEvent", "Hold down action fired");
-        return false;
+        // setup difficult words dialog box
+        dialog.setContentView(R.layout.popup_difficult_words_layout);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_bgckground));
+        dialog.setCancelable(true);
+
+        difficultWordsRecycleView=dialog.findViewById(R.id.difficultWords);
+        if (view instanceof TextView) {
+            TextView textView=(TextView) view;
+            String text = textView.getText().toString().trim();
+            String[] s = text.split(" ");
+            String[] strings = filterTextMassage(s);
+            difficultWordsRecycleView.setAdapter(new DifficultWordsAdapter(VoiceAssistanceThree.this,strings,this));
+        }
+        dialog.show();
+
+        return true;
     }
 
 
