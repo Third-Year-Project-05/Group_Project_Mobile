@@ -1,11 +1,29 @@
 package com.example.echolynk.Model;
 
-public class Blog {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+import com.google.firebase.Timestamp;
+
+public class Blog implements Parcelable {
+
+    private String id;
+    private String status;
     private String title;
     private String author;
     private int image;
     private String description;
+    private Timestamp timestamp;
 
+    public Blog(String id, String title, String author, String description, Timestamp timestamp) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.description = description;
+        this.timestamp = timestamp;
+    }
 
     public Blog() {
     }
@@ -26,6 +44,14 @@ public class Blog {
     public Blog(String title, int image) {
         this.title = title;
         this.image = image;
+    }
+
+    public Blog(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        author = in.readString();
+        description = in.readString();
+        timestamp = in.readParcelable(Timestamp.class.getClassLoader());
     }
 
     public String getTitle() {
@@ -56,13 +82,66 @@ public class Blog {
 
     public void setDescription(String description) {this.description = description;}
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
     @Override
     public String toString() {
         return "Blog{" +
-                "title='" + title + '\'' +
+                "id='" + id + '\'' +
+                ", status='" + status + '\'' +
+                ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", image=" + image +
+                ", description='" + description + '\'' +
+                ", timestamp=" + timestamp +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(title);
+        parcel.writeString(author);
+        parcel.writeString(description);
+        parcel.writeParcelable(timestamp, i);
+    }
+
+    public static final Creator<Blog> CREATOR = new Creator<Blog>() {
+        @Override
+        public Blog createFromParcel(Parcel in) {
+            return new Blog(in);
+        }
+
+        @Override
+        public Blog[] newArray(int size) {
+            return new Blog[size];
+        }
+    };
 }
 
