@@ -32,7 +32,7 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView39"
+        android:id="@+id/blogTopicTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView38"
@@ -46,7 +46,7 @@
         android:id="@+id/blog_topic"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
-        android:layout_below="@+id/textView39"
+        android:layout_below="@+id/blogTopicTextView"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="24dp"
@@ -61,7 +61,7 @@
 
 
     <TextView
-        android:id="@+id/textView39q"
+        android:id="@+id/descriptionTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/blog_topic"
@@ -75,7 +75,7 @@
         android:id="@+id/blog_description"
         android:layout_width="wrap_content"
         android:layout_height="400dp"
-        android:layout_below="@+id/textView39q"
+        android:layout_below="@+id/descriptionTextView"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="24dp"
@@ -104,6 +104,87 @@
         android:layout_marginEnd="50dp"
         android:background="@drawable/button_background"
         android:text="Next"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <FrameLayout
+        android:id="@+id/frameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_below="@+id/textView38"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="24dp"
+        android:visibility="gone"
+        android:background="@drawable/edittext_background">
+
+
+        <ImageView
+            android:id="@+id/uploadImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/upload_icon" />
+
+        <TextView
+            android:id="@+id/textView40"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="35dp"
+            android:text="Upload Image"
+            android:textSize="15sp" />
+
+
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/addTagsTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frameLayout2"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:visibility="gone"
+        android:text="Add Tags" />
+
+    <EditText
+        android:id="@+id/editTextText7"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:layout_below="@+id/addTagsTextview"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="24dp"
+        android:padding="10dp"
+        android:ems="10"
+        android:visibility="gone"
+        android:inputType="text"
+        android:hint="Tags"
+        android:background="@drawable/edittext_background"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/publish_button"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/editTextText7"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="24dp"
+        android:visibility="gone"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/button_background"
+        android:text="Publish"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold" />

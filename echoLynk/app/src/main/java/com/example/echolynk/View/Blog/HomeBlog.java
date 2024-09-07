@@ -40,9 +40,8 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_blog);
 
-        db= FirebaseFirestore.getInstance();
-        recyclerView=findViewById(R.id.blog_recycle_view);
-
+        db = FirebaseFirestore.getInstance();
+        recyclerView = findViewById(R.id.blog_recycle_view);
 
 
         db.collection("blogs")
@@ -64,21 +63,21 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
 
                         }
 
-                        if (recyclerView != null || !blogs.isEmpty()){
-                            if (blogs.isEmpty()){
+                        if (recyclerView != null || !blogs.isEmpty()) {
+                            if (blogs.isEmpty()) {
                                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                                recyclerView.setAdapter(new EmptyAdapter(getApplicationContext(),R.drawable.empty_icon));
-                            }else {
+                                recyclerView.setAdapter(new EmptyAdapter(getApplicationContext(), R.drawable.empty_icon));
+                            } else {
                                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                                recyclerView.setAdapter(new BlogAdapter(getApplicationContext(),blogs,this));
+                                recyclerView.setAdapter(new BlogAdapter(getApplicationContext(), blogs, this));
                             }
-                        }else {
+                        } else {
                             Log.d("recyclerView check", "recyclerView null ");
                             //check the load fragment
                         }
 
                     } else {
-                        Toast.makeText(HomeBlog.this,task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeBlog.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                 });

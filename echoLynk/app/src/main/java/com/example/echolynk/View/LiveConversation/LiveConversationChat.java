@@ -69,6 +69,8 @@ import com.example.echolynk.View.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.api.LogDescriptor;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -122,8 +124,11 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private final Conversations conversations=new Conversations();
 
     private ImageGenerator imageGenerator=new ImageGenerator();
+    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-    private static final String endPoint = "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
+/*https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/*/
+
+    private static final String endPoint = "https://python-backend-8k9v-h0f2gav4u-dilum-induwaras-projects.vercel.app/predict_single/";
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility", "UseCompatLoadingForDrawables"})
     @Override
@@ -134,6 +139,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
         //load conversation
         conversations.loadConversations();
+
 
 
         // setup dialog box
@@ -452,8 +458,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         JSONObject jsonObject2 = new JSONObject();
         try {
 
-            jsonObject2.put("name", "tharindu dakshina");
-            jsonObject2.put("email", "tharindudakshina527@gmail.com");
+            jsonObject2.put("name", currentUser.getDisplayName());
+            jsonObject2.put("email", currentUser.getEmail());
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -469,6 +475,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
+        System.out.println(paramObject);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endPoint, paramObject,
                 new Response.Listener<JSONObject>() {
@@ -519,6 +527,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
             @Override
             protected VolleyError parseNetworkError(VolleyError volleyError) {
+                Log.d(TAG, "VolleyError" + volleyError.getMessage());
                 return super.parseNetworkError(volleyError);
             }
 

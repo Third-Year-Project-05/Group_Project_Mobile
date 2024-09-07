@@ -72,10 +72,10 @@
         <activity
             android:name=".View.SplashActivity"
             android:exported="true">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
 
 
@@ -99,13 +99,7 @@
             android:exported="false" />
         <activity
             android:name=".View.Blog.HomeBlog"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".View.Blog.blog_card_custom"
             android:exported="false" />
