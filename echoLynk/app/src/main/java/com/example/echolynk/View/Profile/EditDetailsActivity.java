@@ -122,7 +122,7 @@ public class EditDetailsActivity extends AppCompatActivity {
         editImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePicker.with(EditDetailsActivity.this).cropSquare().compress(512).maxResultSize(512,512)
+                ImagePicker.with(EditDetailsActivity.this).cropSquare().compress(512).maxResultSize(512, 512)
                         .createIntent(new Function1<Intent, Unit>() {
                             @Override
                             public Unit invoke(Intent intent) {

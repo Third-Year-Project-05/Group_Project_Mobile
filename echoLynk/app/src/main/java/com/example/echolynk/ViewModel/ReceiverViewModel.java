@@ -38,7 +38,7 @@ public class ReceiverViewModel extends RecyclerView.ViewHolder {
         receiverMassage.setOnClickListener(view -> listener.onClick(getAdapterPosition(),view));
 
         senderMassage.setOnLongClickListener(view -> listener.onLongClick(getAdapterPosition(),view));
-
+        receiverMassage.setOnLongClickListener(view -> listener.onLongClick(getAdapterPosition(),view));
 
 
 

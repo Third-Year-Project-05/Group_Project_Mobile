@@ -1,10 +1,12 @@
 package com.example.echolynk.View.Blog;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,18 +18,21 @@ import com.example.echolynk.R;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.BlogAdapter;
 import com.example.echolynk.View.Adapter.EmptyAdapter;
+import com.example.echolynk.View.LiveConversation.LiveConversationChat;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class HomeBlog extends AppCompatActivity implements onClickListener {
 
-    RecyclerView recyclerView;
-
-    @Override
-    public void onClickDifficultWord(int position, View view) {
-
-    }
+    private RecyclerView recyclerView;
+    private FirebaseFirestore db ;
+    private List<Blog> blogs=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,35 +40,50 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_blog);
 
-        recyclerView=findViewById(R.id.blog_recycle_view);
-
-        List<Blog> blogs=new ArrayList<>();
-
-       /* blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
-
-        blogs.add(new Blog("hatti pakaya","by Echolynk",R.drawable.dummy_blog_img1));
-
-        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
-
-        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));
-
-        blogs.add(new Blog("What is Text-to-Speech?","by Echolynk",R.drawable.dummy_blog_img1));*/
+        db = FirebaseFirestore.getInstance();
+        recyclerView = findViewById(R.id.blog_recycle_view);
 
 
-        if (recyclerView != null || !blogs.isEmpty()){
-            if (blogs.isEmpty()){
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                recyclerView.setAdapter(new EmptyAdapter(getApplicationContext(),R.drawable.empty_icon));
-            }else {
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                recyclerView.setAdapter(new BlogAdapter(getApplicationContext(),blogs,this));
-            }
-        }else {
-            Log.d("recyclerView check", "recyclerView null ");
-            //check the load fragment
-        }
+        db.collection("blogs")
+                .whereEqualTo("status", "approved")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            blogs.add(
+                                    new Blog(
+                                            document.getId(),
+                                            document.getString("title"),
+                                            document.getString("author"),
+                                            document.getString("content"),
+                                            document.getTimestamp("timestamp")
+                                    )
+                            );
+
+                        }
+
+                        if (recyclerView != null || !blogs.isEmpty()) {
+                            if (blogs.isEmpty()) {
+                                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                                recyclerView.setAdapter(new EmptyAdapter(getApplicationContext(), R.drawable.empty_icon));
+                            } else {
+                                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                                recyclerView.setAdapter(new BlogAdapter(getApplicationContext(), blogs, this));
+                            }
+                        } else {
+                            Log.d("recyclerView check", "recyclerView null ");
+                            //check the load fragment
+                        }
+
+                    } else {
+                        Toast.makeText(HomeBlog.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                });
 
     }
+
 
     @Override
     public void onInit(int status) {
@@ -73,13 +93,8 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
     @Override
     public void onClick(int position, View view) {
         Intent intent = new Intent(HomeBlog.this, BlogView.class);
-        intent.putExtra("blogTitle","What is Text-to-Speech?");
-        intent.putExtra("blogImage",R.drawable.dummy_blog_img1);
-        intent.putExtra("blogAuthor","by Echolynk");
-        intent.putExtra("blogPublishDate","Published on June 13, 2024");
-        intent.putExtra("description","Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n" +
-                "\u200D\n" +
-                "For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever.");
+        intent.putExtra("position",position);
+        intent.putParcelableArrayListExtra("blogList", new ArrayList<>(blogs));
         startActivity(intent);
     }
 
@@ -90,6 +105,11 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
 
 
     public void backOnclick(View view) {
+
+    }
+
+    @Override
+    public void onClickDifficultWord(int position, View view) {
 
     }
 

@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -23,6 +24,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.echolynk.R;
+import com.example.echolynk.View.LiveConversation.LiveConversationChat;
+import com.example.echolynk.View.LiveConversation.VoiceAssistanceThree;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,9 +43,9 @@ public class ImageGenerator {
     ImageView responseView;
     private Dialog dialog;
 
-    private void showPopup(String imageUrl) {
-        Log.d(TAG, "showPopup: " + imageUrl);
-        dialog = new Dialog(this.dialog.getContext());
+    private void showPopup(String imageUrl, Context context) {
+
+        dialog = new Dialog(context);
         dialog.setContentView(R.layout.popup_layout);
 
         Button closePopupButton = dialog.findViewById(R.id.closePopupButton);
@@ -58,13 +61,12 @@ public class ImageGenerator {
         dialog.show();
     }
 
-    public void Generate(String text) {
+    public void Generate(String text, ProgressBar progressBar2, Context context) {
 
-        // Get the ProgressBar from the layout
-        ProgressBar progressBar = this.dialog.findViewById(R.id.progressBarLiveChatImageGenaretor);
+
 
         // Show the ProgressBar
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar2.setVisibility(View.VISIBLE);
 
         JSONObject jsonObject = new JSONObject();
 
@@ -87,24 +89,23 @@ public class ImageGenerator {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        progressBar.setVisibility(View.GONE);
+                        progressBar2.setVisibility(View.GONE);
                         try {
                             stringOutput = response.getJSONArray("data").
                                     getJSONObject(0).
                                     getString("url");
 
-                            Log.d(TAG, "Request to Dalle: " + stringOutput);
-                            new ImageGenerator.FetchImage(stringOutput).start();
+                            new ImageGenerator.FetchImage(stringOutput,context).start();
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
-                        Log.d(TAG, "Request to GPT-3: " + stringOutput);
                     }
                 },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, "Request to GPT-3: " + error.getMessage());
-                progressBar.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.GONE);
+                Toast.makeText(context,"Unsaved the manages.",Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -135,16 +136,18 @@ public class ImageGenerator {
 
         jsonObjectRequest.setRetryPolicy(policy);
 
-        Volley.newRequestQueue(this.dialog.getContext()).add(jsonObjectRequest);
+        Volley.newRequestQueue(context).add(jsonObjectRequest);
 
     }
 
-    class FetchImage extends Thread{
+     class  FetchImage extends Thread{
         String URL;
         Bitmap bitmap;
+        Context context;
 
-        FetchImage(String URL){
+        FetchImage(String URL, Context context){
             this.URL = URL;
+            this.context=context;
         }
 
         @Override
@@ -154,7 +157,7 @@ public class ImageGenerator {
                 @Override
                 public void run() {
 
-                    progressDialog = new ProgressDialog(dialog.getContext());
+                    progressDialog = new ProgressDialog(context);
                     progressDialog.setMessage("Loading...");
                     progressDialog.setCancelable(false);
                     progressDialog.show();
@@ -176,7 +179,7 @@ public class ImageGenerator {
 
                     if(progressDialog.isShowing()){
                         progressDialog.dismiss();
-                        showPopup(URL);
+                        showPopup(URL,context);
 
                     }
                     responseView.setImageBitmap(bitmap);
