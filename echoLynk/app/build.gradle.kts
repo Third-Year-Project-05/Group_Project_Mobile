@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation (libs.firebase.ui.firestore)
     implementation(libs.firebase.storage)
+    implementation(libs.play.services.recaptchabase)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -60,15 +61,20 @@ dependencies {
 
 
 
-
     // Dakshina
     implementation(libs.firebase.auth)
     implementation(libs.google.firebase.auth)
     implementation(libs.play.services.auth)
     implementation (libs.firebase.auth.v2101)
-    implementation (libs.facebook.android.sdk)
     implementation (libs.okhttp)
     implementation (libs.volley)
+
+
+
+
+
+
+
 
     // Sandaru
 

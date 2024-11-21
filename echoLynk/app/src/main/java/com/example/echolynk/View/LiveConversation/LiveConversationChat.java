@@ -5,12 +5,9 @@ import static android.content.ContentValues.TAG;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,9 +15,7 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
-import android.text.Editable;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +23,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -42,7 +36,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -52,7 +45,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.echolynk.Model.ConversationModel;
-import com.example.echolynk.Model.Conversation_Item;
 import com.example.echolynk.Model.MassageModel;
 import com.example.echolynk.Model.UserModel;
 import com.example.echolynk.R;
@@ -68,7 +60,6 @@ import com.example.echolynk.View.Adapter.ReceiverAdapter;
 import com.example.echolynk.View.MainActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.api.LogDescriptor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -78,9 +69,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -97,20 +85,20 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     // current user ge persona details tika ganna one
     // sql light dala history eka ganna one
 
-    private TextView save_prompt,conversation_title_text;
+    private TextView save_prompt, conversation_title_text;
     private RelativeLayout relativeLayout;
     private RecyclerView recyclerView;
     private LinearLayout massageLayout;
-    private RecyclerView chatRecycleView,difficultWordsRecycleView;
+    private RecyclerView chatRecycleView, difficultWordsRecycleView;
     private RecyclerView suggestion_answer;
-    private EditText massageBox,conversationTitle;
+    private EditText massageBox, conversationTitle;
     private SpeechRecognizer speechRecognizer;
     private ImageButton keyboardBtn, sendButton;
-    private ImageButton mikeBtn,muteMike;
+    private ImageButton mikeBtn, muteMike;
     private ImageButton pauseBtn;
     private ImageButton closeBtn;
-    private Button conversationYesBtn,conversationNoBtn,conversationSaveBtn;
-    private ProgressBar progressBar,progressBar2;
+    private Button conversationYesBtn, conversationNoBtn, conversationSaveBtn;
+    private ProgressBar progressBar, progressBar2;
     private List<MassageModel> massageList = new ArrayList<>();
     private List<String> suggestions = new ArrayList<>();
     private static final int RecodeAudioRequestCode = 1;
@@ -119,16 +107,16 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private FirebaseFirestore db;
     private String conversationStartTime;
     private Dialog dialog;
-    private final DBHelper dbHelper=new DBHelper(LiveConversationChat.this);
+    private final DBHelper dbHelper = new DBHelper(LiveConversationChat.this);
 
-    private final Conversations conversations=new Conversations();
+    private final Conversations conversations = new Conversations();
 
-    private ImageGenerator imageGenerator=new ImageGenerator();
+    private ImageGenerator imageGenerator = new ImageGenerator();
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-/*https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/*/
+    /*https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/*/
 
-    private static final String endPoint = "https://python-backend-8k9v-h0f2gav4u-dilum-induwaras-projects.vercel.app/predict_single/";
+    private static final String endPoint = "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility", "UseCompatLoadingForDrawables"})
     @Override
@@ -141,21 +129,20 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         conversations.loadConversations();
 
 
-
         // setup dialog box
-        dialog=new Dialog(LiveConversationChat.this);
+        dialog = new Dialog(LiveConversationChat.this);
         dialog.setContentView(R.layout.custom_dialog_box);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_bgckground));
         dialog.setCancelable(false);
 
         //initialize cloud firestore
         db = FirebaseFirestore.getInstance();
-        conversationStartTime=getCurrentTime();
+        conversationStartTime = getCurrentTime();
 
         massageLayout = findViewById(R.id.sender_massage_laout);
         relativeLayout = findViewById(R.id.live_conversation_chat);
-        recyclerView = findViewById(R.id.live_users);
+//        recyclerView = findViewById(R.id.live_users);
         chatRecycleView = findViewById(R.id.chat_view);
         suggestion_answer = findViewById(R.id.suggestion_answers);
         keyboardBtn = findViewById(R.id.keyboard_icon);
@@ -201,7 +188,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     // Schedule the log statement to run after 30 seconds (0.5 minutes)
-                    handler.postDelayed(logRunnable, 1000/2); // 30000 milliseconds = 30 seconds
+                    handler.postDelayed(logRunnable, 1000 / 2); // 30000 milliseconds = 30 seconds
                     break;
                 case MotionEvent.ACTION_UP:
                     // Cancel the log statement if the touch is released before 30 seconds
@@ -291,24 +278,33 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             @Override
             public void onResults(Bundle bundle) {
 
-                boolean b=true;
+                boolean b = true;
 
                 muteMike.setVisibility(View.GONE);
                 mikeBtn.setVisibility(View.VISIBLE);
 
                 ArrayList<String> arrayList = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                // Get the recognized text
+                String recognizedText = arrayList.get(0);
 
-                massageList.add(new MassageModel(arrayList.get(0), 1));
+                // Example: Check and handle censored words
+                if (recognizedText.contains("****")) {
+                    Log.d("SpeechRecognizer", "Filtered word detected in: " + recognizedText);
+
+                    // Optionally replace with uncensored alternatives (if known)
+                    recognizedText = recognizedText.replace("***", "possibleWord");
+                }
+
+                massageList.add(new MassageModel(recognizedText, 1));
 
                 setUpLiveChat(chatRecycleView, massageList);
 
                 // find the default conversation list has the this massage
-                for (ConversationModel tempModel :conversationForCheck) {
-                    if (tempModel.getQuestion().equalsIgnoreCase(arrayList.get(0))){
-                        b=false;
+                for (ConversationModel tempModel : conversationForCheck) {
+                    if (tempModel.getQuestion().equalsIgnoreCase(arrayList.get(0))) {
+                        b = false;
                         suggestion_answer.setVisibility(View.VISIBLE);
-                        suggestions.add(tempModel.getAnswer());
-                        setSuggestions(suggestions,suggestion_answer);
+                        setSuggestions(tempModel.getAnswer(), suggestion_answer);
                     }
                 }
 
@@ -354,25 +350,25 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             conversationSaveBtn.setVisibility(View.VISIBLE);
         });
 
-        conversationSaveBtn.setOnClickListener(View->{
+        conversationSaveBtn.setOnClickListener(View -> {
             String title = conversationTitle.getText().toString().trim();
 
             if (title.isEmpty()) {
                 conversationTitle.setError("Please fill this field.");
-            }else {
+            } else {
                 dialog.dismiss();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     LocalDate currentDate = LocalDate.now();
 
-                    if (dbHelper.insertConversation(currentDate.toString(),conversationStartTime,getCurrentTime(),title,massageList.get(massageList.size()-1).getMassage(),massageList)) {
+                    if (dbHelper.insertConversation(currentDate.toString(), conversationStartTime, getCurrentTime(), title, massageList.get(massageList.size() - 1).getMassage(), massageList)) {
                         Log.d(TAG, "Success the save the massage list");
-                        Toast.makeText(LiveConversationChat.this,"Success the save the massages",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LiveConversationChat.this, "Success the save the massages", Toast.LENGTH_SHORT).show();
                         //111111111111111
                         Intent intent = new Intent(this, MainActivity.class);
                         intent.putExtra("load_fragment", "speech");
                         startActivity(intent);
-                    }else {
-                        Toast.makeText(LiveConversationChat.this,"Unsaved the manages.",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(LiveConversationChat.this, "Unsaved the manages.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -384,7 +380,6 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         });
 
     }
-
 
 
     private String getCurrentTime() {
@@ -434,25 +429,37 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         //get the history
         ArrayList<MassageModel> allMassages = dbHelper.getAllMassages();
 
-        for (MassageModel tempMassage:allMassages) {
 
+        // check of the initializing stage
+        if (allMassages.isEmpty()) {
             JSONObject jsonObject1 = new JSONObject();
-            String role="user";
-            if (tempMassage.getType()==0){
-                role="sender";
-            }else {
-                role="receiver";
-            }
-
             try {
-                jsonObject1.put("role", role);
-                jsonObject1.put("content", tempMassage.getMassage());
-            }catch (JSONException e){
-                Toast.makeText(LiveConversationChat.this, "Response is "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                jsonObject1.put("role", "receiver");
+                jsonObject1.put("content", "Initializing Stage");
+            } catch (JSONException e) {
+                Toast.makeText(LiveConversationChat.this, "Response is " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
             history.put(jsonObject1);
-        }
+        } else {
+            for (MassageModel tempMassage : allMassages) {
 
+                JSONObject jsonObject1 = new JSONObject();
+                String role = "user";
+                if (tempMassage.getType() == 0) {
+                    role = "sender";
+                } else {
+                    role = "receiver";
+                }
+
+                try {
+                    jsonObject1.put("role", role);
+                    jsonObject1.put("content", tempMassage.getMassage());
+                } catch (JSONException e) {
+                    Toast.makeText(LiveConversationChat.this, "Response is " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                history.put(jsonObject1);
+            }
+        }
 
 
         JSONObject jsonObject2 = new JSONObject();
@@ -463,8 +470,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
         personalData.put(jsonObject2);
+
 
         JSONObject paramObject = new JSONObject();
         try {
@@ -476,7 +483,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             throw new RuntimeException(e);
         }
 
-        System.out.println(paramObject);
+        Log.d(TAG, "getSuggestions: ----->" + paramObject);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, endPoint, paramObject,
                 new Response.Listener<JSONObject>() {
@@ -492,6 +499,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                             try {
                                 progressBar.setVisibility(View.GONE);
                                 suggestion_answer.setVisibility(View.VISIBLE);
+                                Log.d("suggestions------->", "suggetions.toString()");
                                 JSONArray suggetions = response.getJSONArray("suggetions");
                                 for (int i = 0; i < suggetions.length(); i++) {
                                     String suggestion = suggetions.getString(i);
@@ -500,7 +508,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
                                 }
                             } catch (JSONException e) {
-                                throw new RuntimeException(e);
+                                Log.d("Exception------->", e.getMessage());
                             }
                         }
                     }
@@ -510,7 +518,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                 Log.d(TAG, "Request to GPT-3 error: " + error.getMessage());
                 progressBar.setVisibility(View.GONE);
                 suggestion_answer.setVisibility(View.VISIBLE);
-                Toast.makeText(LiveConversationChat.this, "Response is "+error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LiveConversationChat.this, "Response is " + error.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         }) {
@@ -555,7 +563,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     }
 
     public void setUpLiveChat(RecyclerView chatRecycleView, List<MassageModel> massageList) {
-        chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(), massageList,this));
+        chatRecycleView.setAdapter(new ReceiverAdapter(getApplicationContext(), massageList, this));
 
     }
 
@@ -591,15 +599,14 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     }
 
 
-
     @Override
     public void onClickDifficultWord(int position, View view) {
         dialog.dismiss();
 
         if (view instanceof TextView) {
-            TextView textView=(TextView) view;
+            TextView textView = (TextView) view;
             String text = textView.getText().toString().trim();
-            imageGenerator.Generate(text,progressBar2,dialog.getContext());
+            imageGenerator.Generate(text, progressBar2, dialog.getContext());
         }
     }
 
@@ -615,7 +622,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             suggestions.clear();
             setSuggestions(suggestions, suggestion_answer);
         } else if (view instanceof TextView) {
-            TextView textView=(TextView) view;
+            TextView textView = (TextView) view;
             String text = textView.getText().toString().trim();
             textToSpeech(text);
         }
@@ -627,23 +634,22 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     public boolean onLongClick(int position, View view) {
         // setup difficult words dialog box
         dialog.setContentView(R.layout.popup_difficult_words_layout);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_bgckground));
         dialog.setCancelable(false);
 
-        difficultWordsRecycleView=dialog.findViewById(R.id.difficultWords);
+        difficultWordsRecycleView = dialog.findViewById(R.id.difficultWords);
         if (view instanceof TextView) {
-            TextView textView=(TextView) view;
+            TextView textView = (TextView) view;
             String text = textView.getText().toString().trim();
             String[] s = text.split(" ");
-            difficultWordsRecycleView.setAdapter(new DifficultWordsAdapter(LiveConversationChat.this,s,this));
+            difficultWordsRecycleView.setAdapter(new DifficultWordsAdapter(LiveConversationChat.this, s, this));
         }
 
         dialog.show();
 
         return true;
     }
-
 
 
     private void textToSpeech(String text) {
@@ -656,7 +662,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         try {
             tts.setPitch(pitch);
             tts.setSpeechRate(speed);
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             tts = new TextToSpeech(getApplicationContext(), this::onInit);
         }
 

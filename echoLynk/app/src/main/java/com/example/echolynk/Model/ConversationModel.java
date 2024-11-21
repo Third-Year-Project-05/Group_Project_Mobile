@@ -1,14 +1,16 @@
 package com.example.echolynk.Model;
 
+import java.util.List;
+
 public class ConversationModel {
 
     private String question;
-    private String answer;
+    private List<String>  answer;
 
     public ConversationModel() {
     }
 
-    public ConversationModel(String question, String answer) {
+    public ConversationModel(String question, List<String> answer) {
         this.question = question;
         this.answer = answer;
     }
@@ -21,11 +23,11 @@ public class ConversationModel {
         this.question = question;
     }
 
-    public String getAnswer() {
+    public List<String> getAnswer() {
         return answer;
     }
 
-    public void setAnswer(String answer) {
+    public void setAnswer(List<String> answer) {
         this.answer = answer;
     }
 }

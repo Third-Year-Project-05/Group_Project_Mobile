@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
@@ -25,22 +24,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.echolynk.R;
-import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.View.MainActivity;
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
@@ -193,7 +186,6 @@ public class AddBlogMainActivity extends AppCompatActivity {
                             Log.d("FirebaseStorage", "Download URL: " + imageUrl);
 
 
-
                             Map<String, Object> authorAllData = new HashMap<>();
                             assert currentUser != null;
                             authorAllData.put("email", currentUser.getEmail());
@@ -215,10 +207,17 @@ public class AddBlogMainActivity extends AppCompatActivity {
                             db.collection("blogs") // Specify your collection name
                                     .add(newData) // Add data with a generated document ID
                                     .addOnSuccessListener(documentReference -> {
-                                        Toast.makeText(AddBlogMainActivity.this, "Blog Added", Toast.LENGTH_SHORT).show();
+                                        // get the blog id and
+                                        String id = documentReference.getId();
 
-                                        Intent saveVoice = new Intent(AddBlogMainActivity.this, MainActivity.class);
-                                        startActivity(saveVoice);
+                                        documentReference.update("id",id).addOnSuccessListener(aVoid->{
+                                            Toast.makeText(AddBlogMainActivity.this, "Blog Added", Toast.LENGTH_SHORT).show();
+                                            Intent saveVoice = new Intent(AddBlogMainActivity.this, MainActivity.class);
+                                            startActivity(saveVoice);
+
+                                        }).addOnFailureListener(e->{
+                                            Toast.makeText(AddBlogMainActivity.this, "Blog Error "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        });
 
                                     })
                                     .addOnFailureListener(e -> {
