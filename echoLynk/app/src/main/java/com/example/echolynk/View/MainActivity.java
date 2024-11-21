@@ -1,7 +1,5 @@
 package com.example.echolynk.View;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -33,15 +30,12 @@ import com.example.echolynk.View.Game.GamesFragment;
 import com.example.echolynk.View.Home.HomeFragment;
 import com.example.echolynk.View.LiveConversation.SpeechFragment;
 import com.example.echolynk.View.Profile.ProfileFragment;
-import com.example.echolynk.View.SignInSignUp.SignIn;
 import com.example.echolynk.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -55,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
+
 
       /*  setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.verifyCode), (v, insets) -> {*/
