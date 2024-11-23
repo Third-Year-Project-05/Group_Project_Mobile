@@ -43,7 +43,6 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
         db = FirebaseFirestore.getInstance();
         recyclerView = findViewById(R.id.blog_recycle_view);
 
-
         db.collection("blogs")
                 .whereEqualTo("status", "approved")
                 .get()
@@ -83,7 +82,6 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
                 });
 
     }
-
 
     @Override
     public void onInit(int status) {

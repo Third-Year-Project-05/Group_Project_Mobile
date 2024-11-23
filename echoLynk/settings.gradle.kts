@@ -1,3 +1,5 @@
+@file:Suppress("TYPE_MISMATCH_WARNING")
+
 pluginManagement {
     repositories {
         google {
@@ -16,7 +18,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url = uri("https://jitpack.io")}
+        maven {
+            url = uri("https://jitpack.io")
+        }
     }
 }
 
