@@ -52,6 +52,7 @@ import com.example.echolynk.Utils.Conversations;
 import com.example.echolynk.Utils.DB.DBHelper;
 import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.Utils.ImageGenerator;
+import com.example.echolynk.Utils.PaymentMethod;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.AnswerAdapter;
 import com.example.echolynk.View.Adapter.DifficultWordsAdapter;
@@ -111,7 +112,10 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
     private final Conversations conversations = new Conversations();
 
-    private ImageGenerator imageGenerator = new ImageGenerator();
+    private final ImageGenerator imageGenerator = new ImageGenerator();
+    private PaymentMethod paymentMethod;
+
+
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     /*https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/*/
@@ -125,6 +129,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_live_conversation_chat);
 
+        paymentMethod=new PaymentMethod(LiveConversationChat.this);
         //load conversation
         conversations.loadConversations();
 
@@ -197,6 +202,10 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                     break;
             }
             return true;
+        });
+
+        pauseBtn.setOnClickListener(view -> {
+            paymentMethod.firePaymentMethod();
         });
 
 
