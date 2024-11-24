@@ -39,7 +39,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Objects;
@@ -139,7 +138,7 @@ public class SignUp extends AppCompatActivity {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (user.isEmailVerified()) {
-                                                                    userModel = new UserModel(name.toLowerCase(),"0000000000",email, Timestamp.now(), FirebaseUtils.currentUserId(),pass,"user");
+                                                                    userModel = new UserModel(name.toLowerCase(),"0000000000",email, Timestamp.now(), FirebaseUtils.currentUserId(),pass,"user",false);
                                                                     Log.d("testing001", "Step - 2");
                                                                     Log.d("testing001", name.toLowerCase());
                                                                     Log.d("testing001", "0000000000");
@@ -281,7 +280,7 @@ public class SignUp extends AppCompatActivity {
 
                                         if(userModel == null){
                                             //first time login
-                                            userModel = new UserModel(user.getDisplayName().toLowerCase(),user.getPhoneNumber(),user.getEmail(),Timestamp.now(),FirebaseUtils.currentUserId(),"","user");
+                                            userModel = new UserModel(user.getDisplayName().toLowerCase(),user.getPhoneNumber(),user.getEmail(),Timestamp.now(),FirebaseUtils.currentUserId(),"","user",false);
                                             FirebaseUtils.currentUserDetails().set(userModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {

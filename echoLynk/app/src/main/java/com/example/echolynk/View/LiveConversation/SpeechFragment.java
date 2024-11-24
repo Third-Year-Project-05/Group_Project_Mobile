@@ -1,8 +1,10 @@
 package com.example.echolynk.View.LiveConversation;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,17 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.echolynk.Model.Conversation_Item;
 import com.example.echolynk.R;
 import com.example.echolynk.Utils.DB.DBHelper;
 import com.example.echolynk.ViewModel.MyConversationsAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,6 +28,7 @@ import java.util.List;
 public class SpeechFragment extends Fragment {
 
     ConstraintLayout constraintLayout;
+    ConstraintLayout constraintLayoutWebView;
 
     private RecyclerView recyclerView;
 
@@ -86,6 +84,7 @@ public class SpeechFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         constraintLayout = view.findViewById(R.id.constraintLayout001);
+        constraintLayoutWebView = view.findViewById(R.id.constraintLayoutWebView);
 
          DBHelper dbHelper=new DBHelper(getActivity());
         ArrayList<Conversation_Item> conversations = dbHelper.getConversations();
@@ -101,6 +100,15 @@ public class SpeechFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), LiveConversationChat.class);
+                startActivity(intent);
+            }
+        });
+
+        constraintLayoutWebView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), VideoChat.class);
+                intent.putExtra("url", "https://www.google.com");
                 startActivity(intent);
             }
         });

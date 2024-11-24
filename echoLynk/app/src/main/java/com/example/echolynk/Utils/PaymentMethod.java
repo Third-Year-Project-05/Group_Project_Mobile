@@ -11,6 +11,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.paymentsheet.PaymentSheet;
 import com.stripe.android.paymentsheet.PaymentSheetResult;
@@ -27,7 +28,9 @@ public class PaymentMethod {
     private final PaymentSheet paymentSheet;
     private String paymentIntentClientSecret;
     private PaymentSheet.CustomerConfiguration configuration;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    private String userId;
 
     public PaymentMethod(Context context) {
         this.context = context;
@@ -37,7 +40,8 @@ public class PaymentMethod {
 
 
 
-    public void firePaymentMethod(){
+    public void firePaymentMethod(String userId){
+        this.userId=userId;
         Log.d("Configuration", paymentIntentClientSecret);
         if (paymentIntentClientSecret != null) {
             Log.d("Configuration", configuration.toString());
@@ -52,7 +56,14 @@ public class PaymentMethod {
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
             Toast.makeText(context,((PaymentSheetResult.Failed) paymentSheetResult).getError().getMessage(),Toast.LENGTH_SHORT).show();
         } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-            Toast.makeText(context,"Successfully",Toast.LENGTH_SHORT).show();
+            db.collection("users").document(userId)
+                    .update("isPremium", true) // Set the `isPremium` field to true
+                    .addOnSuccessListener(aVoid -> {
+                        Toast.makeText(context,"Successfully",Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(context,"Failed to update isPremium value.", Toast.LENGTH_SHORT).show();
+                    });
         }else {
             Toast.makeText(context,"Something is wrong.",Toast.LENGTH_SHORT).show();
         }
@@ -83,8 +94,16 @@ public class PaymentMethod {
         }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                try {
+                    Toast.makeText(context, "Fail to get response = " + error, Toast.LENGTH_SHORT).show();
+                    Log.d("onErrorResponse 1", error.toString());
+                    Log.d("onErrorResponse 2", error.getLocalizedMessage());
+                } catch (NullPointerException e){
+                    Log.d("null pointer exception", "null pointer exception is fire");
+                }
                 // method to handle errors.
-                Toast.makeText(context, "Fail to get response = " + error, Toast.LENGTH_SHORT).show();
+
             }
         }) {
             @Override
@@ -102,8 +121,4 @@ public class PaymentMethod {
         // a json object request.
         queue.add(request);
     }
-
-
-
-
 }

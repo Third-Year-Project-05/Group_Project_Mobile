@@ -1,17 +1,18 @@
 package com.example.echolynk.Utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.echolynk.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -20,61 +21,59 @@ import java.util.List;
 
 public class FirebaseUtils {
 
-    public  static Boolean isLoggedIn(){
-        if(currentUserId() != null){
+    public static Boolean isLoggedIn() {
+        if (currentUserId() != null) {
             return true;
         }
         return false;
     }
 
-    public static String currentUserId(){
+    public static String currentUserId() {
         return FirebaseAuth.getInstance().getUid();
     }
 
-    public static DocumentReference currentUserDetails(){
+    public static DocumentReference currentUserDetails() {
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
 
-    public static DocumentReference currentUserTestingDetails(){
+    public static DocumentReference currentUserTestingDetails() {
         return FirebaseFirestore.getInstance().collection("usersTesting").document(currentUserId());
     }
 
-    public static CollectionReference allUserCollectionReference(){
+    public static CollectionReference allUserCollectionReference() {
         return FirebaseFirestore.getInstance().collection("users");
     }
 
-    public static String getChatRoomId(String user1Id, String user2Id){
-        if(user1Id.hashCode() < user2Id.hashCode()){
-            return user1Id+"_"+user2Id;
-        }
-        else {
-            return user2Id+"_"+user1Id;
+    public static String getChatRoomId(String user1Id, String user2Id) {
+        if (user1Id.hashCode() < user2Id.hashCode()) {
+            return user1Id + "_" + user2Id;
+        } else {
+            return user2Id + "_" + user1Id;
         }
     }
 
-    public static DocumentReference getChatRoomReference(String chatroomId){
+    public static DocumentReference getChatRoomReference(String chatroomId) {
         return FirebaseFirestore.getInstance().collection("chatrooms").document(chatroomId);
     }
 
-    public static CollectionReference getChatroomMessageReference(String chatroomId){
+    public static CollectionReference getChatroomMessageReference(String chatroomId) {
         return getChatRoomReference(chatroomId).collection("chats");
     }
 
-    public static DocumentReference getOtherUserFromChatRoomModel(List<String> userIds){
+    public static DocumentReference getOtherUserFromChatRoomModel(List<String> userIds) {
 
-        if(userIds.get(0).equals(currentUserId())){
+        if (userIds.get(0).equals(currentUserId())) {
             return allUserCollectionReference().document(userIds.get(1));
-        }
-        else{
+        } else {
             return allUserCollectionReference().document(userIds.get(0));
         }
     }
 
-    public static String timeStampToString(Timestamp timestamp){
+    public static String timeStampToString(Timestamp timestamp) {
         return new SimpleDateFormat("HH:mm").format(timestamp.toDate());
     }
 
-    public static CollectionReference allChatroomCollectionReference(){
+    public static CollectionReference allChatroomCollectionReference() {
         return FirebaseFirestore.getInstance().collection("chatrooms");
     }
 
@@ -82,7 +81,7 @@ public class FirebaseUtils {
 //        FirebaseAuth.getInstance().signOut();
 //    }
 
-    public static void logOut(Context context){
+    public static void logOut(Context context) {
         // Firebase sign out
         FirebaseAuth.getInstance().signOut();
 
@@ -102,14 +101,19 @@ public class FirebaseUtils {
     }
 
 
-    public static StorageReference getCurrentProfilePicStorageRef(){
+    public static StorageReference getCurrentProfilePicStorageRef() {
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
                 .child(FirebaseUtils.currentUserId());
     }
 
-    public static StorageReference getOtherUserProfilePicStorageRef(String otherUserId){
+    public static StorageReference getOtherUserProfilePicStorageRef(String otherUserId) {
         return FirebaseStorage.getInstance().getReference().child("profile_pic")
                 .child(otherUserId);
+    }
+
+    public static Task<QuerySnapshot> isUserPremium(String userId) {
+        return FirebaseFirestore.getInstance().collection("users")
+                .whereEqualTo("userId", userId).get();
     }
 
 }
