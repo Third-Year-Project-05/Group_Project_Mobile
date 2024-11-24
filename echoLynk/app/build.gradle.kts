@@ -68,7 +68,7 @@ dependencies {
     implementation (libs.firebase.auth.v2101)
     implementation (libs.okhttp)
     implementation (libs.volley)
-
+    implementation (libs.stripe.android.v2120)
 
 
 

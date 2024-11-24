@@ -11,18 +11,20 @@ public class UserModel {
     private String userId;
     private String password;
     private String role;
+    private boolean isPremium;
 
     public UserModel() {
     }
 
-    public UserModel(String userName, String phoneNumber, String email, Timestamp timestamp, String userId,String password,String role) {
+    public UserModel(String userName, String phoneNumber, String email, Timestamp createdTimestamp, String userId, String password, String role, boolean isPremium) {
         this.userName = userName;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.createdTimestamp = timestamp;
+        this.createdTimestamp = createdTimestamp;
         this.userId = userId;
         this.password = password;
         this.role = role;
+        this.isPremium = isPremium;
     }
 
     public String getPassword() {
@@ -79,5 +81,12 @@ public class UserModel {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public boolean getIsPremium() {
+        return isPremium;
+    }
+    public void setIsPremium(boolean isPremium) {
+        this.isPremium = isPremium;
     }
 }

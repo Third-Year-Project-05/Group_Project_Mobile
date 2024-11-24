@@ -2,6 +2,8 @@ package com.example.echolynk.View.LiveConversation;
 
 import static android.content.ContentValues.TAG;
 
+import static com.example.echolynk.Utils.FirebaseUtils.isUserPremium;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -16,7 +18,6 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -52,6 +53,7 @@ import com.example.echolynk.Utils.Conversations;
 import com.example.echolynk.Utils.DB.DBHelper;
 import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.Utils.ImageGenerator;
+import com.example.echolynk.Utils.PaymentMethod;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.AnswerAdapter;
 import com.example.echolynk.View.Adapter.DifficultWordsAdapter;
@@ -111,12 +113,16 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
     private final Conversations conversations = new Conversations();
 
-    private ImageGenerator imageGenerator = new ImageGenerator();
+    private final ImageGenerator imageGenerator = new ImageGenerator();
+    private PaymentMethod paymentMethod;
+
+
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    private final String currentUserId=currentUser.getUid();
 
     /*https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/*/
 
-    private static final String endPoint = "https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/";
+    private static final String endPoint = "https://python-backend-taupe.vercel.app/predict";
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility", "UseCompatLoadingForDrawables"})
     @Override
@@ -125,6 +131,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_live_conversation_chat);
 
+        paymentMethod=new PaymentMethod(LiveConversationChat.this);
         //load conversation
         conversations.loadConversations();
 
@@ -184,7 +191,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         final Handler handler = new Handler();
         final Runnable logRunnable = () -> Log.d("check 3", "onCreate: ");
 
-        pauseBtn.setOnTouchListener((view, motionEvent) -> {
+        /*pauseBtn.setOnTouchListener((view, motionEvent) -> {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     // Schedule the log statement to run after 30 seconds (0.5 minutes)
@@ -197,6 +204,11 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                     break;
             }
             return true;
+        });*/
+
+        pauseBtn.setOnClickListener(view -> {
+
+
         });
 
 
@@ -278,7 +290,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             @Override
             public void onResults(Bundle bundle) {
 
-                boolean b = true;
+                final boolean[] b = {true};
 
                 muteMike.setVisibility(View.GONE);
                 mikeBtn.setVisibility(View.VISIBLE);
@@ -299,19 +311,37 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
                 setUpLiveChat(chatRecycleView, massageList);
 
-                // find the default conversation list has the this massage
-                for (ConversationModel tempModel : conversationForCheck) {
-                    if (tempModel.getQuestion().equalsIgnoreCase(arrayList.get(0))) {
-                        b = false;
-                        suggestion_answer.setVisibility(View.VISIBLE);
-                        setSuggestions(tempModel.getAnswer(), suggestion_answer);
-                    }
-                }
+                // check the user is premium
+                isUserPremium(currentUserId)
+                        .addOnSuccessListener(queryDocumentSnapshots -> {
+                            if (!queryDocumentSnapshots.isEmpty()) {
+                                // Iterate through the results
+                                queryDocumentSnapshots.forEach(documentSnapshot -> {
+                                    boolean isPremium = Boolean.TRUE.equals(documentSnapshot.getBoolean("isPremium"));
+                                    Log.d("Bool value 1", isPremium+" dsdad");
 
-                if (b) {
-                    getSuggestions(arrayList.get(0));
-                }
+                                    if (isPremium) {
+                                        // find the default conversation list has the this massage
+                                        for (ConversationModel tempModel : conversationForCheck) {
+                                            if (tempModel.getQuestion().equalsIgnoreCase(arrayList.get(0))) {
+                                                b[0] = false;
+                                                suggestion_answer.setVisibility(View.VISIBLE);
+                                                setSuggestions(tempModel.getAnswer(), suggestion_answer);
+                                            }
+                                        }
 
+                                        if (b[0]) {
+                                            getSuggestions(arrayList.get(0));
+                                        }
+                                    }else {
+                                        paymentMethod.firePaymentMethod(currentUserId);
+                                    }
+
+                                });
+                            }
+                        }).addOnFailureListener(e -> {
+                            Log.e(TAG, "Error querying users", e);
+                        });
             }
 
             @Override
@@ -499,8 +529,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                             try {
                                 progressBar.setVisibility(View.GONE);
                                 suggestion_answer.setVisibility(View.VISIBLE);
-                                Log.d("suggestions------->", "suggetions.toString()");
                                 JSONArray suggetions = response.getJSONArray("suggetions");
+                                Log.d("suggestions------->", suggetions.toString());
                                 for (int i = 0; i < suggetions.length(); i++) {
                                     String suggestion = suggetions.getString(i);
                                     suggestions.add(suggestion);
@@ -603,11 +633,31 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     public void onClickDifficultWord(int position, View view) {
         dialog.dismiss();
 
-        if (view instanceof TextView) {
-            TextView textView = (TextView) view;
-            String text = textView.getText().toString().trim();
-            imageGenerator.Generate(text, progressBar2, dialog.getContext());
-        }
+        //------------------
+
+        isUserPremium(currentUserId)
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // Iterate through the results
+                        queryDocumentSnapshots.forEach(documentSnapshot -> {
+                            boolean isPremium = Boolean.TRUE.equals(documentSnapshot.getBoolean("isPremium"));
+                            Log.d("Bool value 1", isPremium+" dsdad");
+
+                            if (isPremium) {
+                                if (view instanceof TextView) {
+                                    TextView textView = (TextView) view;
+                                    String text = textView.getText().toString().trim();
+                                    imageGenerator.Generate(text, progressBar2, dialog.getContext());
+                                }
+                            }else {
+                                paymentMethod.firePaymentMethod(currentUserId);
+                            }
+
+                        });
+                    }
+                }).addOnFailureListener(e -> {
+                    Log.e(TAG, "Error querying users", e);
+                });
     }
 
     @Override

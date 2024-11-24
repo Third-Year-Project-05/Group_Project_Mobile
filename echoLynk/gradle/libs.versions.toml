@@ -34,6 +34,7 @@ firebaseAuthVersion = "23.1.0"
 firebaseFirestore = "25.1.1"
 firebaseUiFirestore = "8.0.2"
 stripeAndroid = "21.1.0"
+stripeAndroidVersion = "21.2.0"
 stripeJava = "28.0.0"
 volley = "1.2.1"
 firebaseStorage = "21.0.1"
@@ -82,6 +83,7 @@ lottie = { group = "com.airbnb.android", name = "lottie", version.ref ="lottie"}
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuthVersion" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 stripe-android = { module = "com.stripe:stripe-android", version.ref = "stripeAndroid" }
+stripe-android-v2120 = { module = "com.stripe:stripe-android", version.ref = "stripeAndroidVersion" }
 stripe-java = { module = "com.stripe:stripe-java", version.ref = "stripeJava" }
 volley = { group = "com.android.volley", name = "volley", version.ref="volley"}
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }

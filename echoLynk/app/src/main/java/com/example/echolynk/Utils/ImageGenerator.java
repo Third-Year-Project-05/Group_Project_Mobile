@@ -24,8 +24,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.echolynk.R;
-import com.example.echolynk.View.LiveConversation.LiveConversationChat;
-import com.example.echolynk.View.LiveConversation.VoiceAssistanceThree;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ImageGenerator {
-    private static final String apiKey = "sk-proj-XmRmjjHi5qvdQbkFT7tXT3BlbkFJEZpbfe9lRYALeoVAKEx6";
+    private static final String apiKey = "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";
     private static String stringOutput = "";
     ProgressDialog progressDialog;
     Handler handler = new Handler();
