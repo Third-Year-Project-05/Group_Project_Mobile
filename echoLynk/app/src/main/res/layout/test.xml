@@ -1,45 +1,19 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyActivity"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/txtText"
+    <com.stripe.android.view.CardInputWidget
+        android:id="@+id/card_input_widget"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter text to speak" />
-
-    <SeekBar
-        android:id="@+id/seekBarPitch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="20"
-        android:progress="10"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pitch"/>
-
-    <SeekBar
-        android:id="@+id/seekBarSpeed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="20"
-        android:progress="10"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Speech Rate"/>
+        android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/btnSpeak"
-        android:layout_width="wrap_content"
+        android:id="@+id/pay_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Speak"
-        android:enabled="false"/>
+        android:text="Pay Now"
+        android:layout_marginTop="16dp"/>
 </LinearLayout>
