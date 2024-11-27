@@ -42,11 +42,10 @@ public class PaymentMethod {
 
     public void firePaymentMethod(String userId){
         this.userId=userId;
-        Log.d("Configuration", paymentIntentClientSecret);
         if (paymentIntentClientSecret != null) {
             Log.d("Configuration", configuration.toString());
             paymentSheet.presentWithPaymentIntent(paymentIntentClientSecret,
-                    new PaymentSheet.Configuration("Codes Easy",configuration));
+                    new PaymentSheet.Configuration("echoLynk",configuration));
         }
     }
 
@@ -65,16 +64,17 @@ public class PaymentMethod {
                         Toast.makeText(context,"Failed to update isPremium value.", Toast.LENGTH_SHORT).show();
                     });
         }else {
-            Toast.makeText(context,"Something is wrong.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Something is wrong.-->",Toast.LENGTH_SHORT).show();
         }
     }
 
     public void fetchApi(){
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://python-backend-taupe.vercel.app/payment-sheet";
+        String url = "https://python-backend-527164007-dilum-induwaras-projects.vercel.app/payment-sheet";
 
 
-        StringRequest request = new StringRequest(Request.Method.GET, url, new com.android.volley.Response.Listener<String>() {
+        StringRequest request = new StringRequest(Request.Method.GET, url,
+                new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
@@ -112,7 +112,6 @@ public class PaymentMethod {
 
                 Map<String, String> params = new HashMap<String, String>();
 
-                params.put("authKey","abc");
 
                 return params;
             }

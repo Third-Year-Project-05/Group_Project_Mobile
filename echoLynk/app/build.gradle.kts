@@ -69,7 +69,7 @@ dependencies {
     implementation (libs.okhttp)
     implementation (libs.volley)
     implementation (libs.stripe.android.v2120)
-
+    //implementation ("com.stripe:stripe-android:20.27.0")
 
 
 
