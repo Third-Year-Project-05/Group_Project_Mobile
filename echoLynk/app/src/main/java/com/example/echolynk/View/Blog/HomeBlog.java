@@ -1,7 +1,5 @@
 package com.example.echolynk.View.Blog;
 
-import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,15 +16,11 @@ import com.example.echolynk.R;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.BlogAdapter;
 import com.example.echolynk.View.Adapter.EmptyAdapter;
-import com.example.echolynk.View.LiveConversation.LiveConversationChat;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class HomeBlog extends AppCompatActivity implements onClickListener {
 
@@ -56,7 +50,8 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
                                             document.getString("title"),
                                             document.getString("author"),
                                             document.getString("content"),
-                                            document.getTimestamp("timestamp")
+                                            document.getTimestamp("timestamp"),
+                                            document.getString("imageUrl")
                                     )
                             );
 
@@ -93,6 +88,7 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
         Intent intent = new Intent(HomeBlog.this, BlogView.class);
         intent.putExtra("position",position);
         intent.putParcelableArrayListExtra("blogList", new ArrayList<>(blogs));
+        Log.e("blog image uri 0", blogs.toString());
         startActivity(intent);
     }
 

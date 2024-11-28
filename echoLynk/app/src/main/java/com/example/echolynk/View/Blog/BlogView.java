@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.example.echolynk.Model.Blog;
 import com.example.echolynk.R;
 import com.example.echolynk.View.Adapter.BlogViewAdapter;
@@ -33,6 +34,8 @@ public class BlogView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blog_view);
+         int x=10;
+        String s = String.valueOf(x);
 
         // set as article data
         TextView articleTitle=findViewById(R.id.blog_view_title);
@@ -42,16 +45,30 @@ public class BlogView extends AppCompatActivity {
         TextView articleDescription=findViewById(R.id.blog_view_description);
 
         int position = getIntent().getIntExtra("position", -1);
-        ArrayList<Blog> blogs = getIntent().getParcelableArrayListExtra("blogList");
+        List<Blog> blogs = getIntent().getParcelableArrayListExtra("blogList");
+        Log.e("blog image uri 1", blogs.toString());
 
         // set up blog content
         articleTitle.setText(blogs.get(position).getTitle());
-        articleImage.setImageResource(getIntent().getIntExtra("blogImage",R.drawable.conversation_default));
         articleAuthor.setText(blogs.get(position).getAuthor());
         articlePublishDate.setText(calculateTime(blogs.get(position).getTimestamp()));
         articleDescription.setText(blogs.get(position).getDescription());
+        // handle image uri
+        String imageUrl = blogs.get(position).getImage();
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Log.d("blog image uri", imageUrl);
+            Glide.with(BlogView.this)
+                    .load(imageUrl) // Load the image URL
+                    .placeholder(R.drawable.conversation_default) // Placeholder image
+                    .error(R.drawable.conversation_default) // Error image in case loading fails
+                    .into(articleImage); // Set the loaded image into the ImageView
 
-        Log.d("time stamp ", blogs.get(position).getTimestamp().toString());
+        } else {
+            Log.d("blog image uri", "null image");
+           articleImage.setImageResource(R.drawable.conversation_default);
+        }
+
+
       // set as   recent articles
 
        recyclerView=findViewById(R.id.blog_view_recent_articles_recycle_view);
@@ -59,7 +76,7 @@ public class BlogView extends AppCompatActivity {
         List<Blog> blogList=new ArrayList<>();
 
         for (Blog tempBlog:blogs) {
-            blogList.add(new Blog(tempBlog.getTitle(),R.drawable.dummy_blog_img1));
+            blogList.add(new Blog(tempBlog.getTitle(),tempBlog.getImage()));
         }
 
         if (recyclerView!=null) {

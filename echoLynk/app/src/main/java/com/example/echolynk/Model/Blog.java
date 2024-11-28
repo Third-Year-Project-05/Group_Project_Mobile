@@ -13,45 +13,38 @@ public class Blog implements Parcelable {
     private String status;
     private String title;
     private String author;
-    private int image;
+    private String image;
     private String description;
     private Timestamp timestamp;
 
-    public Blog(String id, String title, String author, String description, Timestamp timestamp) {
+    public Blog(String id, String title, String author, String description, Timestamp timestamp,String image) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.description = description;
         this.timestamp = timestamp;
+        this.image=image;
     }
 
     public Blog() {
     }
 
-    public Blog(String title, String author, int image) {
+    public Blog(String title, String author, String image) {
         this.title = title;
         this.author = author;
         this.image = image;
     }
 
-    public Blog(String title, String author, int image, String description) {
+    public Blog(String title, String author, String image, String description) {
         this.title = title;
         this.author = author;
         this.image = image;
         this.description = description;
     }
 
-    public Blog(String title, int image) {
+    public Blog(String title, String image) {
         this.title = title;
         this.image = image;
-    }
-
-    public Blog(Parcel in) {
-        id = in.readString();
-        title = in.readString();
-        author = in.readString();
-        description = in.readString();
-        timestamp = in.readParcelable(Timestamp.class.getClassLoader());
     }
 
     public String getTitle() {
@@ -70,11 +63,11 @@ public class Blog implements Parcelable {
         this.author = author;
     }
 
-    public int getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -123,11 +116,21 @@ public class Blog implements Parcelable {
         return 0;
     }
 
+    public Blog(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        author = in.readString();
+        image=in.readString();
+        description = in.readString();
+        timestamp = in.readParcelable(Timestamp.class.getClassLoader());
+    }
+
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
         parcel.writeString(id);
         parcel.writeString(title);
         parcel.writeString(author);
+        parcel.writeString(image);
         parcel.writeString(description);
         parcel.writeParcelable(timestamp, i);
     }
