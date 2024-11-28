@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="-1dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Edit Blog"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+
+    <RelativeLayout
+        android:id="@+id/errorMassageLayout"
+        android:layout_width="match_parent"
+        android:layout_height="366dp"
+        android:visibility="visible"
+        android:layout_below="@+id/textView28"
+        android:layout_marginTop="44dp">
+
+        <ImageView
+            android:id="@+id/imageView14"
+            android:layout_width="165dp"
+            android:layout_height="118dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="170dp"
+            app:srcCompat="@drawable/can_not_edit" />
+
+        <TextView
+            android:id="@+id/worningMassage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView14"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="-120dp"
+            android:fontFamily="@font/poppins_bold_italic"
+            android:padding="8dp"
+            android:text="Only the author of this blog is allowed to edit it."
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/blogEditLayout"
+        android:layout_width="match_parent"
+        android:layout_height="600dp"
+        android:visibility="gone"
+        android:layout_below="@+id/textView28"
+        android:layout_marginTop="77dp">
+
+
+        <EditText
+            android:id="@+id/blogEditDescription"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="34dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:background="@drawable/edittext_background"
+            android:ems="10"
+            android:gravity="top|start"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:overScrollMode="always"
+            android:padding="10dp"
+            android:scrollbars="vertical" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/blogEditSaveBTN"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/blogEditDescription"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginEnd="50dp"
+            android:background="@drawable/button_background"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
