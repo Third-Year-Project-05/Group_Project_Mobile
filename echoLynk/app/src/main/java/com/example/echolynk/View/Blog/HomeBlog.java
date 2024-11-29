@@ -88,7 +88,6 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
         Intent intent = new Intent(HomeBlog.this, BlogView.class);
         intent.putExtra("position",position);
         intent.putParcelableArrayListExtra("blogList", new ArrayList<>(blogs));
-        Log.e("blog image uri 0", blogs.toString());
         startActivity(intent);
     }
 

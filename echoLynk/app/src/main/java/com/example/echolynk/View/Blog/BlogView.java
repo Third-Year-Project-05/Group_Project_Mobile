@@ -23,11 +23,11 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.echolynk.Model.Blog;
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.BlogViewAdapter;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.firebase.Timestamp;
@@ -49,21 +49,21 @@ import java.util.TimeZone;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
-public class BlogView extends AppCompatActivity {
+public class BlogView extends AppCompatActivity implements onClickListener{
 
-   private RecyclerView recyclerView;
-   private TextView articleDescription;
-   private RelativeLayout errorMassageLayout,blogEditLayout,blogEditImageLayout;
-   private EditText blogEditDescription;
-   private Button blogEditSaveBTN,blogEditNextBTN,blogEditSkipBTN;
-   private ImageView uploadImage;
-   private Uri selectedImageUri;
-   private ActivityResultLauncher<Intent> imagePickLauncher;
-   private Dialog dialog;
-   private String currentUserName= FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+    private RecyclerView recyclerView;
+    private TextView articleDescription;
+    private RelativeLayout errorMassageLayout, blogEditLayout, blogEditImageLayout;
+    private EditText blogEditDescription;
+    private Button blogEditSaveBTN, blogEditNextBTN, blogEditSkipBTN;
+    private ImageView uploadImage;
+    private Uri selectedImageUri;
+    private ActivityResultLauncher<Intent> imagePickLauncher;
+    private Dialog dialog;
+    private String currentUserName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
     private String blogId;
     private FrameLayout frameLayout2;
-    private FirebaseFirestore db=FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseStorage storage;
 
     @Override
@@ -71,9 +71,9 @@ public class BlogView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_blog_view);
-         int x=10;
+        int x = 10;
         String s = String.valueOf(x);
-        storage=FirebaseStorage.getInstance();
+        storage = FirebaseStorage.getInstance();
         // pic image
 
         imagePickLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
@@ -107,14 +107,13 @@ public class BlogView extends AppCompatActivity {
         );
 
         // set as article data
-        TextView articleTitle=findViewById(R.id.blog_view_title);
-        ImageView articleImage=findViewById(R.id.blog_view_image);
-        TextView articleAuthor=findViewById(R.id.blog_view_author);
-        TextView articlePublishDate=findViewById(R.id.blog_view_publish_date);
-        articleDescription=findViewById(R.id.blog_view_description);
+        TextView articleTitle = findViewById(R.id.blog_view_title);
+        ImageView articleImage = findViewById(R.id.blog_view_image);
+        TextView articleAuthor = findViewById(R.id.blog_view_author);
+        TextView articlePublishDate = findViewById(R.id.blog_view_publish_date);
+        articleDescription = findViewById(R.id.blog_view_description);
 
-        dialog=new Dialog(BlogView.this);
-
+        dialog = new Dialog(BlogView.this);
 
 
         int position = getIntent().getIntExtra("position", -1);
@@ -122,7 +121,7 @@ public class BlogView extends AppCompatActivity {
         Log.e("blog image uri 1", blogs.toString());
 
         // set up blog content
-        blogId=blogs.get(position).getId();
+        blogId = blogs.get(position).getId();
         articleTitle.setText(blogs.get(position).getTitle());
         articleAuthor.setText(blogs.get(position).getAuthor());
         articlePublishDate.setText(calculateTime(blogs.get(position).getTimestamp()));
@@ -139,45 +138,42 @@ public class BlogView extends AppCompatActivity {
 
         } else {
             Log.d("blog image uri", "null image");
-           articleImage.setImageResource(R.drawable.conversation_default);
+            articleImage.setImageResource(R.drawable.conversation_default);
         }
 
 
-      // set as   recent articles
+        // set as   recent articles
 
-       recyclerView=findViewById(R.id.blog_view_recent_articles_recycle_view);
+        recyclerView = findViewById(R.id.blog_view_recent_articles_recycle_view);
 
-        List<Blog> blogList=new ArrayList<>();
+        List<Blog> blogList = new ArrayList<>();
 
-        for (Blog tempBlog:blogs) {
-            blogList.add(new Blog(tempBlog.getTitle(),tempBlog.getImage()));
+        for (Blog tempBlog : blogs) {
+            blogList.add(new Blog(tempBlog.getTitle(), tempBlog.getImage()));
         }
 
-        if (recyclerView!=null) {
-            StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(
-                    1, // span count
-                    StaggeredGridLayoutManager.HORIZONTAL // orientation
-            );
-            recyclerView.setAdapter(new BlogViewAdapter(getApplicationContext(),blogList));
+        if (recyclerView != null) {
+
+            recyclerView.setAdapter(new BlogViewAdapter(getApplicationContext(), blogList, (onClickListener) this));
         }
 
 
-        articleDescription.setOnLongClickListener(view->{
+        articleDescription.setOnLongClickListener(view -> {
             dialog.setContentView(R.layout.popup_edit_blog);
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.custom_dialog_bgckground));
             dialog.setCancelable(false);
 
 
-            errorMassageLayout=dialog.findViewById(R.id.errorMassageLayout);
-            blogEditLayout=dialog.findViewById(R.id.blogEditLayout);
-            blogEditImageLayout=dialog.findViewById(R.id.blogEditImageLayout);
-            blogEditDescription=dialog.findViewById(R.id.blogEditDescription);
-            blogEditSaveBTN=dialog.findViewById(R.id.blogEditSaveBTN);
-            blogEditNextBTN=dialog.findViewById(R.id.blogEditNextBTN);
-            blogEditSkipBTN=dialog.findViewById(R.id.blogEditSkipBTN);
-            uploadImage=dialog.findViewById(R.id.uploadImage1);
-            frameLayout2=dialog.findViewById(R.id.frameLayout2);
+            errorMassageLayout = dialog.findViewById(R.id.errorMassageLayout);
+            blogEditLayout = dialog.findViewById(R.id.blogEditLayout);
+            blogEditImageLayout = dialog.findViewById(R.id.blogEditImageLayout);
+            blogEditDescription = dialog.findViewById(R.id.blogEditDescription);
+            blogEditSaveBTN = dialog.findViewById(R.id.blogEditSaveBTN);
+            blogEditNextBTN = dialog.findViewById(R.id.blogEditNextBTN);
+            blogEditSkipBTN = dialog.findViewById(R.id.blogEditSkipBTN);
+            uploadImage = dialog.findViewById(R.id.uploadImage1);
+            frameLayout2 = dialog.findViewById(R.id.frameLayout2);
 
             if (articleAuthor.getText().toString().equalsIgnoreCase(currentUserName)) {
 
@@ -196,9 +192,9 @@ public class BlogView extends AppCompatActivity {
 
                 // click on the next btn
                 blogEditNextBTN.setOnClickListener(view1 -> {
-                    if (selectedImageUri== null) {
-                        defaultAlert("Warning..!","Please select image before.");
-                    }else {
+                    if (selectedImageUri == null) {
+                        defaultAlert("Warning..!", "Please select image before.");
+                    } else {
                         blogEditLayout.setVisibility(View.VISIBLE);
                         errorMassageLayout.setVisibility(View.GONE);
                         blogEditImageLayout.setVisibility(View.GONE);
@@ -231,7 +227,7 @@ public class BlogView extends AppCompatActivity {
 
                                                                 // Perform the update
                                                                 docRef.update(updates)
-                                                                        .addOnSuccessListener(aVoid ->{
+                                                                        .addOnSuccessListener(aVoid -> {
                                                                             Toast.makeText(this, "Blog updated successfully!", Toast.LENGTH_SHORT).show();
                                                                             backOnclick(view);
                                                                         }).addOnFailureListener(e ->
@@ -251,8 +247,8 @@ public class BlogView extends AppCompatActivity {
                                         });
 
 
-                            }else {
-                                defaultAlert("Warning..!","Description cannot be empty. Please enter your idea before proceeding.");
+                            } else {
+                                defaultAlert("Warning..!", "Description cannot be empty. Please enter your idea before proceeding.");
                             }
                         });
                     }
@@ -281,7 +277,7 @@ public class BlogView extends AppCompatActivity {
 
                                             // Perform the update
                                             docRef.update(updates)
-                                                    .addOnSuccessListener(aVoid ->{
+                                                    .addOnSuccessListener(aVoid -> {
                                                         Toast.makeText(this, "Blog updated successfully!", Toast.LENGTH_SHORT).show();
                                                         backOnclick(view);
                                                     }).addOnFailureListener(e ->
@@ -292,13 +288,13 @@ public class BlogView extends AppCompatActivity {
                                     })
                                     .addOnFailureListener(e ->
                                             Toast.makeText(this, "Failed to fetch data: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-                        }else {
-                        defaultAlert("Warning..!","Description cannot be empty. Please enter your idea before proceeding.");
-                    }
+                        } else {
+                            defaultAlert("Warning..!", "Description cannot be empty. Please enter your idea before proceeding.");
+                        }
                     });
                 });
 
-            }else {
+            } else {
                 blogEditLayout.setVisibility(View.GONE);
                 errorMassageLayout.setVisibility(View.VISIBLE);
             }
@@ -328,7 +324,7 @@ public class BlogView extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void defaultAlert(String title,String massage){
+    private void defaultAlert(String title, String massage) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title)
                 .setMessage(massage)
@@ -337,4 +333,24 @@ public class BlogView extends AppCompatActivity {
         dialog.show();
     }
 
+    @Override
+    public void onInit(int status) {
+
+    }
+
+    @Override
+    public void onClick(int position, View view) {
+        Intent intent = new Intent(BlogView.this, HomeBlog.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickDifficultWord(int position, View view) {
+
+    }
+
+    @Override
+    public boolean onLongClick(int position, View view) {
+        return false;
+    }
 }
