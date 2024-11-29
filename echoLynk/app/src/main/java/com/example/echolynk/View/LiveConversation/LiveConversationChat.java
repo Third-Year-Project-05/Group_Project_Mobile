@@ -97,7 +97,6 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private SpeechRecognizer speechRecognizer;
     private ImageButton keyboardBtn, sendButton;
     private ImageButton mikeBtn, muteMike;
-    private ImageButton pauseBtn;
     private ImageButton closeBtn;
     private Button conversationYesBtn, conversationNoBtn, conversationSaveBtn;
     private ProgressBar progressBar, progressBar2;
@@ -120,8 +119,6 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     private final String currentUserId=currentUser.getUid();
 
-    /*https://python-backend-8k9v-oushx2d3n-dilum-induwaras-projects.vercel.app/predict/*/
-
     private static final String endPoint = "https://python-backend-taupe.vercel.app/predict";
 
     @SuppressLint({"MissingInflatedId", "ClickableViewAccessibility", "UseCompatLoadingForDrawables"})
@@ -133,7 +130,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
         paymentMethod=new PaymentMethod(LiveConversationChat.this);
         //load conversation
-        conversations.loadConversations();
+        conversations.loadConversations(currentUser);
 
 
         // setup dialog box
@@ -155,7 +152,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         keyboardBtn = findViewById(R.id.keyboard_icon);
         mikeBtn = findViewById(R.id.speech_icon);
         muteMike = findViewById(R.id.speech_icon_mute);
-        pauseBtn = findViewById(R.id.pause_icon);
+ //       pauseBtn = findViewById(R.id.pause_icon);
         closeBtn = findViewById(R.id.close_icon);
         massageBox = findViewById(R.id.write_massage);
         sendButton = findViewById(R.id.send_massage);
@@ -190,26 +187,6 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
         final Handler handler = new Handler();
         final Runnable logRunnable = () -> Log.d("check 3", "onCreate: ");
-
-        /*pauseBtn.setOnTouchListener((view, motionEvent) -> {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    // Schedule the log statement to run after 30 seconds (0.5 minutes)
-                    handler.postDelayed(logRunnable, 1000 / 2); // 30000 milliseconds = 30 seconds
-                    break;
-                case MotionEvent.ACTION_UP:
-                    // Cancel the log statement if the touch is released before 30 seconds
-                    handler.removeCallbacks(logRunnable);
-                    Log.d("check 4", "onCreate: ");
-                    break;
-            }
-            return true;
-        });*/
-
-        pauseBtn.setOnClickListener(view -> {
-
-
-        });
 
 
         // set suggestions

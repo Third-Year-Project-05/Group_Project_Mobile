@@ -1,6 +1,7 @@
 package com.example.echolynk.Utils;
 
 import com.example.echolynk.Model.ConversationModel;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,17 +9,23 @@ import java.util.Arrays;
 public class Conversations {
 
     private final ArrayList<ConversationModel> conversations=new ArrayList<>();
-    private  ArrayList<String> answer=new ArrayList<>();
 
     public Conversations() {
     }
 
-    public void loadConversations() {
+    public void loadConversations(FirebaseUser currentUser) {
+        conversations.add(new ConversationModel(
+                "what is your name",
+                Arrays.asList("My name is "+currentUser.getDisplayName()+". What about you?",
+                        "I'm "+currentUser.getDisplayName()+". Nice to meet you!",
+                        "I'm "+currentUser.getDisplayName()+". How about you?")
+        ));
+
         conversations.add(new ConversationModel(
                 "what's your name",
-                Arrays.asList("My name is Sarah. What about you?",
-                        "I'm James. Nice to meet you!",
-                        "I'm Emma. How about you?")
+                Arrays.asList("My name is "+currentUser.getDisplayName()+". What about you?",
+                        "I'm "+currentUser.getDisplayName()+". Nice to meet you!",
+                        "I'm "+currentUser.getDisplayName()+". How about you?")
         ));
         conversations.add(new ConversationModel(
                 "how are you today",
