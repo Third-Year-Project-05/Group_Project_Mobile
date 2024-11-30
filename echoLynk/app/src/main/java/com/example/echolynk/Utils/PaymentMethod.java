@@ -55,17 +55,49 @@ public class PaymentMethod {
         } else if (paymentSheetResult instanceof PaymentSheetResult.Failed) {
             Toast.makeText(context,((PaymentSheetResult.Failed) paymentSheetResult).getError().getMessage(),Toast.LENGTH_SHORT).show();
         } else if (paymentSheetResult instanceof PaymentSheetResult.Completed) {
-            db.collection("users").document(userId)
-                    .update("isPremium", true) // Set the `isPremium` field to true
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(context,"Successfully",Toast.LENGTH_SHORT).show();
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(context,"Failed to update isPremium value.", Toast.LENGTH_SHORT).show();
-                    });
+            try {
+                db.collection("payments").document(userId)
+                        .update("totalCost",5)
+                        .addOnSuccessListener(aVoid->{
+                            userCollectionUpdate();
+                        }).addOnFailureListener(e -> {
+                            newUserAddForPaymentCollection();
+                        });
+            }catch (Exception e){
+                Log.e("Exception", e.getMessage());
+            }
+
         }else {
             Toast.makeText(context,"Something is wrong.-->",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void newUserAddForPaymentCollection() {
+        Map<String, Object> newUser = new HashMap<>();
+        newUser.put("userId", userId);
+        newUser.put("imageCount", 0);
+        newUser.put("suggestionCount ", 0);
+        newUser.put("totalCost ", 5);
+        newUser.put("paymentDate ", new com.google.firebase.Timestamp(new java.util.Date()));
+
+        db.collection("payments")
+                .add(newUser)
+                .addOnSuccessListener(documentReference -> {
+                    userCollectionUpdate();
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(context,e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void userCollectionUpdate() {
+        db.collection("users").document(userId)
+                .update("isPremium", true) // Set the `isPremium` field to true
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(context,"Successfully",Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(context,"Failed to update isPremium value.", Toast.LENGTH_SHORT).show();
+                });
     }
 
     public void fetchApi(){

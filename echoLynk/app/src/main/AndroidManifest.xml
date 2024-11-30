@@ -42,11 +42,11 @@
             android:exported="false" />
         <activity
             android:name=".View.Profile.SupportContactActivity"
-            android:exported="true"
+            android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".View.Blog.AddBlogImageActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".View.Blog.AddBlogMainActivity"
             android:exported="false" />
@@ -74,22 +74,24 @@
         <activity
             android:name=".View.SplashActivity"
             android:exported="true">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity> <!-- Dakshina -->
+            </intent-filter>
+        </activity>
+
+        <!-- Dakshina -->
         <activity
             android:name=".View.LandingPage"
             android:exported="false" />
         <activity
             android:name=".View.MainActivity"
             android:configChanges="orientation|screenSize"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".View.SignInSignUp.SignIn"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".View.SignInSignUp.VerifyCode"
             android:exported="false" />
@@ -98,13 +100,7 @@
             android:exported="false" />
         <activity
             android:name=".View.Blog.HomeBlog"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".View.Blog.blog_card_custom"
             android:exported="false" />
@@ -129,7 +125,7 @@
         <activity
             android:name=".View.LiveConversation.LiveConversationChat"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".View.LiveConversation.reserveMessage"
             android:exported="false" />

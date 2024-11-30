@@ -1,10 +1,17 @@
 package com.example.echolynk.View.Profile;
 
+import static com.example.echolynk.Utils.FirebaseUtils.currentUserId;
+import static com.example.echolynk.Utils.FirebaseUtils.isUserPremium;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,11 +20,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.echolynk.R;
+import com.example.echolynk.Utils.PaymentMethod;
 import com.example.echolynk.View.MainActivity;
 
 public class SwitchToPremiumActivity extends AppCompatActivity {
 
     ImageView backBtn;
+    Button subscribeBTN;
+    RelativeLayout layout3, layout2, layout1;
+    private PaymentMethod paymentMethod;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +43,11 @@ public class SwitchToPremiumActivity extends AppCompatActivity {
         });
 
         backBtn = findViewById(R.id.switch_to_premium_back_btn);
+        subscribeBTN = findViewById(R.id.subscribeBTN);
+        layout3 = findViewById(R.id.layout3);
+        layout2 = findViewById(R.id.layout2);
+        layout1 = findViewById(R.id.layout1);
+        paymentMethod = new PaymentMethod(SwitchToPremiumActivity.this);
 
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,5 +57,30 @@ public class SwitchToPremiumActivity extends AppCompatActivity {
                 startActivity(backBtn);
             }
         });
+
+        isUserPremium(currentUserId())
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        queryDocumentSnapshots.forEach(documentSnapshot -> {
+                            boolean isPremium = Boolean.TRUE.equals(documentSnapshot.getBoolean("isPremium"));
+
+                            if (isPremium) {
+                                subscribeBTN.setVisibility(View.GONE);
+                                layout1.setBackgroundColor(Color.parseColor("#6B29BD05"));
+                                layout2.setBackgroundColor(Color.parseColor("#6B29BD05"));
+                                layout3.setBackgroundColor(Color.parseColor("#6B29BD05"));
+                            } else {
+                                subscribeBTN.setOnClickListener(view -> {
+                                    paymentMethod.firePaymentMethod(currentUserId());
+                                    Intent intent = new Intent(SwitchToPremiumActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                });
+                            }
+                        });
+                    }
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 }

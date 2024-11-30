@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/blog_card_custom"
     android:layout_width="match_parent"
+    android:padding="8dp"
     android:layout_height="wrap_content"
     tools:context=".View.Blog.blog_card_custom"
     android:gravity="center_horizontal">
