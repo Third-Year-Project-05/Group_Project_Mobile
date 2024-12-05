@@ -10,8 +10,28 @@
 
     <ImageView
         android:id="@+id/empty_page_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:srcCompat="@drawable/empty_icon"
-        android:background="#F6F8F8"/>
+        android:layout_width="356dp"
+        android:layout_height="213dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="62dp"
+        android:layout_marginEnd="24dp"
+        android:background="#F6F8F8"
+        tools:srcCompat="@drawable/empty_icon" />
+
+    <TextView
+        android:id="@+id/textView52"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/empty_page_image"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Not Found"
+        android:textSize="30sp" />
+
+
 </RelativeLayout>

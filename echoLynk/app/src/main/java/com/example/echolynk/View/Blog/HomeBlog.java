@@ -16,6 +16,7 @@ import com.example.echolynk.R;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.BlogAdapter;
 import com.example.echolynk.View.Adapter.EmptyAdapter;
+import com.example.echolynk.View.MainActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -98,7 +99,8 @@ public class HomeBlog extends AppCompatActivity implements onClickListener {
 
 
     public void backOnclick(View view) {
-
+        Intent intent = new Intent(HomeBlog.this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override

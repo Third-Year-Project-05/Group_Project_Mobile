@@ -1,8 +1,8 @@
 package com.example.echolynk.View.LiveConversation;
 
 import static android.content.ContentValues.TAG;
-
 import static com.example.echolynk.Utils.FirebaseUtils.isUserPremium;
+import static com.example.echolynk.Utils.PaymentUtils.countSuggestionGeneration;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -54,6 +54,7 @@ import com.example.echolynk.Utils.DB.DBHelper;
 import com.example.echolynk.Utils.FirebaseUtils;
 import com.example.echolynk.Utils.ImageGenerator;
 import com.example.echolynk.Utils.PaymentMethod;
+import com.example.echolynk.Utils.UpdateCallBack;
 import com.example.echolynk.Utils.onClickListener;
 import com.example.echolynk.View.Adapter.AnswerAdapter;
 import com.example.echolynk.View.Adapter.DifficultWordsAdapter;
@@ -116,8 +117,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
     private PaymentMethod paymentMethod;
 
 
-    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    private final String currentUserId=currentUser.getUid();
+    static FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    private static final String currentUserId=currentUser.getUid();
 
     private static final String endPoint = "https://python-backend-taupe.vercel.app/predict";
 
@@ -311,7 +312,17 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                                             getSuggestions(arrayList.get(0));
                                         }
                                     }else {
-                                        paymentMethod.firePaymentMethod(currentUserId);
+                                        paymentMethod.firePaymentMethod(currentUserId, new UpdateCallBack() {
+                                            @Override
+                                            public void onSuccess(boolean result) {
+
+                                            }
+
+                                            @Override
+                                            public void onFailure(boolean result) {
+
+                                            }
+                                        });
                                     }
 
                                 });
@@ -468,12 +479,31 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
             }
         }
 
+        //get personalData
+
+        /*db.collection("user_details").document(currentUserId())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> myArray = (List<String>) documentSnapshot.get("birthDay");
+                        if (myArray != null) {
+                            for (String item : myArray) {
+                                Log.d("FirebaseArray", "Item: " + item);
+                            }
+                        }
+                    } else {
+                        Log.d("FirebaseArray", "Document does not exist");
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("FirebaseArray", "Error fetching document", e));*/
+
 
         JSONObject jsonObject2 = new JSONObject();
         try {
 
             jsonObject2.put("name", currentUser.getDisplayName());
             jsonObject2.put("email", currentUser.getEmail());
+            jsonObject2.put("age", "25");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -507,6 +537,10 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                                 progressBar.setVisibility(View.GONE);
                                 suggestion_answer.setVisibility(View.VISIBLE);
                                 JSONArray suggetions = response.getJSONArray("suggetions");
+                                String status  = response.getString("msg");
+                                int code = response.getInt("status_code");
+                                Log.d("code------->", code+"");
+                                Log.d("status------->", status);
                                 Log.d("suggestions------->", suggetions.toString());
                                 for (int i = 0; i < suggetions.length(); i++) {
                                     String suggestion = suggetions.getString(i);
@@ -514,6 +548,10 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                                     setSuggestions(suggestions, suggestion_answer);
 
                                 }
+
+                                // update payment collection for suggestion
+                                countSuggestionGeneration(LiveConversationChat.this);
+
                             } catch (JSONException e) {
                                 Log.d("Exception------->", e.getMessage());
                             }
@@ -536,6 +574,7 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
 
                 mapHeaders.put("Content-Type", "application/json");
                 mapHeaders.put("x-vercel-protection-bypass", "WzZBi8VJg6JKhYQXapGCThQhaaNWicLQ");
+
 
                 return mapHeaders;
             }
@@ -624,10 +663,20 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
                                 if (view instanceof TextView) {
                                     TextView textView = (TextView) view;
                                     String text = textView.getText().toString().trim();
-                                    imageGenerator.Generate(text, progressBar2, dialog.getContext());
+                                    imageGenerator.Generate(text+"related by student", progressBar2, dialog.getContext());
                                 }
                             }else {
-                                paymentMethod.firePaymentMethod(currentUserId);
+                                paymentMethod.firePaymentMethod(currentUserId, new UpdateCallBack() {
+                                    @Override
+                                    public void onSuccess(boolean result) {
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(boolean result) {
+
+                                    }
+                                });
                             }
 
                         });
@@ -705,6 +754,8 @@ public class LiveConversationChat extends AppCompatActivity implements onClickLi
         }
         super.onDestroy();
     }
+
+
 
 
 }

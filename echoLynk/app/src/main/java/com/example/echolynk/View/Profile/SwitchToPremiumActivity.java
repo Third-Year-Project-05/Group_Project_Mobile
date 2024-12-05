@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.echolynk.R;
 import com.example.echolynk.Utils.PaymentMethod;
+import com.example.echolynk.Utils.UpdateCallBack;
 import com.example.echolynk.View.MainActivity;
 
 public class SwitchToPremiumActivity extends AppCompatActivity {
@@ -71,10 +72,20 @@ public class SwitchToPremiumActivity extends AppCompatActivity {
                                 layout3.setBackgroundColor(Color.parseColor("#6B29BD05"));
                             } else {
                                 subscribeBTN.setOnClickListener(view -> {
-                                    paymentMethod.firePaymentMethod(currentUserId());
-                                    Intent intent = new Intent(SwitchToPremiumActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
+                                    paymentMethod.firePaymentMethod(currentUserId(), new UpdateCallBack() {
+                                        @Override
+                                        public void onSuccess(boolean result) {
+                                            Intent intent = new Intent(SwitchToPremiumActivity.this, SwitchToPremiumActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+
+                                        @Override
+                                        public void onFailure(boolean result) {
+
+                                        }
+                                    });
+
                                 });
                             }
                         });

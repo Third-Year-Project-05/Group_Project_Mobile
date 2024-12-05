@@ -108,7 +108,7 @@ public class SpeechFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), VideoChat.class);
-                intent.putExtra("url", "https://www.google.com");
+                intent.putExtra("url", "https://echolynk-cf3ca.web.app/user-video-chat");
                 startActivity(intent);
             }
         });

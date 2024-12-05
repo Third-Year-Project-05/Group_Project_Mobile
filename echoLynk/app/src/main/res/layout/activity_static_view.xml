@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Profile.StaticView">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="32dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="49dp"
+        android:backgroundTint="#00FFFFFF"
+        android:onClick="backOnclick"
+        android:scaleType="centerCrop"
+        android:scaleY="2"
+        app:srcCompat="@drawable/back_arrow" />
+
+    <TextView
+        android:id="@+id/blog_view_title"
+        android:layout_width="339dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="50dp"
+        android:layout_toEndOf="@+id/backButton"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Echolynk Blog"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/blog_view_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignTop="@+id/blog_view_title"
+        android:layout_marginTop="53dp"
+        android:padding="16dp"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/image_rounded_conner"
+        app:srcCompat="@drawable/dummy_blog_img1" />
+
+    <TextView
+        android:id="@+id/blog_view_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="307dp"
+        android:text="Echolynk Team"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/blog_view_publish_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="309dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/poppins_regular"
+        android:text="Published on June 13, 2024"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="349dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            tools:ignore="ExtraText">
+
+
+            <TextView
+                android:id="@+id/blog_view_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n
+            For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever.
+Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n
+            For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever.Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n
+            For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever.Imagine if your books could talk! With text-to-speech (TTS) technology, they can. From War and Peace to DMs, the machine can read it all out loud. And it doesn’t even need to sound like a robot. Once just a sci-fi dream, TTS now brings words to life — with the voice of your choice\n
+            For those supporting Deaf and hard-of-hearing individuals, in education or at work, TTS offers a bridge to conversations with hearing peers by transforming text into spoken conversation that's more engaging and inclusive than ever." />
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>

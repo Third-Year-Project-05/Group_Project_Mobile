@@ -224,6 +224,7 @@ public class BlogView extends AppCompatActivity implements onClickListener{
                                                                 Map<String, Object> updates = new HashMap<>();
                                                                 updates.put("content", text);
                                                                 updates.put("imageUrl", UpdateUrl);
+                                                                updates.put("status", "updated");
 
                                                                 // Perform the update
                                                                 docRef.update(updates)
@@ -308,7 +309,7 @@ public class BlogView extends AppCompatActivity implements onClickListener{
 
     }
 
-    private String calculateTime(Timestamp timestamp) {
+    public static String calculateTime(Timestamp timestamp) {
         Date date = timestamp.toDate();
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
 

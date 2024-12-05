@@ -1,5 +1,6 @@
 package com.example.echolynk.View.LiveConversation;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
@@ -14,6 +15,7 @@ public class VideoChat extends AppCompatActivity {
 
     private WebView webView;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

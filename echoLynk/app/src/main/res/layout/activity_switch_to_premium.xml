@@ -90,7 +90,7 @@
                 android:id="@+id/imageView15"
                 android:layout_width="108dp"
                 android:layout_height="76dp"
-                tools:srcCompat="@drawable/suggestion_premium" />
+                app:srcCompat="@drawable/suggestion_premium" />
 
             <TextView
                 android:id="@+id/textView48"
@@ -144,7 +144,7 @@
                 android:id="@+id/imageView16"
                 android:layout_width="108dp"
                 android:layout_height="76dp"
-                tools:srcCompat="@drawable/outline_video_chat_24" />
+                app:srcCompat="@drawable/outline_video_chat_24" />
 
             <TextView
                 android:id="@+id/textView49"
@@ -198,7 +198,7 @@
                 android:id="@+id/imageView17"
                 android:layout_width="108dp"
                 android:layout_height="76dp"
-                tools:srcCompat="@drawable/image_generation"/>
+                app:srcCompat="@drawable/image_generation"/>
 
             <TextView
                 android:id="@+id/textView51"

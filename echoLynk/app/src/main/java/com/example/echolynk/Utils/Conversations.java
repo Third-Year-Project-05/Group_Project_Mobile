@@ -22,6 +22,33 @@ public class Conversations {
         ));
 
         conversations.add(new ConversationModel(
+                "hi what is your name",
+                Arrays.asList("My name is "+currentUser.getDisplayName()+". What about you?",
+                        "I'm "+currentUser.getDisplayName()+". Nice to meet you!",
+                        "I'm "+currentUser.getDisplayName()+". How about you?")
+        ));
+
+        conversations.add(new ConversationModel(
+                "what is your favourite sport",
+                Arrays.asList("Basketball",
+                        "Cricket",
+                        "Football")
+        ));
+        conversations.add(new ConversationModel(
+                "what's your favourite sport",
+                Arrays.asList("Basketball",
+                        "Cricket",
+                        "Football")
+        ));
+
+        conversations.add(new ConversationModel(
+                "what's your name",
+                Arrays.asList("My name is "+currentUser.getDisplayName()+". What about you?",
+                        "I'm "+currentUser.getDisplayName()+". Nice to meet you!",
+                        "I'm "+currentUser.getDisplayName()+". How about you?")
+        ));
+
+        conversations.add(new ConversationModel(
                 "what's your name",
                 Arrays.asList("My name is "+currentUser.getDisplayName()+". What about you?",
                         "I'm "+currentUser.getDisplayName()+". Nice to meet you!",
@@ -34,7 +61,7 @@ public class Conversations {
                         "I'm okay, but I have a lot of homework to do.")
         ));
         conversations.add(new ConversationModel(
-                "did you finish the homework",
+                "did you finished the homework",
                 Arrays.asList("Yes, I finished it last night.",
                         "Not yet, I’m planning to do it after school.",
                         "No, I forgot. Do you think I can do it quickly now?")

@@ -29,7 +29,7 @@ public class PaymentMethod {
     private String paymentIntentClientSecret;
     private PaymentSheet.CustomerConfiguration configuration;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private UpdateCallBack onPaymentSheetResultCallback;
     private String userId;
 
     public PaymentMethod(Context context) {
@@ -40,12 +40,15 @@ public class PaymentMethod {
 
 
 
-    public void firePaymentMethod(String userId){
+    public void firePaymentMethod(String userId,UpdateCallBack callBack){
         this.userId=userId;
         if (paymentIntentClientSecret != null) {
             Log.d("Configuration", configuration.toString());
             paymentSheet.presentWithPaymentIntent(paymentIntentClientSecret,
                     new PaymentSheet.Configuration("echoLynk",configuration));
+            onPaymentSheetResultCallback=callBack;
+        }else {
+            callBack.onFailure(false);
         }
     }
 
@@ -59,44 +62,77 @@ public class PaymentMethod {
                 db.collection("payments").document(userId)
                         .update("totalCost",5)
                         .addOnSuccessListener(aVoid->{
-                            userCollectionUpdate();
+                            userCollectionUpdate(new UpdateCallBack() {
+                                @Override
+                                public void onSuccess(boolean result) {
+                                    onPaymentSheetResultCallback.onSuccess(true);
+                                }
+
+                                @Override
+                                public void onFailure(boolean result) {
+                                    onPaymentSheetResultCallback.onFailure(false);
+                                }
+                            });
                         }).addOnFailureListener(e -> {
-                            newUserAddForPaymentCollection();
+                            newUserAddForPaymentCollection(new UpdateCallBack() {
+                                @Override
+                                public void onSuccess(boolean result) {
+                                    onPaymentSheetResultCallback.onSuccess(true);
+                                }
+
+                                @Override
+                                public void onFailure(boolean result) {
+                                    onPaymentSheetResultCallback.onFailure(false);
+                                }
+                            });
                         });
             }catch (Exception e){
                 Log.e("Exception", e.getMessage());
             }
 
         }else {
-            Toast.makeText(context,"Something is wrong.-->",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Something is wrong.",Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void newUserAddForPaymentCollection() {
+    private void newUserAddForPaymentCollection(UpdateCallBack callBack) {
         Map<String, Object> newUser = new HashMap<>();
         newUser.put("userId", userId);
-        newUser.put("imageCount", 0);
-        newUser.put("suggestionCount ", 0);
+        newUser.put("imageCount", 5);
+        newUser.put("suggestionCount ", 100);
         newUser.put("totalCost ", 5);
         newUser.put("paymentDate ", new com.google.firebase.Timestamp(new java.util.Date()));
 
         db.collection("payments")
                 .add(newUser)
                 .addOnSuccessListener(documentReference -> {
-                    userCollectionUpdate();
+                    userCollectionUpdate(new UpdateCallBack() {
+                        @Override
+                        public void onSuccess(boolean result) {
+                            callBack.onSuccess(true);
+                        }
+
+                        @Override
+                        public void onFailure(boolean result) {
+                            callBack.onFailure(false);
+                        }
+                    });
                 }).addOnFailureListener(e -> {
                     Toast.makeText(context,e.getMessage(), Toast.LENGTH_SHORT).show();
+                    callBack.onFailure(false);
                 });
     }
 
-    private void userCollectionUpdate() {
+    private void userCollectionUpdate(UpdateCallBack callBack) {
         db.collection("users").document(userId)
                 .update("isPremium", true) // Set the `isPremium` field to true
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(context,"Successfully",Toast.LENGTH_SHORT).show();
+                    callBack.onSuccess(true);
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(context,"Failed to update isPremium value.", Toast.LENGTH_SHORT).show();
+                    callBack.onFailure(false);
                 });
     }
 

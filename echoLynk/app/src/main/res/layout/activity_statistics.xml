@@ -14,21 +14,35 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         app:srcCompat="@drawable/arrow_left_icon" />
 
     <TextView
         android:id="@+id/textView38"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/statistics_back_btn"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="0dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
-        android:text="Statistics"
+        android:text="My Blogs"
         android:textColor="@color/black"
         android:textSize="25sp"
         android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/my_blogs"
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        android:layout_below="@+id/textView38"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="0dp" />
 
 </RelativeLayout>

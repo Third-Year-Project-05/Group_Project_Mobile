@@ -2,6 +2,7 @@ package com.example.echolynk.Utils;
 
 import android.content.Context;
 
+import com.example.echolynk.Model.UserDetails;
 import com.example.echolynk.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -12,12 +13,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class FirebaseUtils {
 
@@ -31,7 +35,9 @@ public class FirebaseUtils {
     public static String currentUserId() {
         return FirebaseAuth.getInstance().getUid();
     }
-
+    public static String currentUserEmail() {
+        return Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getEmail();
+    }
     public static DocumentReference currentUserDetails() {
         return FirebaseFirestore.getInstance().collection("users").document(currentUserId());
     }
@@ -115,5 +121,7 @@ public class FirebaseUtils {
         return FirebaseFirestore.getInstance().collection("users")
                 .whereEqualTo("userId", userId).get();
     }
+
+
 
 }

@@ -5,10 +5,7 @@ import static com.example.echolynk.Utils.TetFilter.filterTextMassage;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.speech.tts.TextToSpeech;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -18,8 +15,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.echolynk.Model.MassageModel;
@@ -134,7 +129,7 @@ public class VoiceAssistanceThree extends AppCompatActivity implements onClickLi
         if (view instanceof TextView) {
             TextView textView=(TextView) view;
             String text = textView.getText().toString().trim();
-            imageGenerator.Generate(text,progressBar2,dialog.getContext());
+            imageGenerator.Generate(text+text+"related by student",progressBar2,dialog.getContext());
         }
 
     }

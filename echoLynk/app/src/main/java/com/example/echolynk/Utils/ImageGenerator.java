@@ -1,6 +1,7 @@
 package com.example.echolynk.Utils;
 
 import static android.content.ContentValues.TAG;
+import static com.example.echolynk.Utils.PaymentUtils.countImageGeneration;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -34,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ImageGenerator {
-    private static final String apiKey = "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";
+    private static final String apiKey = "sk-proj-ieERVWGY7LdB3m-gMT9aMiL4_dGqz8osIDp-2J6IYpB5azzAJ7bIFIYagqxU1ySJGxWxXDLMirTuH2e0yOiRoXIA";
     private static String stringOutput = "";
     ProgressDialog progressDialog;
     Handler handler = new Handler();
@@ -60,8 +61,6 @@ public class ImageGenerator {
     }
 
     public void Generate(String text, ProgressBar progressBar2, Context context) {
-
-
 
         // Show the ProgressBar
         progressBar2.setVisibility(View.VISIBLE);
@@ -94,6 +93,10 @@ public class ImageGenerator {
                                     getString("url");
 
                             new ImageGenerator.FetchImage(stringOutput,context).start();
+
+                            // update payment collection
+                            countImageGeneration(context);
+
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
